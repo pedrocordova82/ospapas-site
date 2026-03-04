@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg-950: #0b0b0b;
+  --color-bg-900: #141414;
+  --color-gold-500: #f2b705;
+  --color-gold-400: #ffd447;
+  --color-red-500: #c1121f;
+  --color-text-100: #ffffff;
+  --color-text-300: #a1a1a1;
+  --color-text-500: #7a7a7a;
+}
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+}
+
+body {
+  background: var(--color-bg-950);
+  color: var(--color-text-100);
+  font-family: var(--font-body), sans-serif;
+}
+
+a,
+button {
+  cursor: pointer;
+}
