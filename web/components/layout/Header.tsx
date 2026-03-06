@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -15,11 +16,22 @@ const navItems = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const handleLogoClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === "/") {
+      event.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[color:var(--color-bg-900)]/85 backdrop-blur">
       <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3 text-[color:var(--color-text-100)]">
+        <Link href="/" onClick={handleLogoClick} className="flex items-center gap-3 text-[color:var(--color-text-100)]">
           <Image src="/logo-ospapas.png" alt="Logo do MC Os Papas" width={40} height={40} />
           <div className="flex flex-col">
             <span className="font-heading text-3xl leading-none tracking-[0.08em]">MC OS PAPAS</span>
