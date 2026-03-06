@@ -59,10 +59,7 @@ export default function FloatingWhatsApp() {
           className={`absolute bottom-[calc(100%+12px)] right-0 max-w-[220px] rounded-lg border border-white/10 bg-[color:var(--color-bg-900)] px-3 py-2 text-xs text-white/90 shadow-lg transition-all duration-300 ${
             showHint ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-1 opacity-0"
           }`}
-        >
-          Precisa falar com uma sede?
-        </div>
-
+        
         <div
           className={`absolute bottom-[calc(100%+14px)] right-0 w-[min(92vw,300px)] origin-bottom-right rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-3 shadow-2xl transition-all duration-300 ${
             isOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
