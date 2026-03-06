@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import FloatingWhatsApp from "@/components/layout/FloatingWhatsApp";
 import "./globals.css";
 
 const headingFont = Bebas_Neue({
@@ -34,6 +35,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <FloatingWhatsApp />
           </div>
         </div>
       </body>

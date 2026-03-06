@@ -4,22 +4,31 @@ import Image from "next/image";
 export default function Home() {
   const chapterCards = [
     {
+      name: "Pará",
+      href: "/sedes/para",
+      imageUrl: "/sede_para.jpg",
+      type: "Sede Nacional"
+    },    
+    {
       name: "Brasília",
       href: "/sedes/brasilia",
-      imageUrl:
-        "https://images.unsplash.com/photo-1659061364195-849397f2fafa?q=80&w=1752&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imageUrl: "/regional_brasilia.jpg",
     },
     {
       name: "Rio de Janeiro",
       href: "/sedes/rj",
-      imageUrl:
-        "https://images.unsplash.com/photo-1518639192441-8fce0a366e2e?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imageUrl: "/regional_rio.jpeg",
     },
     {
-      name: "Pará",
-      href: "/sedes/para",
-      imageUrl:
-        "https://plus.unsplash.com/premium_photo-1697729600112-434ee1c7f670?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      name: "São Miguel do Oeste",
+      href: "/sedes/saomiguel",
+      imageUrl: "/regional_sm.jpg",
+    },
+    {
+      name: "São Luís",
+      href: "/sedes/saoluis",
+      imageUrl: "/subsede_sl.jpg",
+      type: "Subsede"
     },
   ];
 

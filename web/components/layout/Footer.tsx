@@ -1,3 +1,5 @@
+import { Instagram } from "lucide-react";
+
 export function Footer() {
   return (
     <footer
@@ -13,10 +15,19 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="lg:text-right">
-          <p className="text-sm uppercase tracking-[0.12em] text-[color:var(--color-text-300)]">Contato</p>
-          <p className="mt-3 text-sm text-[color:var(--color-text-100)]">WhatsApp: +55 11 99999-9999</p>
-          <p className="mt-1 text-sm text-[color:var(--color-text-100)]">Instagram: @ospapas.mc</p>
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-white/60">
+            <Instagram size={20} />
+            <span>Instagram</span>
+          </div>
+          <a
+            href="https://instagram.com/mc_os_papas"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-md border border-white/15 px-4 py-2 text-sm text-white/90 transition-all duration-200 hover:scale-105 hover:border-yellow-400 hover:bg-yellow-400/10 hover:text-yellow-400"
+          >
+            @mc_os_papas
+          </a>
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-xs uppercase tracking-[0.08em] text-[color:var(--color-text-500)]">

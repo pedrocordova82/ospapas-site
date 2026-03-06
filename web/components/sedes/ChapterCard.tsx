@@ -5,9 +5,10 @@ type ChapterCardProps = {
   city: string;
   href: string;
   imageUrl: string;
-};
+  type?: string;
+}
 
-export function ChapterCard({ name, city, href, imageUrl }: ChapterCardProps) {
+export function ChapterCard({ name, city, href, imageUrl, type = "Regional" }: ChapterCardProps) {
   return (
     <Link
       href={href}
@@ -19,8 +20,9 @@ export function ChapterCard({ name, city, href, imageUrl }: ChapterCardProps) {
       />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(11,11,11,0.18),transparent_45%),linear-gradient(180deg,rgba(11,11,11,0.58)_22%,rgba(11,11,11,0.98)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 p-6">
-        <p className="text-xs uppercase tracking-[0.15em] text-[color:var(--color-gold-500)]">Sede</p>
-        <h3 className="mt-2 font-heading text-4xl uppercase tracking-[0.04em] text-[color:var(--color-text-100)]">{name}</h3>
+        <p className="text-xs uppercase tracking-[0.15em] text-[color:var(--color-gold-500)]">
+  {type}
+</p>    <h3 className="mt-2 font-heading text-4xl uppercase tracking-[0.04em] text-[color:var(--color-text-100)]">{name}</h3>
         <p className="mt-2 text-sm text-white/95">{city}</p>
         <span className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.12em] text-white/90">
           Ver Capitulo
