@@ -53,18 +53,10 @@ export default function FloatingWhatsApp() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
-      <div
-        className={`max-w-[220px] rounded-lg border border-white/10 bg-[color:var(--color-bg-900)] px-3 py-2 text-xs text-white/90 shadow-lg transition-all duration-300 ${
-          showHint ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-1 opacity-0"
-        }`}
-      >
-        Precisa falar com uma sede?
-      </div>
-
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end sm:bottom-6 sm:right-6">
       <div
         className={`w-[min(92vw,300px)] origin-bottom-right rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-3 shadow-2xl transition-all duration-300 ${
-          isOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
+          isOpen ? "mb-3 scale-100 opacity-100" : "pointer-events-none mb-0 scale-95 opacity-0"
         }`}
       >
         <p className="px-2 pb-2 text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">WhatsApp</p>
@@ -86,6 +78,14 @@ export default function FloatingWhatsApp() {
       </div>
 
       <div className="group relative">
+        <div
+          className={`absolute bottom-full right-0 mb-3 max-w-[220px] rounded-lg border border-white/10 bg-[color:var(--color-bg-900)] px-3 py-2 text-xs text-white/90 shadow-lg transition-all duration-300 ${
+            showHint ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-1 opacity-0"
+          }`}
+        >
+          Precisa falar com uma sede?
+        </div>
+
         <div className="pointer-events-none absolute right-full top-1/2 mr-3 -translate-y-1/2 whitespace-nowrap rounded-md border border-white/10 bg-[color:var(--color-bg-900)] px-3 py-1.5 text-xs text-white/85 opacity-0 shadow-md transition group-hover:opacity-100">
           Fale conosco no WhatsApp
         </div>

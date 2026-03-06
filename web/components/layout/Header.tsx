@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type MouseEvent } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 
 const navItems = [
@@ -15,12 +16,28 @@ const navItems = [
 
 export function Header() {
 const [open, setOpen] = useState(false)
+const pathname = usePathname()
 
-const scrollToTop = () => {
-window.scrollTo({
-top: 0,
-behavior: "smooth",
+const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+if (pathname === "/") {
+event.preventDefault()
+if (window.location.hash) {
+window.history.replaceState(null, "", "/")
+}
+const scrollToPageTop = (behavior: ScrollBehavior) => {
+window.scrollTo({ top: 0, behavior })
+document.documentElement.scrollTo({ top: 0, behavior })
+document.body.scrollTo({ top: 0, behavior })
+}
+
+requestAnimationFrame(() => {
+scrollToPageTop("smooth")
 })
+
+setTimeout(() => {
+scrollToPageTop("auto")
+}, 350)
+}
 }
 
 return (
@@ -28,14 +45,9 @@ return (
 
 ```
       {/* Logo */}
-      <button
-        onClick={() => {
-          window.history.replaceState(null, "", "/")
-          window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-          })
-        }}
+      <Link
+        href="/"
+        onClick={handleLogoClick}
   className="flex items-center gap-3 text-[color:var(--color-text-100)] cursor-pointer"
       >
         <Image
@@ -54,7 +66,7 @@ return (
             FRATRES IN VIA
           </span>
         </div>
-      </button>
+      </Link>
 
       {/* Menu Desktop */}
       <nav className="hidden md:block" aria-label="Navegacao principal">
