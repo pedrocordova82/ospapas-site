@@ -55,7 +55,7 @@ export function Header() {
           href="#entrar"
           className="rounded-md border border-[color:var(--color-gold-500)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-[color:var(--color-bg-950)]"
         >
-          Como Entrar
+          Como Entra
         </a>
       </div>
     </header>
