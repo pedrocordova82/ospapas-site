@@ -2,6 +2,11 @@ import { ChapterCard } from "@/components/sedes/ChapterCard";
 import Image from "next/image";
 
 export default function Home() {
+  /**
+   * SECTION: Chapter Cards Data
+   * This collection feeds the Sedes grid and maps each card to a chapter route.
+   * Slugs are aligned with `/sedes/[slug]` dynamic pages.
+   */
   const chapterCards = [
     {
       name: "Pará",
@@ -32,6 +37,11 @@ export default function Home() {
     },
   ];
 
+  /**
+   * SECTION: Base Content Sections
+   * These sections represent the homepage institutional blocks.
+   * Each `id` is used as an anchor target for header navigation links.
+   */
   const baseSections = [
     { id: "sobre", title: "Sobre o Clube", text: "Irmandade que vive a estrada com respeito, liberdade e lealdade." },
     { id: "eventos", title: "Eventos", text: "Calendário de rides, encontros e ações beneficentes." },
@@ -42,6 +52,11 @@ export default function Home() {
 
   return (
     <div className="pb-20">
+      {/**
+       * SECTION: Hero
+       * Primary introduction area with cinematic background, branding,
+       * and CTA anchors guiding users to events and contact sections.
+       */}
       <section className="relative isolate overflow-hidden border-b border-white/10">
         <div
           className="absolute inset-0 bg-cover bg-center brightness-90"
@@ -79,6 +94,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/**
+       * SECTION: Quem Somos
+       * Short institutional summary describing club identity and purpose.
+       */}
       <section id="quem-somos" className="border-b border-white/10 bg-[color:var(--color-bg-900)]/70">
         <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Quem Somos</p>
@@ -93,6 +112,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/**
+       * SECTION: Chapter Cards (Sedes)
+       * Reusable `ChapterCard` components render chapter previews and
+       * navigate visitors to each chapter detail page.
+       */}
       <section id="sedes" className="mx-auto w-full max-w-6xl px-4 pt-20 sm:px-6 lg:px-8 lg:pt-24">
         <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Capítulos</p>
         <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-6xl">
@@ -109,6 +133,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/**
+       * SECTION: Base Sections Grid
+       * Additional homepage anchors (Sobre, Eventos, Filantropia, etc.)
+       * are rendered from data to keep structure easy to expand.
+       */}
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:pt-24">
         {baseSections.map((section) => (
           <article

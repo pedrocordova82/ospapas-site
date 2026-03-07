@@ -2,28 +2,57 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { chapters } from "@/data/chapters/chapters";
 
+/**
+ * SECTION: Dynamic Route Props
+ * App Router provides `params` with the current chapter slug from `/sedes/[slug]`.
+ */
 type ChapterPageProps = {
   params: Promise<{
     slug: string;
   }>;
 };
 
+/**
+ * SECTION: WhatsApp Link Builder
+ * Normalizes any phone format into digits-only to build a valid wa.me URL.
+ */
 function toWaMe(phone: string) {
   return `https://wa.me/${phone.replace(/\D/g, "")}`;
 }
 
+/**
+ * SECTION: Dynamic Chapter Page
+ * Resolves chapter content based on route slug and renders:
+ * hero, institutional info, contact actions, and map embed.
+ */
 export default async function ChapterPage({ params }: ChapterPageProps) {
+  /**
+   * SECTION: Slug Resolution
+   * Reads the dynamic segment and searches for a chapter with matching slug.
+   */
   const { slug } = await params;
   const chapter = chapters.find((item) => item.slug === slug);
 
+  /**
+   * SECTION: Not Found Handling
+   * If no chapter matches the slug, delegate to Next.js 404 via `notFound()`.
+   */
   if (!chapter) {
     notFound();
   }
 
+  /**
+   * SECTION: Map Embed URL
+   * Uses chapter latitude/longitude to build a Google Maps iframe source.
+   */
   const mapSrc = `https://www.google.com/maps?q=${chapter.latitude},${chapter.longitude}&output=embed`;
 
   return (
     <div className="pb-16">
+      {/**
+       * SECTION: Hero
+       * Displays chapter-specific cover image, overlay, and identity metadata.
+       */}
       <section className="relative isolate min-h-[48vh] overflow-hidden border-b border-white/10">
         <Image
           src={chapter.image}
@@ -48,6 +77,11 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
         </div>
       </section>
 
+      {/**
+       * SECTION: Information + Contact
+       * Left column contains description, optional Instagram, and WhatsApp CTA.
+       * Right column contains the embedded map for physical location context.
+       */}
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-10 sm:px-6 lg:grid-cols-2 lg:px-8">
         <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 sm:p-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Informações</p>

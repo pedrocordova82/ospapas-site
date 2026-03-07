@@ -1,3 +1,8 @@
+/**
+ * SECTION: Chapter Type Definition
+ * Defines the canonical chapter schema used by the frontend.
+ * These fields feed hero, contact, and map sections in `/sedes/[slug]`.
+ */
 export type Chapter = {
   slug: string
   name: string
@@ -12,6 +17,11 @@ export type Chapter = {
   longitude: number
 }
 
+/**
+ * SECTION: Chapters Data Source
+ * Primary dataset used to render chapter cards and dynamic chapter pages.
+ * `slug` values are route keys for the App Router path: `/sedes/[slug]`.
+ */
 export const chapters: Chapter[] = [
   {
     slug: "para",
