@@ -122,7 +122,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
             <iframe
               title={`Mapa da ${chapter.name}`}
               src={mapSrc}
-              className="h-full w-full"
+              className="h-full w-full pointer-events-none"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
