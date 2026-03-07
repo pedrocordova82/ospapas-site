@@ -16,18 +16,18 @@ export default function Home() {
     },
     {
       name: "Rio de Janeiro",
-      href: "/sedes/rj",
-      imageUrl: "/images/rio_de_janeiro/capa.jpeg",
+      href: "/sedes/rio-de-janeiro",
+      imageUrl: "/images/rio-de-janeiro/capa.jpeg",
     },
     {
       name: "São Miguel do Oeste",
-      href: "/sedes/saomiguel",
-      imageUrl: "/images/sao_miguel_do_oeste/capa.jpg",
+      href: "/sedes/sao-miguel-do-oeste",
+      imageUrl: "/images/sao-miguel-do-oeste/capa.jpg",
     },
     {
       name: "São Luís",
-      href: "/sedes/saoluis",
-      imageUrl: "/images/sao_luis/capa.jpg",
+      href: "/sedes/sao-luis",
+      imageUrl: "/images/sao-luis/capa.jpg",
       type: "Subsede"
     },
   ];
