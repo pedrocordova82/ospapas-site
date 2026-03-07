@@ -6,11 +6,11 @@ import { Menu, X } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 
 const navItems = [
-  { label: "Sobre", href: "#sobre" },
-  { label: "Sedes", href: "#sedes" },
-  { label: "Eventos", href: "#eventos" },
-  { label: "Filantropia", href: "#filantropia" },
-  { label: "Contato", href: "#contato" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Sedes", href: "/#sedes" },
+  { label: "Eventos", href: "/#eventos" },
+  { label: "Filantropia", href: "/#filantropia" },
+  { label: "Contato", href: "/#contato" },
 ];
 
 export function Header() {
@@ -54,12 +54,13 @@ export function Header() {
             <ul className="flex items-center gap-6">
               {navItems.map((item) => (
                 <li key={item.label}>
-                  <a
+                  <Link
                     href={item.href}
+                    scroll={true}
                     className="text-sm uppercase tracking-[0.12em] text-[color:var(--color-text-300)] transition hover:text-[color:var(--color-gold-500)]"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
