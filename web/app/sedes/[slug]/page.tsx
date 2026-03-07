@@ -46,6 +46,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
    * Uses chapter latitude/longitude to build a Google Maps iframe source.
    */
   const mapSrc = `https://www.google.com/maps?q=${chapter.latitude},${chapter.longitude}&output=embed`;
+  const mapsLink = `https://www.google.com/maps?q=${chapter.latitude},${chapter.longitude}`;
 
   return (
     <div className="pb-16">
@@ -125,6 +126,21 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
+          </div>
+          {/**
+           * SECTION: Full Google Maps Access
+           * The iframe provides a quick in-page preview, while this link opens
+           * the exact coordinates in Google Maps with full interaction.
+           */}
+          <div className="px-6 pb-6 pt-4 sm:px-8">
+            <a
+              href={mapsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-gold-500)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black"
+            >
+              Abrir no Google Maps
+            </a>
           </div>
         </article>
       </section>
