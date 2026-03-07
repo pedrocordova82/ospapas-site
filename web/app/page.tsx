@@ -105,10 +105,12 @@ export default function Home() {
           <h2 className="mt-4 max-w-4xl font-heading text-5xl uppercase leading-[0.95] tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-6xl lg:text-7xl">
             Estrada, Irmandade e Tradição
           </h2>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-[color:var(--color-text-300)] sm:text-lg">
-            O Os Papas MC é um motoclube brasileiro movido pela paixão por motos, respeito entre irmãos e compromisso com
-            a comunidade. Mais do que encontros e viagens, vivemos um código de honra que fortalece nossa presença na
-            estrada e fora dela.
+          <p className="mt-6 max-w-[73ch] whitespace-pre-line text-justify text-base leading-6 text-[color:var(--color-text-300)] sm:text-lg">
+          {`Cinco amigos motociclistas...
+
+            Unidos por laços de afinidade...
+
+            No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. E por que OS PAPAS? O nome seria uma forma de homenagem ao amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, e como todos são filhos do pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em Latim “ FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.`}
           </p>
         </div>
       </section>
