@@ -53,7 +53,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(11,11,11,0.80),rgba(11,11,11,0.94)),radial-gradient(circle_at_20%_25%,rgba(242,183,5,0.16),transparent_38%)]" />
 
         <div className="relative mx-auto w-full max-w-6xl px-4 py-28 sm:px-6 lg:px-8 lg:py-40">
-          <img src="/log-ospapas.png" alt="Logo do MC Os Papas" className="mb-8 w-40 h-40" />
+          <img src="/logo-ospapas.png" alt="Logo do MC Os Papas" className="mb-8 w-40 h-40" />
           <h1 className="mt-2 max-w-3xl font-heading text-6xl uppercase leading-[0.9] tracking-[0.05em] text-white sm:text-7xl lg:text-8xl">
             MC OS PAPAS
           </h1>
