@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { useState, type MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 
 /**
  * SECTION: Navigation Items
@@ -24,6 +25,52 @@ export function Header() {
    * Controls whether the mobile menu and dark overlay are visible.
    */
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
+  const pathname = usePathname();
+
+  /**
+   * SECTION: Active Navigation (Scroll Spy)
+   * Uses IntersectionObserver to detect which section is currently visible
+   * and updates the desktop navigation highlight accordingly.
+   *
+   * This logic runs only on the homepage to avoid false positives in
+   * non-anchor routes (for example chapter detail pages).
+   */
+  useEffect(() => {
+    if (pathname !== "/") {
+      return;
+    }
+
+    /**
+     * SECTION: Section Detection
+     * Observes all section elements that expose an `id`, and also observes
+     * the footer contact anchor so `#contato` can be highlighted.
+     */
+    const sections = Array.from(document.querySelectorAll("section[id]"));
+    const footerContact = document.getElementById("contato");
+    const observedElements = footerContact ? [...sections, footerContact] : sections;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-30% 0px -55% 0px",
+        threshold: 0.15,
+      },
+    );
+
+    observedElements.forEach((element) => observer.observe(element));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [pathname]);
 
   /**
    * SECTION: Logo Navigation + Smooth Scroll
@@ -78,10 +125,19 @@ export function Header() {
             <ul className="flex items-center gap-6">
               {navItems.map((item) => (
                 <li key={item.label}>
+                  {/**
+                   * SECTION: Active Link Styling
+                   * Matches current `activeSection` against each link anchor id.
+                   * Active item uses gold; inactive items keep standard hover style.
+                   */}
                   <Link
                     href={item.href}
                     scroll={true}
-                    className="text-sm uppercase tracking-[0.12em] text-[color:var(--color-text-300)] transition hover:text-[color:var(--color-gold-500)]"
+                    className={`text-sm uppercase tracking-[0.12em] transition ${
+                      pathname === "/" && activeSection === item.href.replace("/#", "")
+                        ? "text-[color:var(--color-gold-500)]"
+                        : "text-[color:var(--color-text-300)] hover:text-[color:var(--color-gold-500)]"
+                    }`}
                   >
                     {item.label}
                   </Link>
