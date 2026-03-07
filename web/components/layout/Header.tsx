@@ -43,12 +43,17 @@ export function Header() {
 
     /**
      * SECTION: Section Detection
-     * Observes all section elements that expose an `id`, and also observes
-     * the footer contact anchor so `#contato` can be highlighted.
+     * ScrollSpy tracks all sections that expose an `id` attribute and maps
+     * them to matching hash links in the header navigation.
      */
-    const sections = Array.from(document.querySelectorAll("section[id]"));
+    const sections = document.querySelectorAll("section[id]");
     const footerContact = document.getElementById("contato");
-    const observedElements = footerContact ? [...sections, footerContact] : sections;
+
+    /**
+     * SECTION: IntersectionObserver Usage
+     * IntersectionObserver provides a lightweight way to detect visible
+     * sections without attaching continuous scroll listeners.
+     */
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -60,12 +65,13 @@ export function Header() {
       },
       {
         root: null,
-        rootMargin: "-30% 0px -55% 0px",
-        threshold: 0.15,
+        rootMargin: "-40% 0px -50% 0px",
+        threshold: 0,
       },
     );
 
-    observedElements.forEach((element) => observer.observe(element));
+    sections.forEach((section) => observer.observe(section));
+    if (footerContact) observer.observe(footerContact);
 
     return () => {
       observer.disconnect();
@@ -126,21 +132,26 @@ export function Header() {
               {navItems.map((item) => (
                 <li key={item.label}>
                   {/**
-                   * SECTION: Active Link Styling
-                   * Matches current `activeSection` against each link anchor id.
-                   * Active item uses gold; inactive items keep standard hover style.
+                   * SECTION: Active Navigation Styling
+                   * Each link hash is converted to a plain section id
+                   * (e.g. "/#sedes" -> "sedes") and compared with `activeSection`.
                    */}
+                  {(() => {
+                    const sectionId = item.href.replace("/#", "");
+                    return (
                   <Link
                     href={item.href}
                     scroll={true}
                     className={`text-sm uppercase tracking-[0.12em] transition ${
-                      pathname === "/" && activeSection === item.href.replace("/#", "")
+                      pathname === "/" && activeSection === sectionId
                         ? "text-[color:var(--color-gold-500)]"
                         : "text-[color:var(--color-text-300)] hover:text-[color:var(--color-gold-500)]"
                     }`}
                   >
                     {item.label}
                   </Link>
+                    );
+                  })()}
                 </li>
               ))}
             </ul>
