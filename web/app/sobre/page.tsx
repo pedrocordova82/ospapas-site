@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Crown, KeyRound, Landmark, Shield, Route, Handshake, Heart, HeartHandshake, Scale, Users, CheckCircle, ShieldCheck, UsersRound, HandMetal } from "lucide-react";
+import { Crown, KeyRound, Landmark, Shield, Route, Handshake, Heart, HeartHandshake, Scale, Users, CheckCircle, ShieldCheck, UsersRound, HandMetal, User } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 
 const coatOfArmsItems = [
@@ -126,6 +126,39 @@ const leadership = [
     rank: "Representante - Cardeal",
     chapter: "Porto de Moz-PA",
     image: "/images/diretoria/varejao-representante-cardeal-subsede-porto-de-moz.png",
+  },
+];
+
+const hierarchy = [
+  {
+    icon: Crown,
+    title: "Papa",
+    description:
+      "Líder máximo do Moto Clube, responsável por representar a irmandade, conduzir as decisões estratégicas e zelar pelos valores e pela união do clube.",
+  },
+  {
+    icon: Shield,
+    title: "Cardeal",
+    description:
+      "Auxilia diretamente o Papa na liderança do Moto Clube, contribuindo nas decisões importantes e na organização da irmandade.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Bispo",
+    description:
+      "Responsável por apoiar a estrutura do Moto Clube, ajudando na coordenação das atividades e na manutenção da ordem e disciplina.",
+  },
+  {
+    icon: Users,
+    title: "Padre",
+    description:
+      "Membro ativo do Moto Clube que participa das atividades, fortalece a irmandade e representa os valores do clube.",
+  },
+  {
+    icon: User,
+    title: "Diácono",
+    description:
+      "Integrante em fase inicial dentro do Moto Clube, aprendendo a cultura, os valores e a tradição da irmandade.",
   },
 ];
 
@@ -275,6 +308,25 @@ export default function SobrePage() {
           </h2> 
       </section>
     </Reveal>
+
+      <Reveal>
+        <section className="mx-auto w-full max-w-6xl px-3 pb-16 sm:px-6 lg:px-8">
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Estrutura</p>
+          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Hierarquia do Moto Clube</h2>
+          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {hierarchy.map((item) => {
+              const Icon = item.icon;
+              return (
+                <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
+                  <Icon size={30} className="mx-auto text-[color:var(--color-gold-500)]" />
+                  <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.04em] text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-300)]">{item.description}</p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      </Reveal>
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
