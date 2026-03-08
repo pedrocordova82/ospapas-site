@@ -1,4 +1,4 @@
-import { Instagram } from "lucide-react";
+import { Instagram, MessageCircle } from "lucide-react";
 
 /**
  * SECTION: Footer
@@ -25,7 +25,7 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-3">
           {/**
            * SECTION: Instagram Title
            * Icon + label communicates the social channel in a subtle style.
@@ -42,7 +42,7 @@ export function Footer() {
             href="https://instagram.com/mc_os_papas"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block rounded-md border border-white/15 px-4 py-2 text-sm text-white/90 transition-all duration-200 hover:scale-105 hover:border-yellow-400 hover:bg-yellow-400/10 hover:text-yellow-400"
+            className="inline-block rounded-md border border-white/15 px-4 py-2 text-sm text-[color:var(--color-gold-500)] transition-all duration-200 hover:scale-105 hover:border-yellow-400 hover:bg-yellow-400/10 hover:text-yellow-400"
           >
             @mc_os_papas
           </a>
@@ -52,8 +52,29 @@ export function Footer() {
        * SECTION: Copyright
        * Uses current year dynamically to avoid manual yearly maintenance.
        */}
-      <div className="border-t border-white/10 py-4 text-center text-xs uppercase tracking-[0.08em] text-[color:var(--color-text-500)]">
-        {new Date().getFullYear()} Os Papas MC. Todos os direitos reservados.
+      <div className="border-t border-white/10 py-4">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 text-xs uppercase tracking-[0.08em] text-[color:var(--color-text-500)]">
+          <div className="flex items-center gap-3 text-white/60 normal-case tracking-normal">
+            <span>Desenvolvido por:</span>
+            <img
+              src="/images/geral/logo-ux.svg"
+              alt="UX Consultancy"
+              className="h-4 w-auto"
+            />
+            <a
+              href="https://wa.me/5561981508989"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition hover:scale-110"
+            >
+              <MessageCircle size={16} className="text-green-500" />
+            </a>
+          </div>
+
+          <div>
+            {new Date().getFullYear()} Os Papas MC. Todos os direitos reservados.
+          </div>
+        </div>
       </div>
     </footer>
   );
