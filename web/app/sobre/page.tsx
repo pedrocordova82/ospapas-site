@@ -12,6 +12,7 @@ import {
   User,
 } from "@/components/ui/icons/icons";
 import { Reveal } from "@/components/ui/Reveal";
+import { TestIcon } from "@/components/ui/icons/icons";
 
 const coatOfArmsItems = [
   {
