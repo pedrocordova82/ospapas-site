@@ -47,8 +47,8 @@ export const chapters: Chapter[] = [
     instagram: "@mc_os_papas_brasilia",
     whatsapp: "+5561999999999",
     image: "/images/brasilia/capa.jpg",
-    latitude: -15.847456763175366,
-    longitude: -47.964497171163956
+    latitude: -15.825362906642775,
+    longitude: -48.08714023817274
   },
 
   {
