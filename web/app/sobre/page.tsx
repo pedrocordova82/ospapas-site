@@ -205,10 +205,10 @@ export default function SobrePage() {
       </section>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <section className="mx-auto w-full max-w-6xl px-6 py-16">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Origem</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">A história do Moto Clube</h2>
-          <div className="mx-auto mt-8 max-w-4xl text-center text-sm leading-8 text-[color:var(--color-text-300)] sm:text-base">
+          <div className="mx-auto mt-6 max-w-3xl text-center text-lg font-semibold leading-8 text-[color:var(--color-text-200)]">
             <p>
               O Os Papas MC nasceu da união de motociclistas que encontraram na estrada muito mais do que destino: encontraram
               propósito. A fundação do clube veio da vontade de construir uma irmandade sólida, baseada em respeito, lealdade e
@@ -223,7 +223,7 @@ export default function SobrePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-6xl px-6 py-1">
           <div className="grid gap-8 lg:grid-cols-2">
             <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
               <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">NOME</p>
@@ -247,10 +247,10 @@ export default function SobrePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-6xl px-6 py-10">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Símbolos</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Brasão do Moto Clube</h2>
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {coatOfArmsItems.map((item) => {
               return (
                 <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6">
@@ -271,10 +271,10 @@ export default function SobrePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-3 pb-16 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-6xl px-6 py-10">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Princípios</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Valores do Moto Clube</h2>
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {values.map((value) => {
               const iconMap: Record<string, typeof Shield> = {
                 RESPONSABILIDADE: ResponsabilidadeIcon,
@@ -286,7 +286,7 @@ export default function SobrePage() {
               const Icon = iconMap[value] ?? Shield;
 
               return (
-                <article key={value} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
+                <article key={value} className="w-full rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
                   <div className="mb-4 flex justify-center">
                     <Icon width={32} height={32} className="text-[color:var(--color-gold-500)]" />
                   </div>
@@ -301,42 +301,39 @@ export default function SobrePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-4 pb-16 text-center sm:px-6 lg:px-8">
-          <p className="text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
-            Máxima do Moto Clube
-          </p>
+        <section className="mx-auto max-w-5xl px-6 py-16 text-center space-y-12">
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Máxima do Moto Clube</p>
+            <h2 className="text-3xl font-heading uppercase tracking-[0.06em] text-white">
+              Sempre haverá um de nós na estrada
+            </h2>
+          </div>
 
-          <h2 className="mt-1 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">
-            Sempre haverá um de nós na estrada
-          </h2>
+          <div className="space-y-4 border-t border-white/10 pt-8">
+            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Missão do Moto Clube</p>
+            <h2 className="text-3xl font-heading uppercase tracking-[0.06em] text-white">
+              Vivenciar a cultura do motociclismo estradeiro em prol da filantropia e o bem estar social
+            </h2>
+          </div>
 
-          <p className="mt-7 text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
-            Missão do Moto Clube
-          </p>
-
-          <h2 className="mt-1 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">
-            Vivenciar a cultura do motociclismo estradeiro em prol da filantropia e o bem estar social
-          </h2>
-
-          <p className="mt-7 text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
-            Visão do Moto Clube
-          </p>
-
-          <h2 className="mt-1 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">
-            Ter um membro que se identifique com nossos valores em cada estado do Brasil
-          </h2> 
-      </section>
-    </Reveal>
+          <div className="space-y-4 border-t border-white/10 pt-8">
+            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Visão do Moto Clube</p>
+            <h2 className="text-3xl font-heading uppercase tracking-[0.06em] text-white">
+              Ter um membro que se identifique com nossos valores em cada estado do Brasil
+            </h2>
+          </div>
+        </section>
+      </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-3 pb-16 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-6xl px-6 py-16">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Estrutura</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Hierarquia do Moto Clube</h2>
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {hierarchy.map((item) => {
               const Icon = item.icon;
               return (
-                <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
+                <article key={item.title} className="w-full rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
                   <Icon width={50} height={50} className="text-[color:var(--color-gold-500)]" />
                   <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.04em] text-white">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-300)]">{item.description}</p>
@@ -348,10 +345,10 @@ export default function SobrePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-6xl px-6 py-16">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Membros</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Diretoria</h2>
-          <div className="mt-8 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {leadership.map((leader) => (
               <article key={leader.name} className="group text-center">
                 <div className="overflow-hidden rounded-lg aspect-[2/3] shadow-lg shadow-black/40">
