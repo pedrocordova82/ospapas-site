@@ -59,7 +59,7 @@ export default function SobrePage() {
     <div className="pb-16">
       <section className="relative isolate min-h-[48vh] overflow-hidden border-b border-white/10">
         <Image
-          src="/images/brasilia/capa.jpg"
+          src="/images/sobre/capa_sobre.png"
           alt="Moto Clube Os Papas"
           fill
           priority
@@ -100,20 +100,20 @@ export default function SobrePage() {
         <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-2">
             <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
-              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">OS PAPAS</p>
+              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">NOME</p>
               <h3 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">OS PAPAS</h3>
               <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">
-                O nome representa liderança e responsabilidade. No contexto do motoclube, simboliza a missão de conduzir a
-                irmandade com honra, protegendo sua identidade e seus princípios.
+                O nome surgiu como uma forma de homenagear o amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas,
+                era utilizada carinhosamente para designar a figura do Pai.
               </p>
             </article>
 
             <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
-              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">FRATRES IN VIA</p>
+              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">IRMANDADE</p>
               <h3 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">FRATRES IN VIA</h3>
               <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">
-                Expressão em latim para “Irmãos na estrada”. O lema traduz o elo entre os membros: companheirismo constante,
-                respeito mútuo e presença ativa em cada jornada.
+                Como todoso são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim "FRATRES IN VIA" escolhida por nosso vice, Da Pop,
+                está representada em nosso Brasão.
               </p>
             </article>
           </div>
@@ -167,9 +167,8 @@ export default function SobrePage() {
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-4 pb-16 text-center sm:px-6 lg:px-8">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Lema do Moto Clube</p>
-          <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-6xl">FRATRES IN VIA</h2>
-          <p className="mt-4 text-sm uppercase tracking-[0.14em] text-[color:var(--color-text-300)]">Do latim: Irmãos na estrada</p>
+          <p className="text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Lema do Moto Clube</p>
+          <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-4xl">Sempre haverá um de nós na estrada</h2>
         </section>
       </Reveal>
 
