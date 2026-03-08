@@ -59,7 +59,7 @@ export function Footer() {
             <img
               src="/images/geral/logo-ux.svg"
               alt="UX Consultancy"
-              className="h-4 w-auto"
+              className="h-3.5 w-auto"
             />
             <a
               href="https://wa.me/5561981508989"
