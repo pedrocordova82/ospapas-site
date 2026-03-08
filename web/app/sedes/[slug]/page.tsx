@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Instagram } from "lucide-react";
 import { chapters } from "@/data/chapters/chapters";
 import { brasiliaEvents } from "@/data/chapters/brasilia/events";
 import { brasiliaGallery } from "@/data/chapters/brasilia/gallery";
@@ -93,28 +94,29 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
         <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 sm:p-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Informações</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">Sobre a Sede</h2>
-          <p className="mt-5 text-sm leading-7 text-white/80">{chapter.description}</p>
+          <p className="mt-5 text-sm leading-7 text-white/80 text-justify">{chapter.description}</p>
 
-          <div className="mt-8 space-y-3 text-sm">
+          <div className="mt- space-y-1 text-sm">
             {chapter.instagram ? (
-              <p className="text-white/85">
-                Instagram:{" "}
+              <div className="mt-4 flex items-center gap-2 text-base text-[color:var(--color-text-300)]">
+                <Instagram size={20} className="text-gray-400" />
+                <span className="text-[color:var(--color-text-300)]">Instagram:</span>
                 <a
                   href={`https://instagram.com/${chapter.instagram.replace(/^@/, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[color:var(--color-gold-500)] transition hover:text-[color:var(--color-gold-400)]"
+                  className="font-medium text-[color:var(--color-gold-500)] hover:underline"
                 >
                   {chapter.instagram}
                 </a>
-              </p>
+              </div>
             ) : null}
 
             <a
               href={toWaMe(chapter.whatsapp)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex rounded-md bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
+              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600"
             >
               Falar no WhatsApp
             </a>
