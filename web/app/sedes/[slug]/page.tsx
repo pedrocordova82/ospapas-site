@@ -74,12 +74,12 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
 
         <div className="relative mx-auto flex min-h-[48vh] w-full max-w-6xl items-end px-4 py-10 sm:px-6 lg:px-8">
           <div>
-            <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">{chapter.type}</p>
+            <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">{chapter.type}</p>
             <h1 className="mt-3 font-heading text-5xl uppercase tracking-[0.04em] text-white sm:text-6xl lg:text-7xl">
               {chapter.name}
             </h1>
             <p className="mt-4 text-sm uppercase tracking-[0.14em] text-white/80">
-              {chapter.city} - {chapter.state}
+              {chapter.state}
             </p>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
                   href={`https://instagram.com/${chapter.instagram.replace(/^@/, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-[color:var(--color-gold-500)] hover:underline"
+                  className="text-sm font-medium text-[color:var(--color-gold-500)] hover:underline"
                 >
                   {chapter.instagram}
                 </a>
@@ -160,7 +160,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
        */}
       {chapterMembers.length > 0 ? (
         <section className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Membros</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Irmandade</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Membros</h2>
           <div className="mt-8 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
             {chapterMembers.map((member) => (
@@ -187,7 +187,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
       
       {chapterEvents.length > 0 ? (
         <section className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Eventos</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Agenda</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Eventos</h2>
           <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {chapterEvents.map((event) => (
@@ -208,7 +208,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
 
       {chapterGallery.length > 0 ? (
         <section className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Galeria</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Momentos</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Galeria</h2>
           <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {chapterGallery.map((image, index) => (

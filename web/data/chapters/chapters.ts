@@ -25,9 +25,8 @@ export type Chapter = {
 export const chapters: Chapter[] = [
   {
     slug: "para",
-    name: "Sede Pará",
-    city: "Ananindeua",
-    state: "PA",
+    name: "Belém",
+    state: "Pará",
     type: "Sede",
     description: "Sede Nacional Pará",
     instagram: "@mc_os_papas",
@@ -39,9 +38,8 @@ export const chapters: Chapter[] = [
 
   {
     slug: "brasilia",
-    name: "Regional Brasília",
-    city: "Brasília",
-    state: "DF",
+    name: "Brasília",
+    state: "Distrito Federal",
     type: "Regional",
     description: "A regional de Brasília nasceu a partir de um sonho de expandir o Moto Clube, quando ums dos membros da regional do Rio de Janeiro foi trasnferido para trabalhar em Brasília. Naquela época, o presidente viu uma grande oportunidade de expandir o MC para a capital federal.",
     instagram: "@mc_os_papas_brasilia",
@@ -53,9 +51,8 @@ export const chapters: Chapter[] = [
 
   {
     slug: "rio-de-janeiro",
-    name: "Regional Rio de Janeiro",
-    city: "Rio de Janeiro",
-    state: "RJ",
+    name: "Rio de Janeiro",
+    state: "Rio de Janeiro",
     type: "Regional",
     description: "Regional Rio de Janeiro",
     instagram: "@mc_os_papas_regional_rj",
@@ -67,9 +64,8 @@ export const chapters: Chapter[] = [
 
   {
     slug: "sao-miguel-do-oeste",
-    name: "Regional São Miguel do Oeste",
-    city: "São Miguel do Oeste",
-    state: "SC",
+    name: "São Miguel do Oeste",
+    state: "Santa Catarina",
     type: "Regional",
     description: "Regional São Miguel do Oeste",
     instagram: "@mc_os_papas_sc",
@@ -81,9 +77,8 @@ export const chapters: Chapter[] = [
 
   {
     slug: "sao-luis",
-    name: "Subsede São Luís",
-    city: "São Luís",
-    state: "MA",
+    name: "São Luís",
+    state: "Maranhão",
     type: "Subsede",
     description: "Subsede São Luís",
     whatsapp: "+5561999999999",
