@@ -43,7 +43,7 @@ export const chapters: Chapter[] = [
     city: "Brasília",
     state: "DF",
     type: "Regional",
-    description: "Regional Brasília",
+    description: "A regional de Brasília nasceu a partir de um sonho de expandir o Moto Clube, quando ums dos membros da regional do Rio de Janeiro foi trasnferido para trabalhar em Brasília. Naquela época, o presidente viu uma grande oportunidade de expandir o MC para a capital federal.",
     instagram: "@mc_os_papas_brasilia",
     whatsapp: "+5561999999999",
     image: "/images/brasilia/capa.jpg",
