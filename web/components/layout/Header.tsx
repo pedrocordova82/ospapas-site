@@ -115,7 +115,7 @@ export function Header() {
             onClick={handleLogoClick}
             className="flex cursor-pointer items-center gap-3 text-[color:var(--color-text-100)]"
           >
-            <Image src="/logo-ospapas.png" alt="Logo do MC Os Papas" width={40} height={40} />
+            <Image src="/images/geral/logo-ospapas.png" alt="Logo do MC Os Papas" width={40} height={40} />
             <div className="flex flex-col text-left">
               <span className="font-heading text-3xl leading-none tracking-[0.08em]">MC OS PAPAS</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-gold-500)]">FRATRES IN VIA</span>
