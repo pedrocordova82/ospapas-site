@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Crown, KeyRound, Landmark, Shield, Route, Handshake, Heart, HeartHandshake, Scale } from "lucide-react";
+import { Crown, KeyRound, Landmark, Shield, Route, Handshake, Heart, HeartHandshake, Scale, Users, CheckCircle } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 
 const coatOfArmsItems = [
@@ -40,7 +40,13 @@ const coatOfArmsItems = [
   },
 ];
 
-const values = ["IRMANDADE", "ESTRADA", "RESPEITO", "FILANTROPIA", "LEALDADE"];
+const values = [
+  "RESPONSABILIDADE",
+  "RESPEITO",
+  "FAMÍLIA",
+  "FILANTROPIA",
+  "IRMANDADE",
+];
 
 const leadership = [
   {
@@ -167,18 +173,20 @@ export default function SobrePage() {
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {values.map((value) => {
               const iconMap: Record<string, typeof Shield> = {
-                IRMANDADE: Handshake,
-                ESTRADA: Route,
+                RESPONSABILIDADE: CheckCircle,
                 RESPEITO: Scale,
+                FAMÍLIA: Users,
                 FILANTROPIA: HeartHandshake,
-                LEALDADE: Heart,
+                IRMANDADE: Handshake,
               };
               const Icon = iconMap[value] ?? Shield;
 
               return (
                 <article key={value} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
                   <Icon size={30} className="mx-auto text-[color:var(--color-gold-500)]" />
-                  <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.04em] text-white">{value}</h3>
+                  <h3 className="mt-4 break-words text-center font-heading text-3xl uppercase tracking-[0.04em] text-white [overflow-wrap:break-word]">
+                    {value}
+                  </h3>
                 </article>
               );
             })}
