@@ -303,7 +303,7 @@ export default function SobrePage() {
       <Reveal>
         <section className="mx-auto max-w-5xl px-6 py-16 text-center space-y-12">
           <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Máxima do Moto Clube</p>
+            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Lema do Moto Clube</p>
             <h2 className="text-3xl font-heading uppercase tracking-[0.06em] text-white">
               Sempre haverá um de nós na estrada
             </h2>
@@ -329,11 +329,11 @@ export default function SobrePage() {
         <section className="mx-auto w-full max-w-6xl px-6 py-16">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Estrutura</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Hierarquia do Moto Clube</h2>
-          <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="mt-8 flex flex-wrap justify-center gap-6">
             {hierarchy.map((item) => {
               const Icon = item.icon;
               return (
-                <article key={item.title} className="w-full rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
+                <article key={item.title} className="w-[260px] rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
                   <Icon width={50} height={50} className="text-[color:var(--color-gold-500)]" />
                   <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.04em] text-white">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-300)]">{item.description}</p>
