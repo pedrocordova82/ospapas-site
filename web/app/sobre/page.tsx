@@ -290,7 +290,7 @@ export default function SobrePage() {
                   <div className="mb-4 flex justify-center">
                     <Icon width={32} height={32} className="text-[color:var(--color-gold-500)]" />
                   </div>
-                  <h3 className="break-words text-center font-heading text-3xl uppercase tracking-[0.04em] text-white [overflow-wrap:break-word]">
+                  <h3 className="break-normal text-center font-heading text-2xl uppercase tracking-[0.01em] text-white [overflow-wrap:break-word]">
                     {value}
                   </h3>
                 </article>
