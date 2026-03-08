@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Crown, KeyRound, Landmark, Shield, Route, Handshake, Heart, HeartHandshake, Scale, Users, CheckCircle } from "lucide-react";
+import { Crown, KeyRound, Landmark, Shield, Route, Handshake, Heart, HeartHandshake, Scale, Users, CheckCircle, ShieldCheck, UsersRound, HandMetal } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 
 const coatOfArmsItems = [
@@ -167,17 +167,17 @@ export default function SobrePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
+        <section className="mx-auto w-full max-w-6xl px-3 pb-16 sm:px-6 lg:px-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Princípios</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Valores do Moto Clube</h2>
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value) => {
               const iconMap: Record<string, typeof Shield> = {
-                RESPONSABILIDADE: CheckCircle,
-                RESPEITO: Scale,
+                RESPONSABILIDADE: ShieldCheck,
+                RESPEITO: Handshake,
                 FAMÍLIA: Users,
                 FILANTROPIA: HeartHandshake,
-                IRMANDADE: Handshake,
+                IRMANDADE: HandMetal,
               };
               const Icon = iconMap[value] ?? Shield;
 
