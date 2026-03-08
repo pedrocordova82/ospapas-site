@@ -4,24 +4,39 @@ import { Reveal } from "@/components/ui/Reveal";
 
 const coatOfArmsItems = [
   {
-    title: "OS PAPAS",
+    title: "O BRASÃO",
     description: "Representa liderança espiritual, responsabilidade e compromisso com a irmandade.",
-    icon: Crown,
+    image: "/images/sobre/brasao.png",
   },
   {
-    title: "FRATRES IN VIA",
-    description: "O lema reforça a união entre irmãos de estrada em todos os caminhos.",
-    icon: Route,
+    title: "OS PAPAS",
+    description: "A palavra \"Papas\", do grego, era utilizada carinhosamente para designar a figura do Pai.",
+    image: "/images/sobre/os-papas.png",
+  },
+  {
+    title: "FRATRES IN VIA v",
+    description: "O lema do MC é representado pela frase \"Fraters in via\", do latim \"Irmãos na estrada\". O V representa os 5 membros fundadores.",
+    image: "/images/sobre/fratres-in-via.png",
   },
   {
     title: "CHAVES",
-    description: "Simbolizam honra, confiança e o dever de guardar os valores do motoclube.",
-    icon: KeyRound,
+    description: "As chaves simbolizam a mudança, a abertura que nos permite acessar o outro lado, e também o fechamento. Em seu duplo papel, fazem referência ao 6exito, sabedoria e libertação.",
+    image: "/images/sobre/chaves.png",
   },
   {
     title: "MITRA",
-    description: "Marca tradição, hierarquia e respeito à história que sustenta o clube.",
-    icon: Landmark,
+    description: "A Mitra simboliza o capacete de defesa contra os adversários da verdade, a qual sempre defenderemos.",
+    image: "/images/sobre/mitra.png",
+  },
+  {
+    title: "FÊNIX",
+    description: "A Fênix, conhecida por nascer das cinzas, faz alusão à união dos membros fundadores em prol da criação do MC. Representando, assim, um novo nascimento.",
+    image: "/images/sobre/fenix.png",
+  },
+  {
+    title: "ESCUDO",
+    description: "O escudo, além de proteger, remete ao orgulho, a exemplo dos guerreiros nos tempos antigos, que ostentavam-os com grande honra e combate.",
+    image: "/images/sobre/escudo.png",
   },
 ];
 
@@ -129,7 +144,13 @@ export default function SobrePage() {
               const Icon = item.icon;
               return (
                 <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6">
-                  <Icon size={36} className="text-[color:var(--color-gold-500)]" />
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={70}
+                    height={70}
+                    className="mb-4 object-contain"
+                  />
                   <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.05em] text-white">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-300)]">{item.description}</p>
                 </article>
