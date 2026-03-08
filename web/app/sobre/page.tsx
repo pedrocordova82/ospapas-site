@@ -149,31 +149,31 @@ const leadership = [
 
 const hierarchy = [
   {
-    icon: Crown,
+    icon: PapaIcon,
     title: "Papa",
     description:
       "Líder máximo do Moto Clube, responsável por representar a irmandade, conduzir as decisões estratégicas e zelar pelos valores e pela união do clube.",
   },
   {
-    icon: Shield,
+    icon: CardinalIcon,
     title: "Cardeal",
     description:
       "Auxilia diretamente o Papa na liderança do Moto Clube, contribuindo nas decisões importantes e na organização da irmandade.",
   },
   {
-    icon: ShieldCheck,
+    icon: BishopIcon,
     title: "Bispo",
     description:
       "Responsável por apoiar a estrutura do Moto Clube, ajudando na coordenação das atividades e na manutenção da ordem e disciplina.",
   },
   {
-    icon: Users,
+    icon: PriestIcon,
     title: "Padre",
     description:
       "Membro ativo do Moto Clube que participa das atividades, fortalece a irmandade e representa os valores do clube.",
   },
   {
-    icon: User,
+    icon: DeaconIcon,
     title: "Diácono",
     description:
       "Integrante em fase inicial dentro do Moto Clube, aprendendo a cultura, os valores e a tradição da irmandade.",
