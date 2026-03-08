@@ -45,7 +45,7 @@ export default function Home() {
    * Each `id` is used as an anchor target for header navigation links.
    */
   const baseSections = [
-    { id: "sobre", title: "Sobre o Clube", text: "Irmandade que vive a estrada com respeito, liberdade e lealdade." },
+    { id: "sobre", title: "Sobre o Moto Clube", text: "Irmandade que vive a estrada com respeito, liberdade e lealdade." },
     { id: "eventos", title: "Eventos", text: "Calendário de rides, encontros e ações beneficentes." },
     { id: "filantropia", title: "Filantropia", text: "Ações sociais e apoio a comunidades parceiras." },
     { id: "na-estrada", title: "Na Estrada", text: "Histórias de viagem, rotas e momentos da irmandade." },
