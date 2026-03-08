@@ -1,6 +1,7 @@
 // custom icons
 export { FamiliaIcon } from "./familia-icon";
 export { ResponsabilidadeIcon } from "./responsabilidade-icon";
+export { TestIcon } from "./test-icon";
 
 // lucide icons
 export {
