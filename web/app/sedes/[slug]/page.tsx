@@ -163,14 +163,19 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
           <div className="mt-8 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
             {chapterMembers.map((member) => (
               <article key={member.name} className="group">
-                <div className="overflow-hidden rounded-lg aspect-[2/3]">
+                <div className="overflow-hidden rounded-lg aspect-[2/3] shadow-lg shadow-black/40">
                   <div className="relative h-full w-full">
-                    <Image src={member.image} alt={member.name} fill className="object-cover transition group-hover:scale-105" />
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                    />
                   </div>
                 </div>
-                <div className="mt-3 text-center">
+                <div className="mt-1 text-center">
                   <h3 className="font-semibold text-white">{member.name}</h3>
-                  <p className="text-sm text-[color:var(--color-gold-500)]">{member.role}</p>
+                  <p className="text-sm font-medium tracking-[0.08em] text-[color:var(--color-gold-500)]">{member.role}</p>
                 </div>
               </article>
             ))}
