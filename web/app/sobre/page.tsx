@@ -50,28 +50,82 @@ const values = [
 
 const leadership = [
   {
+    name: "Nômade Papa",
+    rank: "Fundador",
+    chapter: "Belém-PA",
+    image: "/images/diretoria/nomade-papa-fundador-belem.png",
+  },
+  {
+    name: "Caveira",
+    rank: "Presidente - Cardeal",
+    chapter: "Rio de janeiro-RJ",
+    image: "/images/diretoria/caveira-presidente-cardeal-regional-rio-de-janeiro.png",
+  },
+  {
+    name: "Mardone",
+    rank: "Vice-Presidente - Cardeal",
+    chapter: "Tomé Açu-PA",
+    image: "/images/diretoria/mardone-vice-cardeal-regional-tome-acu.png",
+  },
+  {
+    name: "Billau",
+    rank: "Diretor Sede Nacional - Cardela",
+    chapter: "Belém-PA",
+    image: "/images/diretoria/billau-diretor-cardeal-sede-belem.png",
+  },
+  {
+    name: "Verme",
+    rank: "Diretor Regional - Cardeal",
+    chapter: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/verme-diretor-cardeal-regional-regional-reio-de-janeiro.png",
+  },
+  {
     name: "Poodle",
-    rank: "Diretor - Cardeal",
-    chapter: "Brasília",
-    image: "/images/brasilia/members/joao.jpg",
+    rank: "Diretor Regional - Cardela",
+    chapter: "Brasília-DF",
+    image: "/images/diretoria/podle-diretor-cardeal-regional-brasilia.png",
   },
   {
-    name: "Mendes",
-    rank: "Capitão",
-    chapter: "Brasília",
-    image: "/images/brasilia/members/carlos.jpg",
+    name: "Gadeia",
+    rank: "Diretor Regional - Cardeal",
+    chapter: "Tomé Açi-PA",
+    image: "/images/diretoria/gadeia-diretor-cardeal-regional-tome-acu.png",
   },
   {
-    name: "Oliveira",
-    rank: "Road Captain",
-    chapter: "Brasília",
-    image: "/images/brasilia/members/marcos.jpg",
+    name: "Netanf",
+    rank: "Diretor Financeiro - Cardeal",
+    chapter: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/netanf-diretor-financeiro-cardeal-regional-rio-de-janeiro.png",
   },
   {
-    name: "Conselho",
-    rank: "Diretoria Institucional",
-    chapter: "Sede Nacional",
-    image: "/images/geral/logo-ospapas.png",
+    name: "sniper",
+    rank: "Diretor Social - Cardeal",
+    chapter: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/sniper-diretor-social-regional-rio-de-janeiro.png",
+  },
+  {
+    name: "Careca",
+    rank: "Diretor de Marketing - Cardeal",
+    chapter: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/careca-diretor-marketing-regional-rio-de-janeiro.png",
+  },
+  {
+    name: "El Loco",
+    rank: "Representante - Cardeal",
+    chapter: "São Luís-MA",
+    image: "/images/diretoria/el-loco-representante-cardeal-subsede-sao-luis.png",
+  },
+  {
+    name: "Bino",
+    rank: "Representante - Cardeal",
+    chapter: "Macapá-AP",
+    image: "/images/diretoria/bino-representante-cardeal-subsede-macapa.png",
+  },
+  {
+    name: "Varejão",
+    rank: "Representante - Cardeal",
+    chapter: "Porto de Moz-PA",
+    image: "/images/diretoria/varejao-representante-cardeal-subsede-porto-de-moz.png",
   },
 ];
 
@@ -224,7 +278,7 @@ export default function SobrePage() {
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Direção</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Membros</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Diretoria</h2>
           <div className="mt-8 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {leadership.map((leader) => (
