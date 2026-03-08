@@ -24,4 +24,5 @@ export {
   X,
   Instagram,
   Menu,
+  UserCircle,
 } from "lucide-react";

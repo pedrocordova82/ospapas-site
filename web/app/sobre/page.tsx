@@ -10,6 +10,8 @@ import {
   ShieldCheck,
   Users,
   User,
+  UserCircle,
+  UsersRound,
 } from "@/components/ui/icons/icons";
 import { Reveal } from "@/components/ui/Reveal";
 import { TestIcon } from "@/components/ui/icons/icons";
@@ -273,7 +275,7 @@ export default function SobrePage() {
               const iconMap: Record<string, typeof Shield> = {
                 RESPONSABILIDADE: ResponsabilidadeIcon,
                 RESPEITO: Scale,
-                FAMÍLIA: FamiliaIcon,
+                FAMÍLIA: UsersRound,
                 FILANTROPIA: HeartHandshake,
                 IRMANDADE: Handshake,
               };
