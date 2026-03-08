@@ -56,11 +56,13 @@ export function Footer() {
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 text-xs uppercase tracking-[0.08em] text-[color:var(--color-text-500)]">
           <div className="flex items-center gap-3 text-white/60 normal-case tracking-normal">
             <span>Desenvolvido por:</span>
+
             <img
-              src="/images/geral/logo-ux.svg"
-              alt="UX Consultancy"
-              className="h-3.5 w-auto"
+            src="/images/geral/logo-ux.svg"
+            alt="UX Consultancy"
+             className="h-4 w-auto"
             />
+
             <a
               href="https://wa.me/5561981508989"
               target="_blank"
@@ -69,7 +71,7 @@ export function Footer() {
             >
               <MessageCircle size={16} className="text-green-500" />
             </a>
-          </div>
+        </div>
 
           <div>
             {new Date().getFullYear()} Os Papas MC. Todos os direitos reservados.
