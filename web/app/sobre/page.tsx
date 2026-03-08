@@ -14,7 +14,11 @@ import {
   UsersRound,
 } from "@/components/ui/icons/icons";
 import { Reveal } from "@/components/ui/Reveal";
-import { TestIcon } from "@/components/ui/icons/icons";
+import { DeaconIcon } from "@/components/ui/icons/icons";
+import { PriestIcon } from "@/components/ui/icons/icons";
+import { BishopIcon } from "@/components/ui/icons/icons";
+import { CardinalIcon } from "@/components/ui/icons/icons";
+import { PapaIcon } from "@/components/ui/icons/icons";
 
 const coatOfArmsItems = [
   {

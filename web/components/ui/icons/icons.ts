@@ -1,7 +1,11 @@
 // custom icons
 export { FamiliaIcon } from "./familia-icon";
 export { ResponsabilidadeIcon } from "./responsabilidade-icon";
-export { TestIcon } from "./test-icon";
+export { DeaconIcon } from "./deacon-icon";
+export { PriestIcon } from "./priest-icon";
+export { BishopIcon } from "./bishop-icon";
+export { CardinalIcon } from "./cardinal-icon";
+export { PapaIcon } from "./papa-icon";
 
 // lucide icons
 export {
