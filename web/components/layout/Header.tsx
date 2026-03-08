@@ -12,7 +12,7 @@ import { useEffect, useState, type MouseEvent } from "react";
  * Keeping this array shared prevents navigation drift between breakpoints.
  */
 const navItems = [
-  { label: "Sobre", href: "/#sobre" },
+  { label: "Sobre", href: "/sobre" },
   { label: "Sedes", href: "/#sedes" },
   { label: "Eventos", href: "/#eventos" },
   { label: "Filantropia", href: "/#filantropia" },

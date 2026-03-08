@@ -1,6 +1,7 @@
 import { ChapterCard } from "@/components/sedes/ChapterCard";
 import { Reveal } from "@/components/ui/Reveal";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   /**
@@ -150,7 +151,19 @@ export default function Home() {
        */}
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:pt-24">
         {baseSections.map((section) => (
-          section.id === "sobre" || section.id === "eventos" || section.id === "filantropia" ? (
+          section.id === "sobre" ? (
+            <Reveal key={section.id}>
+              <Link href="/sobre" className="group block cursor-pointer">
+                <article id={section.id} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
+                  <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Seção Base</p>
+                  <h2 className="mt-4 font-heading text-4xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-5xl">
+                    {section.title}
+                  </h2>
+                  <p className="mt-5 text-sm leading-7 text-[color:var(--color-text-300)]">{section.text}</p>
+                </article>
+              </Link>
+            </Reveal>
+          ) : section.id === "eventos" || section.id === "filantropia" ? (
             <Reveal key={section.id}>
               <article id={section.id} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
                 <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Seção Base</p>
