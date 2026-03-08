@@ -1,14 +1,14 @@
 export const brasiliaEvents = [
   {
-    title: "Passeio Serra da Canastra",
-    date: "2024-08-12",
-    location: "Minas Gerais",
-    image: "/images/brasilia/events/canastra.jpg",
+    title: "Filantropia",
+    date: "15/04/2025",
+    location: "Brasília",
+    image: "/images/brasilia/events/filantropia-viver-associacao-2025-04-05.jpg",
   },
   {
-    title: "Encontro Nacional MC",
-    date: "2024-10-02",
+    title: "Passeio Pad Bier",
+    date: "30/03/2025",
     location: "Brasília",
-    image: "/images/brasilia/events/encontro.jpg",
+    image: "/images/brasilia/events/pad-bier-2025-03-30.jpg",
   },
 ];
