@@ -21,7 +21,8 @@ type ChapterGalleryProps = {
  * interaction through a reusable Lightbox component.
  */
 export function ChapterGallery({ images, chapterName, events }: ChapterGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const lightboxImages = [...events.map((event) => event.image), ...images];
 
   return (
     <>
@@ -30,11 +31,11 @@ export function ChapterGallery({ images, chapterName, events }: ChapterGalleryPr
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Agenda</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Eventos</h2>
           <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {events.map((event) => (
+            {events.map((event, index) => (
               <article key={event.title} className="overflow-hidden rounded-xl border border-white/10 bg-[color:var(--color-bg-900)]">
                 <button
                   type="button"
-                  onClick={() => setSelectedImage(event.image)}
+                  onClick={() => setSelectedIndex(index)}
                   className="relative h-52 w-full cursor-pointer overflow-hidden"
                   aria-label={`Abrir imagem do evento ${event.title}`}
                 >
@@ -60,7 +61,7 @@ export function ChapterGallery({ images, chapterName, events }: ChapterGalleryPr
               <button
                 key={image}
                 type="button"
-                onClick={() => setSelectedImage(image)}
+                onClick={() => setSelectedIndex(events.length + index)}
                 className="overflow-hidden rounded-lg"
                 aria-label={`Abrir imagem ${index + 1} da galeria de ${chapterName}`}
               >
@@ -73,7 +74,9 @@ export function ChapterGallery({ images, chapterName, events }: ChapterGalleryPr
         </section>
       ) : null}
 
-      <Lightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
+      {selectedIndex !== null ? (
+        <Lightbox images={lightboxImages} index={selectedIndex} onClose={() => setSelectedIndex(null)} />
+      ) : null}
     </>
   );
 }
