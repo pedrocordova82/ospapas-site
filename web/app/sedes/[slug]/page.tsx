@@ -5,6 +5,7 @@ import { chapters } from "@/data/chapters/chapters";
 import { brasiliaEvents } from "@/data/chapters/brasilia/events";
 import { brasiliaGallery } from "@/data/chapters/brasilia/gallery";
 import { brasiliaMembers } from "@/data/chapters/brasilia/members";
+import { ChapterGallery } from "@/components/sedes/ChapterGallery";
 
 /**
  * SECTION: Dynamic Route Props
@@ -210,15 +211,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
         <section className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Momentos</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Galeria</h2>
-          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {chapterGallery.map((image, index) => (
-              <div key={image} className="overflow-hidden rounded-lg">
-                <div className="relative h-36 w-full transition hover:scale-105 sm:h-44">
-                  <Image src={image} alt={`Galeria ${chapter.name} ${index + 1}`} fill className="object-cover" />
-                </div>
-              </div>
-            ))}
-          </div>
+          <ChapterGallery images={chapterGallery} chapterName={chapter.name} />
         </section>
       ) : null}
     </div>
