@@ -152,31 +152,31 @@ const hierarchy = [
     icon: PapaIcon,
     title: "Papa",
     description:
-      "Líder máximo do Moto Clube, responsável por representar a irmandade, conduzir as decisões estratégicas e zelar pelos valores e pela união do clube.",
+      "O Papa representa o mais alto nível de hierarquia dentro do Moto Clube. São membros de extrema confiança, normalmente fundadores, líderes ou integrantes que possuem grande respeito e responsabilidade dentro da organização, podendo também atuar como representantes nômades do Moto Clube.",
   },
   {
     icon: CardinalIcon,
     title: "Cardeal",
     description:
-      "Auxilia diretamente o Papa na liderança do Moto Clube, contribuindo nas decisões importantes e na organização da irmandade.",
+      "O Cardeal é um membro escudado, que já recebeu o brasão completo do Moto Clube em seu colete. Esse nível representa confiança, lealdade e comprometimento comprovado com a irmandade e seus valores.",
   },
   {
     icon: BishopIcon,
     title: "Bispo",
     description:
-      "Responsável por apoiar a estrutura do Moto Clube, ajudando na coordenação das atividades e na manutenção da ordem e disciplina.",
+      "O Bispo é o membro que já conquistou maior reconhecimento dentro do clube. Ele passa a utilizar o nome \"Os Papas\" na parte superior do colete, demonstrando que já possui maior nível de pertencimento e responsabilidade dentro da estrutura do Moto Clube.",
   },
   {
     icon: PriestIcon,
     title: "Padre",
     description:
-      "Membro ativo do Moto Clube que participa das atividades, fortalece a irmandade e representa os valores do clube.",
+      "O Padre é o membro que já foi oficialmente aceito na irmandade. Ele passa a utilizar no colete a identificação do país e da cidade do capítulo ao qual pertence, representando sua base e sua ligação com o Moto Clube.",
   },
   {
     icon: DeaconIcon,
     title: "Diácono",
     description:
-      "Integrante em fase inicial dentro do Moto Clube, aprendendo a cultura, os valores e a tradição da irmandade.",
+      "O Diácono é o membro em período de avaliação dentro do Moto Clube. Nesta fase ele demonstra comprometimento, disciplina e alinhamento com os valores do clube. Ainda não utiliza identificação no colete, pois está em processo de aprendizado e integração com a irmandade.",
   },
 ];
 
@@ -337,7 +337,7 @@ export default function SobrePage() {
               const Icon = item.icon;
               return (
                 <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
-                  <Icon size={30} className="mx-auto text-[color:var(--color-gold-500)]" />
+                  <Icon width={50} height={50} className="text-[color:var(--color-gold-500)]" />
                   <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.04em] text-white">{item.title}</h3>
                   <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-300)]">{item.description}</p>
                 </article>
