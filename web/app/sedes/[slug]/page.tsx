@@ -160,17 +160,18 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
         <section className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Membros</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Membros</h2>
-          <div className="mt-8 grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
             {chapterMembers.map((member) => (
-              <article
-                key={member.name}
-                className="text-center transition hover:scale-105"
-              >
-                <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full">
-                  <Image src={member.image} alt={member.name} fill className="object-cover" />
+              <article key={member.name} className="group">
+                <div className="overflow-hidden rounded-lg aspect-[2/3]">
+                  <div className="relative h-full w-full">
+                    <Image src={member.image} alt={member.name} fill className="object-cover transition group-hover:scale-105" />
+                  </div>
                 </div>
-                <h3 className="mt-4 font-semibold text-white">{member.name}</h3>
-                <p className="text-sm text-gray-400">{member.role}</p>
+                <div className="mt-3 text-center">
+                  <h3 className="font-semibold text-white">{member.name}</h3>
+                  <p className="text-sm text-[color:var(--color-gold-500)]">{member.role}</p>
+                </div>
               </article>
             ))}
           </div>
