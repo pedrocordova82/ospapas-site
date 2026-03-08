@@ -188,14 +188,31 @@ export default function SobrePage() {
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-4 pb-16 text-center sm:px-6 lg:px-8">
-          <p className="text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Máxima do Moto Clube</p>
-          <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">Sempre haverá um de nós na estrada</h2>
-          <p className="text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Missão do Moto Clube</p>
-          <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">Vivenciar a cultura do motociclismo estradeiro em prol da filantropia e o bem estar social</h2>
-          <p className="text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Visão do Moto Clube</p>
-          <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">Ter um membro que se identifique com nossos valores em cada Estado do Brasil</h2>
-        </section>
-      </Reveal>
+          <p className="text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
+            Máxima do Moto Clube
+          </p>
+
+          <h2 className="mt-1 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">
+            Sempre haverá um de nós na estrada
+          </h2>
+
+          <p className="mt-7 text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
+            Missão do Moto Clube
+          </p>
+
+          <h2 className="mt-1 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">
+            Vivenciar a cultura do motociclismo estradeiro em prol da filantropia e o bem estar social
+          </h2>
+
+          <p className="mt-7 text-base uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
+            Visão do Moto Clube
+          </p>
+
+          <h2 className="mt-1 font-heading text-5xl uppercase tracking-[0.06em] text-white sm:text-3xl">
+            Ter um membro que se identifique com nossos valores em cada estado do Brasil
+          </h2> 
+      </section>
+    </Reveal>
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
