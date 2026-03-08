@@ -45,11 +45,36 @@ export default function Home() {
    * Each `id` is used as an anchor target for header navigation links.
    */
   const baseSections = [
-    { id: "sobre", title: "Sobre o Moto Clube", text: "Irmandade que vive a estrada com respeito, liberdade e lealdade." },
-    { id: "eventos", title: "Eventos", text: "Calendário de rides, encontros e ações beneficentes." },
-    { id: "filantropia", title: "Filantropia", text: "Ações sociais e apoio a comunidades parceiras." },
-    { id: "na-estrada", title: "Na Estrada", text: "Histórias de viagem, rotas e momentos da irmandade." },
-    { id: "galeria", title: "Galeria", text: "Fotografias de eventos, rides e encontros do clube." },
+    {
+    id: "sobre",
+    label: "Institucional",
+    title: "Sobre o Moto Clube",
+    text: "Irmandade que vive a estrada com respeito, liberdade e lealdade."
+  },
+  {
+    id: "eventos",
+    label: "Agenda",
+    title: "Eventos",
+    text: "Calendário de rides, encontros e ações beneficentes."
+  },
+  {
+    id: "filantropia",
+    label: "Ação Social",
+    title: "Filantropia",
+    text: "Ações sociais e apoio a comunidades parceiras."
+  },
+  {
+    id: "na-estrada",
+    label: "Viagens",
+    title: "Na Estrada",
+    text: "Histórias de viagem, rotas e momentos da irmandade."
+  },
+  {
+    id: "galeria",
+    label: "Momentos",
+    title: "Galeria",
+    text: "Fotografias de eventos, rides e encontros do clube."
+  }
   ];
 
   return (
@@ -155,7 +180,7 @@ export default function Home() {
             <Reveal key={section.id}>
               <Link href="/sobre" className="group block cursor-pointer">
                 <article id={section.id} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
-                  <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Seção Base</p>
+                 <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">{section.label}</p>
                   <h2 className="mt-4 font-heading text-4xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-5xl">
                     {section.title}
                   </h2>
@@ -166,7 +191,7 @@ export default function Home() {
           ) : section.id === "eventos" || section.id === "filantropia" ? (
             <Reveal key={section.id}>
               <article id={section.id} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
-                <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Seção Base</p>
+                <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">{section.label}</p>
                 <h2 className="mt-4 font-heading text-4xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-5xl">
                   {section.title}
                 </h2>
@@ -179,7 +204,7 @@ export default function Home() {
               id={section.id}
               className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8"
             >
-              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Seção Base</p>
+              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">{section.label}</p>
               <h2 className="mt-4 font-heading text-4xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-5xl">
                 {section.title}
               </h2>
