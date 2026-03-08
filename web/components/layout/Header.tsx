@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X } from "@/components/ui/icons/icons";
 import { useEffect, useState, type MouseEvent } from "react";
 
 /**

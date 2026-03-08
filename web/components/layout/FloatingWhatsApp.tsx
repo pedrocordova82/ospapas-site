@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle, X } from "@/components/ui/icons/icons";
 import { useEffect, useState } from "react";
 
 /**

@@ -1,4 +1,4 @@
-import { Instagram, MessageCircle } from "lucide-react";
+import { Instagram, MessageCircle } from "@/components/ui/icons/icons";
 
 /**
  * SECTION: Footer

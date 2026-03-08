@@ -1,5 +1,16 @@
 import Image from "next/image";
-import { Crown, KeyRound, Landmark, Shield, Route, Handshake, Heart, HeartHandshake, Scale, Users, CheckCircle, ShieldCheck, UsersRound, HandMetal, User } from "lucide-react";
+import {
+  ResponsabilidadeIcon,
+  FamiliaIcon,
+  Handshake,
+  HeartHandshake,
+  Scale,
+  Crown,
+  Shield,
+  ShieldCheck,
+  Users,
+  User,
+} from "@/components/ui/icons/icons";
 import { Reveal } from "@/components/ui/Reveal";
 
 const coatOfArmsItems = [
@@ -220,7 +231,7 @@ export default function SobrePage() {
               <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">IRMANDADE</p>
               <h3 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">FRATRES IN VIA</h3>
               <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">
-                Como todoso são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim "FRATRES IN VIA" escolhida por nosso vice, Da Pop,
+                Como todoso são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim &quot;FRATRES IN VIA&quot; escolhida por nosso vice, Da Pop,
                 está representada em nosso Brasão.
               </p>
             </article>
@@ -234,7 +245,6 @@ export default function SobrePage() {
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Brasão do Moto Clube</h2>
           <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {coatOfArmsItems.map((item) => {
-              const Icon = item.icon;
               return (
                 <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6">
                   <Image
@@ -260,18 +270,20 @@ export default function SobrePage() {
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((value) => {
               const iconMap: Record<string, typeof Shield> = {
-                RESPONSABILIDADE: ShieldCheck,
-                RESPEITO: Handshake,
-                FAMÍLIA: Users,
+                RESPONSABILIDADE: ResponsabilidadeIcon,
+                RESPEITO: Scale,
+                FAMÍLIA: FamiliaIcon,
                 FILANTROPIA: HeartHandshake,
-                IRMANDADE: HandMetal,
+                IRMANDADE: Handshake,
               };
               const Icon = iconMap[value] ?? Shield;
 
               return (
                 <article key={value} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
-                  <Icon size={30} className="mx-auto text-[color:var(--color-gold-500)]" />
-                  <h3 className="mt-4 break-words text-center font-heading text-3xl uppercase tracking-[0.04em] text-white [overflow-wrap:break-word]">
+                  <div className="mb-4 flex justify-center">
+                    <Icon width={32} height={32} className="text-[color:var(--color-gold-500)]" />
+                  </div>
+                  <h3 className="break-words text-center font-heading text-3xl uppercase tracking-[0.04em] text-white [overflow-wrap:break-word]">
                     {value}
                   </h3>
                 </article>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Instagram } from "lucide-react";
+import { Instagram } from "@/components/ui/icons/icons";
 import { chapters } from "@/data/chapters/chapters";
 import { brasiliaEvents } from "@/data/chapters/brasilia/events";
 import { brasiliaGallery } from "@/data/chapters/brasilia/gallery";
