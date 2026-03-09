@@ -88,8 +88,7 @@ export default function Home() {
         <div
           className="absolute inset-0 bg-cover bg-center brightness-90"
           style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1524591652733-73fa1ae7b5ee?auto=format&fit=crop&w=1800&q=80')",
+            backgroundImage: "url('/images/geral/capa-inicial-page.png')",
           }}
         />
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(11,11,11,0.80),rgba(11,11,11,0.94)),radial-gradient(circle_at_20%_25%,rgba(242,183,5,0.16),transparent_38%)]" />
