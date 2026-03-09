@@ -85,14 +85,9 @@ export default function Home() {
        * and CTA anchors guiding users to events and contact sections.
        */}
       <section className="relative isolate overflow-hidden border-b border-white/10">
-        <div
-          className="absolute inset-0 bg-cover bg-center brightness-90"
-          style={{
-            backgroundImage: "url('/images/geral/capa-inicial-page.png')",
-          }}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(11,11,11,0.80),rgba(11,11,11,0.94)),radial-gradient(circle_at_20%_25%,rgba(242,183,5,0.16),transparent_38%)]" />
-
+        <div className="absolute inset-0 bg-[url('/images/geral/capa-inicial-page.png')] bg-cover bg-center brightness-75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black/90" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.15),transparent_60%)]" />
         <div className="relative mx-auto w-full max-w-6xl px-4 py-28 sm:px-6 lg:px-8 lg:py-40">
           <img src="/images/geral/logo-ospapas.png" alt="Logo do MC Os Papas" className="mb-8 w-40 h-40" />
           <h1 className="mt-2 max-w-3xl font-heading text-6xl uppercase leading-[0.9] tracking-[0.05em] text-white sm:text-7xl lg:text-8xl">
