@@ -57,7 +57,7 @@ export const chapters: Chapter[] = [
     description: "Regional Rio de Janeiro",
     instagram: "@mc_os_papas_regional_rj",
     whatsapp: "+5561999999999",
-    image: "/images/rio_de_janeiro/capa.jpeg",
+    image: "/images/rio-de-janeiro/capa.jpeg",
     latitude: -22.92471083409714,
     longitude: -43.34784851349188
   },
@@ -70,7 +70,7 @@ export const chapters: Chapter[] = [
     description: "Regional São Miguel do Oeste",
     instagram: "@mc_os_papas_sc",
     whatsapp: "+5561999999999",
-    image: "/images/sao_miguel_do_oeste/capa.jpg",
+    image: "/images/sao-miguel-do-oeste/capa.jpg",
     latitude: -26.695630322051688,
     longitude: -53.554433515344144
   },
@@ -82,7 +82,7 @@ export const chapters: Chapter[] = [
     type: "Subsede",
     description: "Subsede São Luís",
     whatsapp: "+5561999999999",
-    image: "/images/sao_luis/capa.jpg",
+    image: "/images/sao-luis/capa.jpg",
     latitude: -2.530806224441873,
     longitude: -44.242222017196426
   }

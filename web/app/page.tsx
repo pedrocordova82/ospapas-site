@@ -19,7 +19,7 @@ export default function Home() {
     {
       name: "São Luís",
       href: "/sedes/sao-luis",
-      imageUrl: "/images/sao-luis/capa.jpg",
+      imageUrl: "/images/sao-luis/capa.jpg?v=2",
       type: "Subsede"
     },    
     {
