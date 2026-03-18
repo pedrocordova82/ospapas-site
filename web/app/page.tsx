@@ -156,7 +156,7 @@ export default function Home() {
        */}
       <Reveal>
         <section id="sedes" className="mx-auto w-full max-w-6xl px-4 pt-20 sm:px-6 lg:px-8 lg:pt-24">
-          <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Capítulos</p>
+          <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Onde Estamos</p>
           <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-6xl">
             Sedes
           </h2>
