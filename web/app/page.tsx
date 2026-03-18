@@ -132,6 +132,15 @@ export default function Home() {
 
             No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. E por que OS PAPAS? O nome seria uma forma de homenagem ao amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, e como todos são filhos do pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em Latim “ FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.`}
           </p>
+          <Link
+            href="/sobre"
+            className="group mt-6 inline-flex items-center gap-2 rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition-all duration-200 hover:scale-105 hover:bg-[color:var(--color-gold-500)] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-900)]"
+          >
+            <span className="text-lg leading-none transition-transform duration-200 group-hover:rotate-90">
+              +
+            </span>
+            Saiba mais
+          </Link>
         </div>
       </section>
 
