@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "@/components/ui/icons/icons";
-import { useEffect, useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 
 /**
  * SECTION: Navigation Items
@@ -12,12 +12,12 @@ import { useEffect, useState, type MouseEvent } from "react";
  * Keeping this array shared prevents navigation drift between breakpoints.
  */
 const navItems = [
-  { label: "Home", href: "/#top" },
-  { label: "Sobre", href: "/sobre" },
-  { label: "Sedes", href: "/#sedes" },
-  { label: "Eventos", href: "/#eventos" },
-  { label: "Filantropia", href: "/#filantropia" },
-  { label: "Contato", href: "/#contato" },
+  { label: "Home", href: "/#top", activePath: "/" },
+  { label: "Sobre", href: "/sobre", activePath: "/sobre" },
+  { label: "Sedes", href: "/#sedes", activePath: "/sedes" },
+  { label: "Eventos", href: "/#eventos", activePath: "/eventos" },
+  { label: "Filantropia", href: "/#filantropia", activePath: "/filantropia" },
+  { label: "Contato", href: "/#contato", activePath: "/contato" },
 ];
 
 export function Header() {
@@ -26,58 +26,17 @@ export function Header() {
    * Controls whether the mobile menu and dark overlay are visible.
    */
   const [open, setOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
   const pathname = usePathname();
 
   /**
-   * SECTION: Active Navigation (Scroll Spy)
-   * Uses IntersectionObserver to detect which section is currently visible
-   * and updates the desktop navigation highlight accordingly.
-   *
-   * This logic runs only on the homepage to avoid false positives in
-   * non-anchor routes (for example sede detail pages).
+   * SECTION: Active Navigation Helper
+   * Header highlighting is route-based so each menu item only reacts to its
+   * own path prefix without loose matching side effects.
    */
-  useEffect(() => {
-    if (pathname !== "/") {
-      return;
-    }
-
-    /**
-     * SECTION: Section Detection
-     * ScrollSpy tracks all sections that expose an `id` attribute and maps
-     * them to matching hash links in the header navigation.
-     */
-    const sections = document.querySelectorAll("section[id]");
-    const footerContact = document.getElementById("contato");
-
-    /**
-     * SECTION: IntersectionObserver Usage
-     * IntersectionObserver provides a lightweight way to detect visible
-     * sections without attaching continuous scroll listeners.
-     */
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: "-40% 0px -50% 0px",
-        threshold: 0,
-      },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    if (footerContact) observer.observe(footerContact);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [pathname]);
+  const isActive = (path: string) => {
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
 
   /**
    * SECTION: Logo Navigation + Smooth Scroll
@@ -134,25 +93,20 @@ export function Header() {
                 <li key={item.label}>
                   {/**
                    * SECTION: Active Navigation Styling
-                   * Each link hash is converted to a plain section id
-                   * (e.g. "/#sedes" -> "sedes") and compared with `activeSection`.
+                   * Active state is derived from the current route path so
+                   * homepage anchors do not keep unrelated items highlighted.
                    */}
-                  {(() => {
-                    const sectionId = item.href.replace("/#", "");
-                    return (
                   <Link
                     href={item.href}
                     scroll={true}
                     className={`text-sm uppercase tracking-[0.12em] transition ${
-                      pathname === "/" && activeSection === sectionId
+                      isActive(item.activePath)
                         ? "text-[color:var(--color-gold-500)]"
                         : "text-[color:var(--color-text-300)] hover:text-[color:var(--color-gold-500)]"
                     }`}
                   >
                     {item.label}
                   </Link>
-                    );
-                  })()}
                 </li>
               ))}
             </ul>
@@ -196,7 +150,9 @@ export function Header() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-lg uppercase tracking-[0.12em] text-white"
+                className={`text-lg uppercase tracking-[0.12em] ${
+                  isActive(item.activePath) ? "text-[color:var(--color-gold-500)]" : "text-white"
+                }`}
                 onClick={() => setOpen(false)}
               >
                 {item.label}
