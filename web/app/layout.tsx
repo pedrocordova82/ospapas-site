@@ -57,7 +57,7 @@ export default function RootLayout({
             {/**
              * SECTION: Floating Contact Entry Point
              * The WhatsApp widget is globally mounted so visitors can contact
-             * chapters from any page in the site.
+             * sedes from any page in the site.
              */}
             <FloatingWhatsApp />
           </div>

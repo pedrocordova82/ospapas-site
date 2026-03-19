@@ -1,17 +1,17 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Instagram } from "@/components/ui/icons/icons";
-import { chapters } from "@/data/chapters/chapters";
-import { brasiliaEvents } from "@/data/chapters/brasilia/events";
-import { brasiliaGallery } from "@/data/chapters/brasilia/gallery";
-import { brasiliaMembers } from "@/data/chapters/brasilia/members";
-import { ChapterGallery } from "@/components/sedes/ChapterGallery";
+import { sedes } from "@/data/sedes/sedes";
+import { brasiliaEvents } from "@/data/sedes/brasilia/events";
+import { brasiliaGallery } from "@/data/sedes/brasilia/gallery";
+import { brasiliaMembers } from "@/data/sedes/brasilia/members";
+import { SedeGallery } from "@/components/sedes/SedeGallery";
 
 /**
  * SECTION: Dynamic Route Props
- * App Router provides `params` with the current chapter slug from `/sedes/[slug]`.
+ * App Router provides `params` with the current sede slug from `/sedes/[slug]`.
  */
-type ChapterPageProps = {
+type SedePageProps = {
   params: Promise<{
     slug: string;
   }>;
@@ -26,46 +26,46 @@ function toWaMe(phone: string) {
 }
 
 /**
- * SECTION: Dynamic Chapter Page
- * Resolves chapter content based on route slug and renders:
+ * SECTION: Dynamic Sede Page
+ * Resolves sede content based on route slug and renders:
  * hero, institutional info, contact actions, and map embed.
  */
-export default async function ChapterPage({ params }: ChapterPageProps) {
+export default async function SedePage({ params }: SedePageProps) {
   /**
    * SECTION: Slug Resolution
-   * Reads the dynamic segment and searches for a chapter with matching slug.
+   * Reads the dynamic segment and searches for a sede with matching slug.
    */
   const { slug } = await params;
-  const chapter = chapters.find((item) => item.slug === slug);
+  const sede = sedes.find((item) => item.slug === slug);
 
   /**
    * SECTION: Not Found Handling
-   * If no chapter matches the slug, delegate to Next.js 404 via `notFound()`.
+   * If no sede matches the slug, delegate to Next.js 404 via `notFound()`.
    */
-  if (!chapter) {
+  if (!sede) {
     notFound();
   }
 
   /**
    * SECTION: Map Embed URL
-   * Uses chapter latitude/longitude to build a Google Maps iframe source.
+   * Uses sede latitude/longitude to build a Google Maps iframe source.
    */
-  const mapSrc = `https://www.google.com/maps?q=${chapter.latitude},${chapter.longitude}&output=embed`;
-  const mapsLink = `https://www.google.com/maps?q=${chapter.latitude},${chapter.longitude}`;
-  const chapterEvents = slug === "brasilia" ? brasiliaEvents : [];
-  const chapterGallery = slug === "brasilia" ? brasiliaGallery : [];
-  const chapterMembers = slug === "brasilia" ? brasiliaMembers : [];
+  const mapSrc = `https://www.google.com/maps?q=${sede.latitude},${sede.longitude}&output=embed`;
+  const mapsLink = `https://www.google.com/maps?q=${sede.latitude},${sede.longitude}`;
+  const sedeEvents = slug === "brasilia" ? brasiliaEvents : [];
+  const sedeGallery = slug === "brasilia" ? brasiliaGallery : [];
+  const sedeMembers = slug === "brasilia" ? brasiliaMembers : [];
 
   return (
     <div className="pb-16">
       {/**
        * SECTION: Hero
-       * Displays chapter-specific cover image, overlay, and identity metadata.
+       * Displays sede-specific cover image, overlay, and identity metadata.
        */}
       <section className="relative isolate min-h-[48vh] overflow-hidden border-b border-white/10">
         <Image
-          src={chapter.image}
-          alt={`Capa da ${chapter.name}`}
+          src={sede.image}
+          alt={`Capa da ${sede.name}`}
           fill
           priority
           className="object-cover"
@@ -75,12 +75,12 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
 
         <div className="relative mx-auto flex min-h-[48vh] w-full max-w-6xl items-end px-4 py-10 sm:px-6 lg:px-8">
           <div>
-            <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">{chapter.type}</p>
+            <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">{sede.type}</p>
             <h1 className="mt-3 font-heading text-5xl uppercase tracking-[0.04em] text-white sm:text-6xl lg:text-7xl">
-              {chapter.name}
+              {sede.name}
             </h1>
             <p className="mt-4 text-sm uppercase tracking-[0.14em] text-white/80">
-              {chapter.state}
+              {sede.state}
             </p>
           </div>
         </div>
@@ -95,26 +95,26 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
         <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 sm:p-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Informações</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">Sobre a Sede</h2>
-          <p className="mt-5 text-sm leading-7 text-white/80 text-justify">{chapter.description}</p>
+          <p className="mt-5 text-sm leading-7 text-white/80 text-justify">{sede.description}</p>
 
           <div className="mt- space-y-1 text-sm">
-            {chapter.instagram ? (
+            {sede.instagram ? (
               <div className="mt-4 flex items-center gap-2 text-base text-[color:var(--color-text-300)]">
                 <Instagram size={20} className="text-gray-400" />
                 <span className="text-[color:var(--color-text-300)]">Instagram:</span>
                 <a
-                  href={`https://instagram.com/${chapter.instagram.replace(/^@/, "")}`}
+                  href={`https://instagram.com/${sede.instagram.replace(/^@/, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm font-medium text-[color:var(--color-gold-500)] hover:underline"
                 >
-                  {chapter.instagram}
+                  {sede.instagram}
                 </a>
               </div>
             ) : null}
 
             <a
-              href={toWaMe(chapter.whatsapp)}
+              href={toWaMe(sede.whatsapp)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600"
@@ -129,7 +129,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
           <h2 className="px-6 pb-4 pt-2 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:px-8">Localização</h2>
           <div className="aspect-[16/11] w-full border-t border-white/10">
             <iframe
-              title={`Mapa da ${chapter.name}`}
+              title={`Mapa da ${sede.name}`}
               src={mapSrc}
               className="h-full w-full pointer-events-none"
               loading="lazy"
@@ -155,16 +155,16 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
       </section>
 
       {/**
-       * SECTION: Chapter Extra Content
-       * Brasília is the first chapter with modular Events, Gallery, and Members
-       * datasets. These blocks are rendered after the map using the chapter slug.
+       * SECTION: Sede Extra Content
+       * Brasília is the first sede with modular Events, Gallery, and Members
+       * datasets. These blocks are rendered after the map using the sede slug.
        */}
-      {chapterMembers.length > 0 ? (
+      {sedeMembers.length > 0 ? (
         <section className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Irmandade</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Membros</h2>
           <div className="mt-8 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
-            {chapterMembers.map((member) => (
+            {sedeMembers.map((member) => (
               <article key={member.name} className="group">
                 <div className="overflow-hidden rounded-lg aspect-[2/3] shadow-lg shadow-black/40">
                   <div className="relative h-full w-full">
@@ -186,7 +186,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
         </section>
       ) : null}
       
-      <ChapterGallery images={chapterGallery} chapterName={chapter.name} events={chapterEvents} />
+      <SedeGallery images={sedeGallery} sedeName={sede.name} events={sedeEvents} />
     </div>
   );
 }

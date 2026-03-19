@@ -5,18 +5,18 @@ import { useState } from "react";
 import EventGalleryModal, { type EventGalleryItem } from "@/components/ui/EventGalleryModal";
 import Lightbox from "@/components/ui/Lightbox";
 
-type ChapterGalleryProps = {
+type SedeGalleryProps = {
   images: string[];
-  chapterName: string;
+  sedeName: string;
   events: EventGalleryItem[];
 };
 
 /**
- * SECTION: Interactive Chapter Gallery
+ * SECTION: Interactive Sede Gallery
  * Keeps the same gallery grid layout while splitting interactions:
  * event cards open a carousel modal and gallery images open the shared lightbox.
  */
-export function ChapterGallery({ images, chapterName, events }: ChapterGalleryProps) {
+export function SedeGallery({ images, sedeName, events }: SedeGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventGalleryItem | null>(null);
 
@@ -69,10 +69,10 @@ export function ChapterGallery({ images, chapterName, events }: ChapterGalleryPr
                 type="button"
                 onClick={() => setSelectedIndex(index)}
                 className="overflow-hidden rounded-lg"
-                aria-label={`Abrir imagem ${index + 1} da galeria de ${chapterName}`}
+                aria-label={`Abrir imagem ${index + 1} da galeria de ${sedeName}`}
               >
                 <div className="relative h-36 w-full cursor-pointer transition duration-300 hover:scale-105 sm:h-44">
-                  <Image src={image} alt={`Galeria ${chapterName} ${index + 1}`} fill className="object-cover" />
+                  <Image src={image} alt={`Galeria ${sedeName} ${index + 1}`} fill className="object-cover" />
                 </div>
               </button>
             ))}

@@ -70,79 +70,79 @@ const leadership = [
   {
     name: "Nômade Papa",
     rank: "Fundador",
-    chapter: "Belém-PA",
+    sede: "Belém-PA",
     image: "/images/diretoria/nomade-papa-fundador-belem.png",
   },
   {
     name: "Caveira",
     rank: "Presidente - Cardeal",
-    chapter: "Rio de janeiro-RJ",
+    sede: "Rio de janeiro-RJ",
     image: "/images/diretoria/caveira-presidente-cardeal-regional-rio-de-janeiro.png",
   },
   {
     name: "Mardone",
     rank: "Vice-Presidente - Cardeal",
-    chapter: "Tomé Açu-PA",
+    sede: "Tomé Açu-PA",
     image: "/images/diretoria/mardone-vice-cardeal-regional-tome-acu.png",
   },
   {
     name: "Billau",
     rank: "Diretor Sede Nacional - Cardela",
-    chapter: "Belém-PA",
+    sede: "Belém-PA",
     image: "/images/diretoria/billau-diretor-cardeal-sede-belem.png",
   },
   {
     name: "Verme",
     rank: "Diretor Regional - Cardeal",
-    chapter: "Rio de Janeiro-RJ",
+    sede: "Rio de Janeiro-RJ",
     image: "/images/diretoria/verme-diretor-cardeal-regional-regional-reio-de-janeiro.png",
   },
   {
     name: "Poodle",
     rank: "Diretor Regional - Cardela",
-    chapter: "Brasília-DF",
+    sede: "Brasília-DF",
     image: "/images/diretoria/podle-diretor-cardeal-regional-brasilia.png",
   },
   {
     name: "Gadeia",
     rank: "Diretor Regional - Cardeal",
-    chapter: "Tomé Açi-PA",
+    sede: "Tomé Açi-PA",
     image: "/images/diretoria/gadeia-diretor-cardeal-regional-tome-acu.png",
   },
   {
     name: "Netanf",
     rank: "Diretor Financeiro - Cardeal",
-    chapter: "Rio de Janeiro-RJ",
+    sede: "Rio de Janeiro-RJ",
     image: "/images/diretoria/netanf-diretor-financeiro-cardeal-regional-rio-de-janeiro.png",
   },
   {
     name: "sniper",
     rank: "Diretor Social - Cardeal",
-    chapter: "Rio de Janeiro-RJ",
+    sede: "Rio de Janeiro-RJ",
     image: "/images/diretoria/sniper-diretor-social-regional-rio-de-janeiro.png",
   },
   {
     name: "Careca",
     rank: "Diretor de Marketing - Cardeal",
-    chapter: "Rio de Janeiro-RJ",
+    sede: "Rio de Janeiro-RJ",
     image: "/images/diretoria/careca-diretor-marketing-regional-rio-de-janeiro.png",
   },
   {
     name: "El Loco",
     rank: "Representante - Cardeal",
-    chapter: "São Luís-MA",
+    sede: "São Luís-MA",
     image: "/images/diretoria/el-loco-representante-cardeal-subsede-sao-luis.png",
   },
   {
     name: "Bino",
     rank: "Representante - Cardeal",
-    chapter: "Macapá-AP",
+    sede: "Macapá-AP",
     image: "/images/diretoria/bino-representante-cardeal-subsede-macapa.png",
   },
   {
     name: "Varejão",
     rank: "Representante - Cardeal",
-    chapter: "Porto de Moz-PA",
+    sede: "Porto de Moz-PA",
     image: "/images/diretoria/varejao-representante-cardeal-subsede-porto-de-moz.png",
   },
 ];
@@ -364,7 +364,7 @@ export default function SobrePage() {
                 <div className="mt-3 text-center">
                   <p className="font-semibold text-white">{leader.name}</p>
                   <p className="text-sm text-[color:var(--color-gold-500)]">{leader.rank}</p>
-                  <p className="mt-1 text-sm text-[color:var(--color-text-300)]">{leader.chapter}</p>
+                  <p className="mt-1 text-sm text-[color:var(--color-text-300)]">{leader.sede}</p>
                 </div>
               </article>
             ))}

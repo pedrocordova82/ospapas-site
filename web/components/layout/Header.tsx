@@ -35,7 +35,7 @@ export function Header() {
    * and updates the desktop navigation highlight accordingly.
    *
    * This logic runs only on the homepage to avoid false positives in
-   * non-anchor routes (for example chapter detail pages).
+   * non-anchor routes (for example sede detail pages).
    */
   useEffect(() => {
     if (pathname !== "/") {

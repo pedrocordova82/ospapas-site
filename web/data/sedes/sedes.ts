@@ -1,9 +1,9 @@
 /**
- * SECTION: Chapter Type Definition
- * Defines the canonical chapter schema used by the frontend.
+ * SECTION: Sede Type Definition
+ * Defines the canonical sede schema used by the frontend.
  * These fields feed hero, contact, and map sections in `/sedes/[slug]`.
  */
-export type Chapter = {
+export type Sede = {
   slug: string
   name: string
   city: string
@@ -18,11 +18,11 @@ export type Chapter = {
 }
 
 /**
- * SECTION: Chapters Data Source
- * Primary dataset used to render chapter cards and dynamic chapter pages.
+ * SECTION: Sedes Data Source
+ * Primary dataset used to render sede cards and dynamic sede pages.
  * `slug` values are route keys for the App Router path: `/sedes/[slug]`.
  */
-export const chapters: Chapter[] = [
+export const sedes: Sede[] = [
   {
     slug: "para",
     name: "Belém",

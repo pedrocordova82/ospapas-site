@@ -1,15 +1,15 @@
-import { ChapterCard } from "@/components/sedes/ChapterCard";
+import { SedeCard } from "@/components/sedes/SedeCard";
 import { Reveal } from "@/components/ui/Reveal";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   /**
-   * SECTION: Chapter Cards Data
-   * This collection feeds the Sedes grid and maps each card to a chapter route.
+   * SECTION: Sede Cards Data
+   * This collection feeds the Sedes grid and maps each card to a sede route.
    * Slugs are aligned with `/sedes/[slug]` dynamic pages.
    */
-  const chapterCards = [
+  const sedeCards = [
     {
       name: "Pará",
       href: "/sedes/para",
@@ -145,9 +145,9 @@ export default function Home() {
       </section>
 
       {/**
-       * SECTION: Chapter Cards (Sedes)
-       * Reusable `ChapterCard` components render chapter previews and
-       * navigate visitors to each chapter detail page.
+       * SECTION: Sede Cards
+       * Reusable `SedeCard` components render sede previews and
+       * navigate visitors to each sede detail page.
        */}
       {/**
        * SECTION: Reveal Animation Usage
@@ -165,8 +165,8 @@ export default function Home() {
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {chapterCards.map((chapter) => (
-              <ChapterCard key={chapter.name} {...chapter} />
+            {sedeCards.map((sede) => (
+              <SedeCard key={sede.name} {...sede} />
             ))}
           </div>
         </section>

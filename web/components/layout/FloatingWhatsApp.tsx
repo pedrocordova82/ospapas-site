@@ -11,7 +11,7 @@ const SESSION_KEY = "ospapas-wa-hint-dismissed";
 
 /**
  * SECTION: Contact List Structure
- * Centralized chapter contact data used to render WhatsApp quick actions.
+ * Centralized sede contact data used to render WhatsApp quick actions.
  */
 const contacts = [
   {
@@ -38,7 +38,7 @@ const contacts = [
 
 /**
  * SECTION: Floating WhatsApp Widget
- * Fixed bottom-right contact entry point with expandable list of chapters.
+ * Fixed bottom-right contact entry point with expandable list of sedes.
  */
 export default function FloatingWhatsApp() {
   /**
@@ -99,7 +99,7 @@ export default function FloatingWhatsApp() {
 
         {/**
          * SECTION: Expandable Contact Panel
-         * The chapter list appears/disappears with scale and opacity transitions.
+         * The sede list appears/disappears with scale and opacity transitions.
          */}
         <div
           className={`absolute bottom-[calc(100%+14px)] right-0 w-[min(92vw,300px)] origin-bottom-right rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-3 shadow-2xl transition-all duration-300 ${

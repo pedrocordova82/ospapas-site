@@ -3,7 +3,7 @@ import { Instagram, MessageCircle } from "@/components/ui/icons/icons";
 /**
  * SECTION: Footer
  * Global footer with brand summary, social entry point, and legal text.
- * The layout is intentionally compact to keep focus on chapter content.
+ * The layout is intentionally compact to keep focus on sede content.
  */
 export function Footer() {
   return (
