@@ -115,19 +115,19 @@ export function Header() {
           {/**
            * SECTION: Right Controls
            * Mobile shows the hamburger toggle, while desktop shows the
-           * "Como Entrar" call-to-action button.
+           * primary call-to-action button.
            */}
           <div className="flex items-center gap-4">
             <button className="text-white md:hidden" onClick={() => setOpen((v) => !v)}>
               {open ? <X size={26} /> : <Menu size={26} />}
             </button>
 
-            <a
-              href="#entrar"
+            <Link
+              href="/faca-parte"
               className="hidden rounded-md border border-[color:var(--color-gold-500)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black md:inline-block"
             >
-              Como Entrar
-            </a>
+              Faça Parte do MC
+            </Link>
           </div>
         </div>
       </header>
@@ -159,13 +159,13 @@ export function Header() {
               </Link>
             ))}
 
-            <a
-              href="#entrar"
+            <Link
+              href="/faca-parte"
               className="mt-4 rounded-md border border-[color:var(--color-gold-500)] px-6 py-3 text-sm uppercase tracking-[0.12em] text-[color:var(--color-gold-500)]"
               onClick={() => setOpen(false)}
             >
-              Como Entrar
-            </a>
+              Faça Parte do MC
+            </Link>
           </nav>
         </div>
       )}

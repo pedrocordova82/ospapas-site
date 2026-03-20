@@ -104,13 +104,13 @@ export default function Home() {
             >
               Ver Eventos
             </a>
-            <a
+            <Link
               id="entrar"
-              href="#contato"
+              href="/#sedes"
               className="rounded-md border border-white/70 bg-black/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white/10"
             >
-              Como Entrar
-            </a>
+              Onde Estamos
+            </Link>
           </div>
         </div>
       </section>

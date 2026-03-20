@@ -2,39 +2,13 @@
 
 import { MessageCircle, X } from "@/components/ui/icons/icons";
 import { useEffect, useState } from "react";
+import { WhatsAppSelectorPanel } from "@/components/ui/WhatsAppSelectorPanel";
 
 /**
  * SECTION: Session Key
  * Controls one-session visibility for the contextual hint bubble.
  */
 const SESSION_KEY = "ospapas-wa-hint-dismissed";
-
-/**
- * SECTION: Contact List Structure
- * Centralized sede contact data used to render WhatsApp quick actions.
- */
-const contacts = [
-  {
-    name: "Sede Pará",
-    href: "https://wa.me/5591999999999",
-  },
-  {
-    name: "Regional Brasília",
-    href: "https://wa.me/5561999999999",
-  },
-  {
-    name: "Regional Rio de Janeiro",
-    href: "https://wa.me/5521999999999",
-  },
-  {
-    name: "Regional São Miguel do Oeste",
-    href: "https://wa.me/5549999999999",
-  },
-  {
-    name: "Subsede São Luís",
-    href: "https://wa.me/5598999999999",
-  },
-];
 
 /**
  * SECTION: Floating WhatsApp Widget
@@ -106,22 +80,7 @@ export default function FloatingWhatsApp() {
             isOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0"
           }`}
         >
-          <p className="px-2 pb-2 text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">WhatsApp</p>
-          <ul className="space-y-3">
-            {contacts.map((contact) => (
-              <li key={contact.name}>
-                <a
-                  href={contact.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 p-4 text-sm text-white/90 transition hover:border-green-500 hover:bg-green-500/10 hover:text-white"
-                >
-                  <MessageCircle size={18} className="text-green-500" />
-                  <span>{contact.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <WhatsAppSelectorPanel />
         </div>
 
         <div className="group relative">
