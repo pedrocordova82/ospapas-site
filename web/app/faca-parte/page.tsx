@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { type FormEvent, useState } from "react";
+import { BrazilMap } from "@/components/map/BrazilMap";
 import { Reveal } from "@/components/ui/Reveal";
 import { X } from "@/components/ui/icons/icons";
 import { WhatsAppSelectorPanel } from "@/components/ui/WhatsAppSelectorPanel";
@@ -172,6 +173,27 @@ export default function FacaPartePage() {
                 ) : null}
               </form>
             </article>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section className="mx-auto w-full max-w-6xl px-6 pb-16">
+          <div className="rounded-2xl border border-white/10 bg-[color:var(--color-bg-900)] p-8 sm:p-10">
+            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
+              Presença Nacional
+            </p>
+            <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">
+              Onde Estamos
+            </h2>
+            <p className="mt-5 max-w-3xl text-base leading-8 text-[color:var(--color-text-300)]">
+              O MC Os Papas está presente em diferentes regiões do Brasil, conectando estrada, irmandade e
+              propósito.
+            </p>
+
+            <div className="mt-8 flex items-center justify-center">
+              <BrazilMap className="w-full max-w-5xl" />
+            </div>
           </div>
         </section>
       </Reveal>
