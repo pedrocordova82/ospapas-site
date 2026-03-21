@@ -73,6 +73,8 @@ function formatBrazilPhone(phoneDigits: string) {
 export default function FacaPartePage() {
   const [isWhatsOpen, setIsWhatsOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
+  const [statusType, setStatusType] = useState<"success" | "error" | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedState, setSelectedState] = useState<StateCode | "">("");
   const [cityQuery, setCityQuery] = useState("");
   const [phoneDigits, setPhoneDigits] = useState("");
@@ -176,20 +178,57 @@ export default function FacaPartePage() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (phoneDigits.length !== 11) {
-      setStatusMessage("Informe um celular v\u00e1lido no formato (99) 99999-9999.");
+    if (isSubmitting) {
       return;
     }
 
-    const formData = new FormData(event.currentTarget);
+    if (phoneDigits.length !== 11) {
+      setStatusType("error");
+      setStatusMessage("Informe um celular válido no formato (99) 99999-9999.");
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
 
-    console.log("Interesse recebido:", payload);
-    setStatusMessage("Interesse registrado com sucesso. Em breve entraremos em contato.");
-    event.currentTarget.reset();
-    setSelectedState("");
-    resetCityField();
-    setPhoneDigits("");
+    setIsSubmitting(true);
+    setStatusMessage("");
+    setStatusType(null);
+
+    void (async () => {
+      try {
+        const response = await fetch("/api/join", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const result = (await response.json()) as { message?: string };
+
+        if (!response.ok) {
+          throw new Error(result.message || "Não foi possível enviar seu interesse agora.");
+        }
+
+        setStatusType("success");
+        setStatusMessage(result.message || "Interesse enviado com sucesso. Em breve entraremos em contato.");
+        form.reset();
+        setSelectedState("");
+        resetCityField();
+        setPhoneDigits("");
+      } catch (error) {
+        setStatusType("error");
+        setStatusMessage(
+          error instanceof Error
+            ? error.message
+            : "Não foi possível enviar seu interesse agora. Tente novamente em instantes.",
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
+    })();
   };
 
   return (
@@ -264,6 +303,20 @@ export default function FacaPartePage() {
               </p>
 
               <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+                <div className="hidden" aria-hidden="true">
+                  <label htmlFor="website">
+                    Website
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      defaultValue=""
+                    />
+                  </label>
+                </div>
+
                 <div className="grid gap-5 sm:grid-cols-2">
                   <label className="block">
                     <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/70">Nome</span>
@@ -402,13 +455,20 @@ export default function FacaPartePage() {
 
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="inline-flex items-center rounded-md border border-[color:var(--color-gold-500)] px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black"
                 >
-                  Enviar Interesse
+                  {isSubmitting ? "Enviando..." : "Enviar Interesse"}
                 </button>
 
                 {statusMessage ? (
-                  <p className="text-sm text-[color:var(--color-gold-500)]">{statusMessage}</p>
+                  <p
+                    className={`text-sm ${
+                      statusType === "error" ? "text-red-300" : "text-[color:var(--color-gold-500)]"
+                    }`}
+                  >
+                    {statusMessage}
+                  </p>
                 ) : null}
               </form>
             </article>
