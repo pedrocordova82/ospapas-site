@@ -192,7 +192,7 @@ export default function FacaPartePage() {
             </p>
 
             <div className="mt-8 flex items-center justify-center">
-              <BrazilMap className="w-full max-w-5xl" />
+              <BrazilMap className="w-full" />
             </div>
           </div>
         </section>
