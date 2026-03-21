@@ -147,17 +147,6 @@ export default function FacaPartePage() {
                   </label>
 
                   <label className="block">
-                    <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/70">Cidade</span>
-                    <input
-                      name="cidade"
-                      type="text"
-                      required
-                      className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[color:var(--color-gold-500)]"
-                      placeholder="Sua cidade"
-                    />
-                  </label>
-
-                  <label className="block">
                     <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/70">Estado</span>
                     <select
                       name="estado"
@@ -174,6 +163,17 @@ export default function FacaPartePage() {
                         </option>
                       ))}
                     </select>
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/70">Cidade</span>
+                    <input
+                      name="cidade"
+                      type="text"
+                      required
+                      className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[color:var(--color-gold-500)]"
+                      placeholder="Sua cidade"
+                    />
                   </label>
 
                   <label className="block">
