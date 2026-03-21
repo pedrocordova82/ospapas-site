@@ -17,6 +17,36 @@ const joinText = [
   "Venha fazer parte do MC Os Papas.",
 ];
 
+const estadosBrasil = [
+  "AC",
+  "AL",
+  "AM",
+  "AP",
+  "BA",
+  "CE",
+  "DF",
+  "ES",
+  "GO",
+  "MA",
+  "MG",
+  "MS",
+  "MT",
+  "PA",
+  "PB",
+  "PE",
+  "PI",
+  "PR",
+  "RJ",
+  "RN",
+  "RO",
+  "RR",
+  "RS",
+  "SC",
+  "SE",
+  "SP",
+  "TO",
+] as const;
+
 export default function FacaPartePage() {
   const [isWhatsOpen, setIsWhatsOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
@@ -129,13 +159,21 @@ export default function FacaPartePage() {
 
                   <label className="block">
                     <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/70">Estado</span>
-                    <input
+                    <select
                       name="estado"
-                      type="text"
                       required
+                      defaultValue=""
                       className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[color:var(--color-gold-500)]"
-                      placeholder="Seu estado"
-                    />
+                    >
+                      <option value="" disabled>
+                        Selecione
+                      </option>
+                      {estadosBrasil.map((uf) => (
+                        <option key={uf} value={uf}>
+                          {uf}
+                        </option>
+                      ))}
+                    </select>
                   </label>
 
                   <label className="block">
