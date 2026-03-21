@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { type FormEvent, useState } from "react";
+import { type ChangeEvent, type FormEvent, type KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { BrazilMap } from "@/components/map/BrazilMap";
+import { CITIES_BY_STATE, STATE_CODES, type CityOption, type StateCode } from "@/data/brazil-locations";
 import { Reveal } from "@/components/ui/Reveal";
 import { X } from "@/components/ui/icons/icons";
 import { WhatsAppSelectorPanel } from "@/components/ui/WhatsAppSelectorPanel";
@@ -17,39 +18,140 @@ const joinText = [
   "Venha fazer parte do MC Os Papas.",
 ];
 
-const estadosBrasil = [
-  "AC",
-  "AL",
-  "AM",
-  "AP",
-  "BA",
-  "CE",
-  "DF",
-  "ES",
-  "GO",
-  "MA",
-  "MG",
-  "MS",
-  "MT",
-  "PA",
-  "PB",
-  "PE",
-  "PI",
-  "PR",
-  "RJ",
-  "RN",
-  "RO",
-  "RR",
-  "RS",
-  "SC",
-  "SE",
-  "SP",
-  "TO",
-] as const;
+function normalizeText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function filterCities(cities: CityOption[], query: string, limit = 10) {
+  const normalizedQuery = normalizeText(query);
+
+  if (!normalizedQuery) {
+    return cities.slice(0, limit);
+  }
+
+  const startsWithMatches: CityOption[] = [];
+  const includesMatches: CityOption[] = [];
+
+  for (const city of cities) {
+    const normalizedCity = normalizeText(city.name);
+
+    if (normalizedCity.startsWith(normalizedQuery)) {
+      startsWithMatches.push(city);
+      continue;
+    }
+
+    if (normalizedCity.includes(normalizedQuery)) {
+      includesMatches.push(city);
+    }
+  }
+
+  return [...startsWithMatches, ...includesMatches].slice(0, limit);
+}
 
 export default function FacaPartePage() {
   const [isWhatsOpen, setIsWhatsOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
+  const [selectedState, setSelectedState] = useState<StateCode | "">("");
+  const [cityQuery, setCityQuery] = useState("");
+  const [isCityListOpen, setIsCityListOpen] = useState(false);
+  const [highlightedCityIndex, setHighlightedCityIndex] = useState(-1);
+  const cityComboboxRef = useRef<HTMLDivElement>(null);
+  const cityListboxId = "cidade-sugestoes";
+
+  const availableCities = useMemo(() => {
+    return selectedState ? CITIES_BY_STATE[selectedState] : [];
+  }, [selectedState]);
+
+  const filteredCities = useMemo(() => {
+    return filterCities(availableCities, cityQuery);
+  }, [availableCities, cityQuery]);
+
+  const activeCityOptionId =
+    highlightedCityIndex >= 0 && highlightedCityIndex < filteredCities.length
+      ? `${cityListboxId}-option-${highlightedCityIndex}`
+      : undefined;
+
+  useEffect(() => {
+    function handlePointerDown(event: PointerEvent) {
+      if (!cityComboboxRef.current?.contains(event.target as Node)) {
+        setIsCityListOpen(false);
+        setHighlightedCityIndex(-1);
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, []);
+
+  const resetCityField = () => {
+    setCityQuery("");
+    setIsCityListOpen(false);
+    setHighlightedCityIndex(-1);
+  };
+
+  const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedState(event.target.value as StateCode | "");
+    resetCityField();
+  };
+
+  const selectCity = (cityName: string) => {
+    setCityQuery(cityName);
+    setIsCityListOpen(false);
+    setHighlightedCityIndex(-1);
+  };
+
+  const handleCityKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (!selectedState) {
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setIsCityListOpen(true);
+      setHighlightedCityIndex((currentIndex) => {
+        if (!filteredCities.length) {
+          return -1;
+        }
+
+        return currentIndex >= filteredCities.length - 1 ? 0 : currentIndex + 1;
+      });
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setIsCityListOpen(true);
+      setHighlightedCityIndex((currentIndex) => {
+        if (!filteredCities.length) {
+          return -1;
+        }
+
+        return currentIndex <= 0 ? filteredCities.length - 1 : currentIndex - 1;
+      });
+      return;
+    }
+
+    if (event.key === "Enter" && isCityListOpen && highlightedCityIndex >= 0) {
+      event.preventDefault();
+      selectCity(filteredCities[highlightedCityIndex].name);
+      return;
+    }
+
+    if (event.key === "Escape") {
+      setIsCityListOpen(false);
+      setHighlightedCityIndex(-1);
+      return;
+    }
+
+    if (event.key === "Tab") {
+      setIsCityListOpen(false);
+      setHighlightedCityIndex(-1);
+    }
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,6 +162,8 @@ export default function FacaPartePage() {
     console.log("Interesse recebido:", payload);
     setStatusMessage("Interesse registrado com sucesso. Em breve entraremos em contato.");
     event.currentTarget.reset();
+    setSelectedState("");
+    resetCityField();
   };
 
   return (
@@ -151,13 +255,14 @@ export default function FacaPartePage() {
                     <select
                       name="estado"
                       required
-                      defaultValue=""
+                      value={selectedState}
+                      onChange={handleStateChange}
                       className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[color:var(--color-gold-500)]"
                     >
                       <option value="" disabled>
                         Selecione
                       </option>
-                      {estadosBrasil.map((uf) => (
+                      {STATE_CODES.map((uf) => (
                         <option key={uf} value={uf}>
                           {uf}
                         </option>
@@ -167,13 +272,73 @@ export default function FacaPartePage() {
 
                   <label className="block">
                     <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/70">Cidade</span>
-                    <input
-                      name="cidade"
-                      type="text"
-                      required
-                      className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[color:var(--color-gold-500)]"
-                      placeholder="Sua cidade"
-                    />
+                    <div ref={cityComboboxRef} className="relative">
+                      <input
+                        name="cidade"
+                        type="text"
+                        role="combobox"
+                        required
+                        disabled={!selectedState}
+                        autoComplete="off"
+                        value={cityQuery}
+                        aria-autocomplete="list"
+                        aria-expanded={selectedState ? isCityListOpen : false}
+                        aria-controls={selectedState ? cityListboxId : undefined}
+                        aria-activedescendant={activeCityOptionId}
+                        className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[color:var(--color-gold-500)] disabled:cursor-not-allowed disabled:opacity-60"
+                        placeholder={selectedState ? "Digite sua cidade" : "Selecione um estado primeiro"}
+                        onFocus={() => {
+                          if (selectedState) {
+                            setIsCityListOpen(true);
+                          }
+                        }}
+                        onChange={(event) => {
+                          setCityQuery(event.target.value);
+                          setIsCityListOpen(true);
+                          setHighlightedCityIndex(-1);
+                        }}
+                        onKeyDown={handleCityKeyDown}
+                      />
+
+                      {selectedState && isCityListOpen ? (
+                        <div
+                          id={cityListboxId}
+                          role="listbox"
+                          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 max-h-64 overflow-y-auto rounded-md border border-white/10 bg-[color:var(--color-bg-900)]/95 p-2 shadow-2xl backdrop-blur-sm"
+                        >
+                          {filteredCities.length ? (
+                            filteredCities.map((city, index) => {
+                              const isHighlighted = index === highlightedCityIndex;
+                              const isSelected = city.name === cityQuery;
+
+                              return (
+                                <button
+                                  key={city.ibgeCode ?? city.name}
+                                  id={`${cityListboxId}-option-${index}`}
+                                  type="button"
+                                  role="option"
+                                  aria-selected={isHighlighted || isSelected}
+                                  className={`flex w-full cursor-pointer rounded-md px-3 py-2 text-left text-sm transition ${
+                                    isHighlighted || isSelected
+                                      ? "bg-[color:var(--color-gold-500)]/12 text-white"
+                                      : "text-white/80 hover:bg-white/5"
+                                  }`}
+                                  onMouseEnter={() => setHighlightedCityIndex(index)}
+                                  onMouseDown={(event) => {
+                                    event.preventDefault();
+                                    selectCity(city.name);
+                                  }}
+                                >
+                                  {city.name}
+                                </button>
+                              );
+                            })
+                          ) : (
+                            <p className="px-3 py-2 text-sm text-white/50">Nenhuma cidade encontrada</p>
+                          )}
+                        </div>
+                      ) : null}
+                    </div>
                   </label>
 
                   <label className="block">
