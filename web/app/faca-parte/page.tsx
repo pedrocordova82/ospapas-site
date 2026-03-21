@@ -36,11 +36,11 @@ export default function FacaPartePage() {
     <div className="pb-16">
       <section className="relative isolate min-h-[52vh] overflow-hidden border-b border-white/10">
         <Image
-          src="/images/geral/capa-inicial-page.png"
+          src="/images/geral/ospapas_estrada.png"
           alt="Motociclistas do MC Os Papas na estrada"
           fill
           priority
-          className="object-cover"
+          className="object-cover object-[80%_center]"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,11,11,0.3)_0%,rgba(11,11,11,0.8)_55%,rgba(11,11,11,0.95)_100%)]" />
