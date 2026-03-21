@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "@/components/ui/icons/icons";
-import { useState, type MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 
 const navItems = [
   { label: "Home", href: "/#top", activePath: "/" },
@@ -18,6 +18,7 @@ const navItems = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
   // Evita destacar links de âncoras que não pertencem à rota atual.
@@ -44,6 +45,17 @@ export function Header() {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   };
+
+  // Reforça visualmente a CTA quando o usuário já avançou além da primeira dobra.
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 48);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
@@ -82,13 +94,28 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-4">
+            <Link
+              href="/faca-parte"
+              className={`inline-flex items-center rounded-md border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition md:hidden ${
+                isScrolled
+                  ? "border-[color:var(--color-gold-500)] bg-[color:var(--color-gold-500)] text-black shadow-[0_0_24px_rgba(212,175,55,0.22)]"
+                  : "border-[color:var(--color-gold-500)]/80 text-[color:var(--color-gold-500)] shadow-[0_8px_24px_rgba(0,0,0,0.22)] hover:bg-[color:var(--color-gold-500)] hover:text-black"
+              }`}
+            >
+              Faça Parte
+            </Link>
+
             <button className="text-white md:hidden" onClick={() => setOpen((v) => !v)}>
               {open ? <X size={26} /> : <Menu size={26} />}
             </button>
 
             <Link
               href="/faca-parte"
-              className="hidden rounded-md border border-[color:var(--color-gold-500)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black md:inline-block"
+              className={`hidden items-center rounded-md border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] transition duration-300 md:inline-flex ${
+                isScrolled
+                  ? "border-[color:var(--color-gold-500)] bg-[color:var(--color-gold-500)] text-black shadow-[0_0_28px_rgba(212,175,55,0.24)] hover:-translate-y-0.5 hover:shadow-[0_10px_34px_rgba(212,175,55,0.22)]"
+                  : "border-[color:var(--color-gold-500)] text-[color:var(--color-gold-500)] shadow-[0_10px_28px_rgba(0,0,0,0.22)] hover:-translate-y-0.5 hover:bg-[color:var(--color-gold-500)] hover:text-black hover:shadow-[0_12px_32px_rgba(212,175,55,0.16)]"
+              } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-900)]`}
             >
               Faça Parte do MC
             </Link>
