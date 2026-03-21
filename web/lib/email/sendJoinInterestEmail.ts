@@ -25,6 +25,8 @@ export async function sendJoinInterestEmail(payload: JoinInterestEmailPayload) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.JOIN_FORM_TO_EMAIL;
   const from = process.env.JOIN_FORM_FROM_EMAIL;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  const logoUrl = siteUrl ? `${siteUrl}/images/geral/logo-ospapas.png` : null;
 
   if (!apiKey || !to || !from) {
     throw new Error("Configuração de email incompleta.");
@@ -65,6 +67,18 @@ export async function sendJoinInterestEmail(payload: JoinInterestEmailPayload) {
                     <td style="padding:0 0 20px 0;">
                       <div style="border:1px solid rgba(212,175,55,0.22); background-color:#111111; border-radius:20px; overflow:hidden;">
                         <div style="padding:24px 28px; border-bottom:1px solid rgba(212,175,55,0.16); background:linear-gradient(180deg,#171717 0%,#101010 100%);">
+                          ${
+                            logoUrl
+                              ? `
+                          <img
+                            src="${logoUrl}"
+                            alt="MC Os Papas"
+                            width="160"
+                            style="display:block; width:100%; max-width:160px; height:auto; margin:0 auto 18px auto; border:0; outline:none; text-decoration:none;"
+                          />
+                          `
+                              : ""
+                          }
                           <p style="margin:0; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#d4af37;">
                             MC Os Papas
                           </p>
