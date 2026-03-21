@@ -12,7 +12,8 @@ const navItems = [
   { label: "Sedes", href: "/#sedes", activePath: "/sedes" },
   { label: "Eventos", href: "/#eventos", activePath: "/eventos" },
   { label: "Filantropia", href: "/#filantropia", activePath: "/filantropia" },
-  { label: "Contato", href: "/#contato", activePath: "/contato" },
+  // Removido item "Contato" para evitar redundância,
+  // já que o site possui CTA via WhatsApp e formulário de interesse.
 ];
 
 export function Header() {
