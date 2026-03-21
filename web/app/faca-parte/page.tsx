@@ -52,11 +52,30 @@ function filterCities(cities: CityOption[], query: string, limit = 10) {
   return [...startsWithMatches, ...includesMatches].slice(0, limit);
 }
 
+function formatBrazilPhone(phoneDigits: string) {
+  const digits = phoneDigits.replace(/\D/g, "").slice(0, 11);
+
+  if (!digits) {
+    return "";
+  }
+
+  if (digits.length <= 2) {
+    return `(${digits}`;
+  }
+
+  if (digits.length <= 7) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  }
+
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
+
 export default function FacaPartePage() {
   const [isWhatsOpen, setIsWhatsOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string>("");
   const [selectedState, setSelectedState] = useState<StateCode | "">("");
   const [cityQuery, setCityQuery] = useState("");
+  const [phoneDigits, setPhoneDigits] = useState("");
   const [isCityListOpen, setIsCityListOpen] = useState(false);
   const [highlightedCityIndex, setHighlightedCityIndex] = useState(-1);
   const cityComboboxRef = useRef<HTMLDivElement>(null);
@@ -74,6 +93,7 @@ export default function FacaPartePage() {
     highlightedCityIndex >= 0 && highlightedCityIndex < filteredCities.length
       ? `${cityListboxId}-option-${highlightedCityIndex}`
       : undefined;
+  const formattedPhone = useMemo(() => formatBrazilPhone(phoneDigits), [phoneDigits]);
 
   useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
@@ -156,6 +176,11 @@ export default function FacaPartePage() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (phoneDigits.length !== 11) {
+      setStatusMessage("Informe um celular v\u00e1lido no formato (99) 99999-9999.");
+      return;
+    }
+
     const formData = new FormData(event.currentTarget);
     const payload = Object.fromEntries(formData.entries());
 
@@ -164,6 +189,7 @@ export default function FacaPartePage() {
     event.currentTarget.reset();
     setSelectedState("");
     resetCityField();
+    setPhoneDigits("");
   };
 
   return (
@@ -343,13 +369,23 @@ export default function FacaPartePage() {
 
                   <label className="block">
                     <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/70">Celular</span>
+                    <input name="celular" type="hidden" value={phoneDigits} />
                     <input
-                      name="celular"
+                      id="celular"
                       type="tel"
                       required
+                      inputMode="numeric"
+                      autoComplete="tel-national"
+                      maxLength={15}
+                      value={formattedPhone}
+                      aria-invalid={phoneDigits.length > 0 && phoneDigits.length !== 11}
                       className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/30 focus:border-[color:var(--color-gold-500)]"
-                      placeholder="Seu celular"
+                      placeholder="(99) 99999-9999"
+                      onChange={(event) => {
+                        setPhoneDigits(event.target.value.replace(/\D/g, "").slice(0, 11));
+                      }}
                     />
+                    <p className="mt-2 text-xs text-white/45">Digite apenas números</p>
                   </label>
                 </div>
 
