@@ -41,42 +41,137 @@ export async function sendJoinInterestEmail(payload: JoinInterestEmailPayload) {
   const text = [
     "Novo interesse em fazer parte do MC Os Papas",
     "",
+    "Novo interesse recebido pelo site",
+    "",
     `Nome: ${payload.nome}`,
     `Estado: ${payload.estado}`,
     `Cidade: ${payload.cidade}`,
     `Celular: ${payload.celular}`,
     `Email: ${payload.email}`,
     `Data/hora do envio: ${sentAt}`,
+    "",
+    "Mensagem enviada automaticamente pelo formulário do site.",
   ].join("\n");
 
   const html = `
-    <div style="font-family: Arial, sans-serif; color: #111; line-height: 1.6;">
-      <h2 style="margin-bottom: 16px;">Novo interesse em fazer parte do MC Os Papas</h2>
-      <table style="border-collapse: collapse; width: 100%; max-width: 640px;">
+    <div style="margin:0; padding:32px 16px; background-color:#0b0b0b;">
+      <table role="presentation" style="width:100%; border-collapse:collapse;">
         <tbody>
           <tr>
-            <td style="padding: 8px 0; font-weight: 700;">Nome</td>
-            <td style="padding: 8px 0;">${escapeHtml(payload.nome)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; font-weight: 700;">Estado</td>
-            <td style="padding: 8px 0;">${escapeHtml(payload.estado)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; font-weight: 700;">Cidade</td>
-            <td style="padding: 8px 0;">${escapeHtml(payload.cidade)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; font-weight: 700;">Celular</td>
-            <td style="padding: 8px 0;">${escapeHtml(payload.celular)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; font-weight: 700;">Email</td>
-            <td style="padding: 8px 0;">${escapeHtml(payload.email)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; font-weight: 700;">Data/hora do envio</td>
-            <td style="padding: 8px 0;">${escapeHtml(sentAt)}</td>
+            <td align="center">
+              <table role="presentation" style="width:100%; max-width:680px; border-collapse:collapse; font-family:Arial, sans-serif;">
+                <tbody>
+                  <tr>
+                    <td style="padding:0 0 20px 0;">
+                      <div style="border:1px solid rgba(212,175,55,0.22); background-color:#111111; border-radius:20px; overflow:hidden;">
+                        <div style="padding:24px 28px; border-bottom:1px solid rgba(212,175,55,0.16); background:linear-gradient(180deg,#171717 0%,#101010 100%);">
+                          <p style="margin:0; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#d4af37;">
+                            MC Os Papas
+                          </p>
+                          <h1 style="margin:10px 0 0 0; font-size:28px; line-height:1.2; color:#f8f5ef;">
+                            Novo interesse em fazer parte do MC Os Papas
+                          </h1>
+                          <p style="margin:10px 0 0 0; font-size:14px; line-height:1.7; color:#b9b4aa;">
+                            Novo interesse recebido pelo site
+                          </p>
+                        </div>
+
+                        <div style="padding:28px;">
+                          <table role="presentation" style="width:100%; border-collapse:collapse;">
+                            <tbody>
+                              <tr>
+                                <td style="padding:0 0 12px 0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#d4af37;">
+                                  Nome
+                                </td>
+                                <td style="padding:0 0 12px 24px; font-size:15px; line-height:1.6; color:#f8f5ef;" align="right">
+                                  ${escapeHtml(payload.nome)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" style="padding:0 0 14px 0;">
+                                  <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="padding:0 0 12px 0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#d4af37;">
+                                  Estado
+                                </td>
+                                <td style="padding:0 0 12px 24px; font-size:15px; line-height:1.6; color:#f8f5ef;" align="right">
+                                  ${escapeHtml(payload.estado)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" style="padding:0 0 14px 0;">
+                                  <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="padding:0 0 12px 0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#d4af37;">
+                                  Cidade
+                                </td>
+                                <td style="padding:0 0 12px 24px; font-size:15px; line-height:1.6; color:#f8f5ef;" align="right">
+                                  ${escapeHtml(payload.cidade)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" style="padding:0 0 14px 0;">
+                                  <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="padding:0 0 12px 0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#d4af37;">
+                                  Celular
+                                </td>
+                                <td style="padding:0 0 12px 24px; font-size:15px; line-height:1.6; color:#f8f5ef;" align="right">
+                                  ${escapeHtml(payload.celular)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" style="padding:0 0 14px 0;">
+                                  <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="padding:0 0 12px 0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#d4af37;">
+                                  Email
+                                </td>
+                                <td style="padding:0 0 12px 24px; font-size:15px; line-height:1.6; color:#f8f5ef;" align="right">
+                                  ${escapeHtml(payload.email)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" style="padding:0 0 14px 0;">
+                                  <div style="height:1px; background-color:rgba(255,255,255,0.08);"></div>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="padding:0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#d4af37;">
+                                  Data/hora do envio
+                                </td>
+                                <td style="padding:0 0 0 24px; font-size:15px; line-height:1.6; color:#f8f5ef;" align="right">
+                                  ${escapeHtml(sentAt)}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <div style="padding:18px 28px; border-top:1px solid rgba(212,175,55,0.12); background-color:#0d0d0d;">
+                          <p style="margin:0; font-size:12px; line-height:1.7; color:#8f897d;">
+                            Esta mensagem foi enviada automaticamente pelo formulário de interesse do site do MC Os Papas.
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
           </tr>
         </tbody>
       </table>

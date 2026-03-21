@@ -303,7 +303,10 @@ export default function FacaPartePage() {
               </p>
 
               <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-                <div className="hidden" aria-hidden="true">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-[-9999px] top-auto h-px w-px overflow-hidden opacity-0"
+                >
                   <label htmlFor="website">
                     Website
                     <input
