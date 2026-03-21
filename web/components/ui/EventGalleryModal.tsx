@@ -20,6 +20,7 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    // Faz a galeria responder ao teclado sem depender do foco nos botões laterais.
     const handleKeyDown = (eventKey: KeyboardEvent) => {
       if (eventKey.key === "Escape") onClose();
       if (eventKey.key === "ArrowLeft") {
@@ -39,6 +40,7 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
   };
 
   const next = () => {
+    // O carrossel volta ao início para manter a navegação contínua.
     setIndex((current) => (current === event.images.length - 1 ? 0 : current + 1));
   };
 

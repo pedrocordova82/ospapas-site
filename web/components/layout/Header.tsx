@@ -6,11 +6,6 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "@/components/ui/icons/icons";
 import { useState, type MouseEvent } from "react";
 
-/**
- * SECTION: Navigation Items
- * Centralized anchor list used by both desktop and mobile menus.
- * Keeping this array shared prevents navigation drift between breakpoints.
- */
 const navItems = [
   { label: "Home", href: "/#top", activePath: "/" },
   { label: "Sobre", href: "/sobre", activePath: "/sobre" },
@@ -21,28 +16,16 @@ const navItems = [
 ];
 
 export function Header() {
-  /**
-   * SECTION: Mobile Navigation Toggle
-   * Controls whether the mobile menu and dark overlay are visible.
-   */
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  /**
-   * SECTION: Active Navigation Helper
-   * Header highlighting is route-based so each menu item only reacts to its
-   * own path prefix without loose matching side effects.
-   */
+  // Evita destacar links de âncoras que não pertencem à rota atual.
   const isActive = (path: string) => {
     if (path === "/") return pathname === "/";
     return pathname.startsWith(path);
   };
 
-  /**
-   * SECTION: Logo Navigation + Smooth Scroll
-   * On homepage, clicking the logo forces smooth scroll to top.
-   * On other pages, the Link keeps normal route navigation behavior.
-   */
+  // Na home, o clique no logo sempre leva o usuário de volta ao topo.
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (window.location.pathname !== "/") return;
 
@@ -63,11 +46,6 @@ export function Header() {
 
   return (
     <>
-      {/**
-       * SECTION: Header Shell
-       * Sticky top bar shared across pages with logo, desktop navigation,
-       * and breakpoint-specific controls.
-       */}
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[color:var(--color-bg-900)]/85 backdrop-blur">
         <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
@@ -82,20 +60,10 @@ export function Header() {
             </div>
           </Link>
 
-          {/**
-           * SECTION: Desktop Navigation
-           * Visible from medium screens and up (`md:block`).
-           * Mobile navigation is rendered separately below.
-           */}
           <nav className="hidden md:block" aria-label="Navegacao principal">
             <ul className="flex items-center gap-6">
               {navItems.map((item) => (
                 <li key={item.label}>
-                  {/**
-                   * SECTION: Active Navigation Styling
-                   * Active state is derived from the current route path so
-                   * homepage anchors do not keep unrelated items highlighted.
-                   */}
                   <Link
                     href={item.href}
                     scroll={true}
@@ -112,11 +80,6 @@ export function Header() {
             </ul>
           </nav>
 
-          {/**
-           * SECTION: Right Controls
-           * Mobile shows the hamburger toggle, while desktop shows the
-           * primary call-to-action button.
-           */}
           <div className="flex items-center gap-4">
             <button className="text-white md:hidden" onClick={() => setOpen((v) => !v)}>
               {open ? <X size={26} /> : <Menu size={26} />}
@@ -132,17 +95,8 @@ export function Header() {
         </div>
       </header>
 
-      {/**
-       * SECTION: Mobile Menu Overlay
-       * Dark overlay closes the mobile menu when users click outside it.
-       */}
       {open && <div className="fixed inset-0 z-30 bg-black/80 backdrop-blur-sm" onClick={() => setOpen(false)} />}
 
-      {/**
-       * SECTION: Mobile Navigation Panel
-       * Visible only on small screens (`md:hidden`) and rendered as a
-       * stacked vertical menu below the sticky header.
-       */}
       {open && (
         <div className="fixed left-0 top-20 z-50 w-full border-t border-white/10 bg-black md:hidden">
           <nav className="flex flex-col items-center gap-6 py-6">

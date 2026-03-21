@@ -9,11 +9,6 @@ type LightboxProps = {
   onClose: () => void;
 };
 
-/**
- * SECTION: Lightbox Modal
- * Displays a fullscreen overlay image preview while keeping users on
- * the same page. Supports close by backdrop, button, and ESC key.
- */
 export default function Lightbox({ images, index, onClose }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(index);
   const [zoomed, setZoomed] = useState(false);
@@ -32,6 +27,7 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
   const image = images[currentIndex];
 
   useEffect(() => {
+    // Mantém a navegação disponível no teclado enquanto o lightbox estiver aberto.
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowLeft") {
@@ -56,6 +52,8 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     const diff = e.changedTouches[0].screenX - touchStartX.current;
+
+    // Um deslocamento mínimo evita acionar troca de imagem em toques curtos.
     if (diff > 50) prev();
     if (diff < -50) next();
   };

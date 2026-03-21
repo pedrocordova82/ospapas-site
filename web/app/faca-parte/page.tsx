@@ -18,6 +18,7 @@ const joinText = [
   "Venha fazer parte do MC Os Papas.",
 ];
 
+// A busca da cidade ignora acentos e caixa para ficar mais tolerante ao digitar.
 function normalizeText(value: string) {
   return value
     .normalize("NFD")
@@ -26,6 +27,7 @@ function normalizeText(value: string) {
     .trim();
 }
 
+// Prioriza cidades que começam com o termo e limita a lista para manter a navegação leve.
 function filterCities(cities: CityOption[], query: string, limit = 10) {
   const normalizedQuery = normalizeText(query);
 
@@ -52,6 +54,7 @@ function filterCities(cities: CityOption[], query: string, limit = 10) {
   return [...startsWithMatches, ...includesMatches].slice(0, limit);
 }
 
+// Formata o valor visível do campo sem armazenar símbolos no payload do formulário.
 function formatBrazilPhone(phoneDigits: string) {
   const digits = phoneDigits.replace(/\D/g, "").slice(0, 11);
 
@@ -98,6 +101,7 @@ export default function FacaPartePage() {
   const formattedPhone = useMemo(() => formatBrazilPhone(phoneDigits), [phoneDigits]);
 
   useEffect(() => {
+    // Fecha a lista de sugestões ao clicar fora do combobox.
     function handlePointerDown(event: PointerEvent) {
       if (!cityComboboxRef.current?.contains(event.target as Node)) {
         setIsCityListOpen(false);
@@ -116,6 +120,7 @@ export default function FacaPartePage() {
   };
 
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    // Trocar o estado invalida qualquer cidade já digitada ou selecionada.
     setSelectedState(event.target.value as StateCode | "");
     resetCityField();
   };
@@ -131,6 +136,7 @@ export default function FacaPartePage() {
       return;
     }
 
+    // Mantém a combobox acessível com teclado, inclusive quando há muitas cidades.
     if (event.key === "ArrowDown") {
       event.preventDefault();
       setIsCityListOpen(true);
@@ -178,6 +184,7 @@ export default function FacaPartePage() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    // Evita envio duplicado enquanto a requisição ainda está em andamento.
     if (isSubmitting) {
       return;
     }
@@ -196,6 +203,7 @@ export default function FacaPartePage() {
     setStatusMessage("");
     setStatusType(null);
 
+    // O envio acontece via API interna para manter credenciais e validações fora do cliente.
     void (async () => {
       try {
         const response = await fetch("/api/join", {

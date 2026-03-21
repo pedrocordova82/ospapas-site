@@ -113,11 +113,12 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
 
-  // Quando um ponto foi aberto por toque/clique, ele permanece ativo até interação externa.
+  // No mobile, o toque fixa o ponto para permitir leitura do tooltip sem hover.
   const displayedId = pinnedId ?? activeId;
 
   useEffect(() => {
     function handlePointerDown(event: PointerEvent) {
+      // Fecha o tooltip fixado ao tocar fora da área interativa do mapa.
       if (!rootRef.current?.contains(event.target as Node)) {
         setPinnedId(null);
         setActiveId(null);

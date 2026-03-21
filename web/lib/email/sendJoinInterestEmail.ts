@@ -12,6 +12,7 @@ type ResendErrorResponse = {
   statusCode?: number;
 };
 
+// Escapa o conteúdo informado pelo usuário antes de interpolar no HTML do email.
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -32,6 +33,7 @@ export async function sendJoinInterestEmail(payload: JoinInterestEmailPayload) {
     throw new Error("Configuração de email incompleta.");
   }
 
+  // Mantém o template resiliente: a logo só aparece quando existe uma URL pública válida.
   const sentAt = new Intl.DateTimeFormat("pt-BR", {
     dateStyle: "full",
     timeStyle: "short",
@@ -40,6 +42,7 @@ export async function sendJoinInterestEmail(payload: JoinInterestEmailPayload) {
 
   const subject = "Novo interesse em fazer parte do MC Os Papas";
 
+  // A versão em texto cobre clientes com suporte limitado a HTML.
   const text = [
     "Novo interesse em fazer parte do MC Os Papas",
     "",
@@ -55,6 +58,7 @@ export async function sendJoinInterestEmail(payload: JoinInterestEmailPayload) {
     "Mensagem enviada automaticamente pelo formulário do site.",
   ].join("\n");
 
+  // O HTML usa estrutura compatível com clientes de email e reforça a identidade visual da marca.
   const html = `
     <div style="margin:0; padding:32px 16px; background-color:#0b0b0b;">
       <table role="presentation" style="width:100%; border-collapse:collapse;">
@@ -208,6 +212,7 @@ export async function sendJoinInterestEmail(payload: JoinInterestEmailPayload) {
     }),
   });
 
+  // Quando o provedor falha, registramos status e resposta para facilitar diagnóstico em produção.
   if (!response.ok) {
     let errorBody: ResendErrorResponse | string | null = null;
 

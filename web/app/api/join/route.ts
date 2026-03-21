@@ -72,6 +72,7 @@ export async function POST(request: Request) {
       );
     }
 
+    // Só dispara o email depois que toda a combinação de campos foi validada no servidor.
     await sendJoinInterestEmail({
       nome,
       estado,
