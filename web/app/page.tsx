@@ -4,11 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-  /**
-   * SECTION: Sede Cards Data
-   * This collection feeds the Sedes grid and maps each card to a sede route.
-   * Slugs are aligned with `/sedes/[slug]` dynamic pages.
-   */
   const sedeCards = [
     {
       name: "Pará",
@@ -39,11 +34,6 @@ export default function Home() {
     },
   ];
 
-  /**
-   * SECTION: Base Content Sections
-   * These sections represent the homepage institutional blocks.
-   * Each `id` is used as an anchor target for header navigation links.
-   */
   const baseSections = [
     {
     id: "sobre",
@@ -79,35 +69,30 @@ export default function Home() {
 
   return (
     <div className="pb-20">
-      {/**
-       * SECTION: Hero
-       * Primary introduction area with cinematic background, branding,
-       * and CTA anchors guiding users to events and contact sections.
-       */}
       <section className="relative isolate overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 bg-[url('/images/geral/capa-inicial-page.png')] bg-cover bg-center brightness-75" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black/90" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.15),transparent_60%)]" />
-        <div className="relative mx-auto w-full max-w-6xl px-4 py-28 sm:px-6 lg:px-8 lg:py-40">
-          <img src="/images/geral/logo-ospapas.png" alt="Logo do MC Os Papas" className="mb-8 w-40 h-40" />
-          <h1 className="mt-2 max-w-3xl font-heading text-6xl uppercase leading-[0.9] tracking-[0.05em] text-white sm:text-7xl lg:text-8xl">
+        <div className="relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-40">
+          <img src="/images/geral/logo-ospapas.png" alt="Logo do MC Os Papas" className="mb-6 h-28 w-28 sm:mb-8 sm:h-40 sm:w-40" />
+          <h1 className="mt-2 max-w-3xl text-balance font-heading text-5xl uppercase leading-[0.9] tracking-[0.05em] text-white sm:text-7xl lg:text-8xl">
             MC OS PAPAS
           </h1>
-          <p className="mt-6 text-base uppercase tracking-[0.24em] text-white/80">FRATRES IN VIA</p>
-          <p className="mt-10 max-w-2xl text-lg leading-8 text-white/80">
+          <p className="mt-6 text-sm uppercase tracking-[0.2em] text-white/80 sm:text-base sm:tracking-[0.24em]">FRATRES IN VIA</p>
+          <p className="mt-8 max-w-2xl text-base leading-7 text-white/80 sm:mt-10 sm:text-lg sm:leading-8">
             A irmandade em movimento, com presença nacional, história de estrada e compromisso com a comunidade.
           </p>
-          <div className="mt-12 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:flex-wrap">
             <a
               href="#eventos"
-              className="rounded-md bg-[color:var(--color-gold-500)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[color:var(--color-gold-400)]"
+              className="rounded-md bg-[color:var(--color-gold-500)] px-6 py-3 text-center text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[color:var(--color-gold-400)]"
             >
               Ver Eventos
             </a>
             <Link
               id="entrar"
               href="/#sedes"
-              className="rounded-md border border-white/70 bg-black/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white/10"
+              className="rounded-md border border-white/70 bg-black/20 px-6 py-3 text-center text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white/10"
             >
               Onde Estamos
             </Link>
@@ -115,10 +100,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/**
-       * SECTION: Quem Somos
-       * Short institutional summary describing club identity and purpose.
-       */}
       <section id="quem-somos" className="border-b border-white/10 bg-[color:var(--color-bg-900)]/70">
         <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Quem Somos</p>
@@ -144,16 +125,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/**
-       * SECTION: Sede Cards
-       * Reusable `SedeCard` components render sede previews and
-       * navigate visitors to each sede detail page.
-       */}
-      {/**
-       * SECTION: Reveal Animation Usage
-       * Homepage anchor blocks are wrapped in `Reveal` so they fade/slide in
-       * when entering the viewport, improving scanability and perceived polish.
-       */}
       <Reveal>
         <section id="sedes" className="mx-auto w-full max-w-6xl px-4 pt-20 sm:px-6 lg:px-8 lg:pt-24">
           <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Onde Estamos</p>
@@ -172,11 +143,6 @@ export default function Home() {
         </section>
       </Reveal>
 
-      {/**
-       * SECTION: Base Sections Grid
-       * Additional homepage anchors (Sobre, Eventos, Filantropia, etc.)
-       * are rendered from data to keep structure easy to expand.
-       */}
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:pt-24">
         {baseSections.map((section) => (
           section.id === "sobre" ? (

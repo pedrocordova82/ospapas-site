@@ -46,7 +46,7 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <button
@@ -54,7 +54,7 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
           clickEvent.stopPropagation();
           onClose();
         }}
-        className="absolute right-6 top-6 text-2xl text-white transition hover:scale-110"
+        className="absolute right-4 top-4 rounded-full bg-black/45 p-2 text-2xl text-white transition hover:scale-110 sm:right-6 sm:top-6"
         aria-label="Fechar galeria do evento"
       >
         ✕
@@ -65,7 +65,7 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
           clickEvent.stopPropagation();
           prev();
         }}
-        className="absolute left-6 text-3xl text-white transition hover:scale-110"
+        className="absolute left-2 top-1/2 rounded-full bg-black/45 p-2 text-3xl text-white transition hover:scale-110 sm:left-6"
         aria-label="Imagem anterior do evento"
       >
         ‹
@@ -76,14 +76,14 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
           clickEvent.stopPropagation();
           next();
         }}
-        className="absolute right-6 text-3xl text-white transition hover:scale-110"
+        className="absolute right-2 top-1/2 rounded-full bg-black/45 p-2 text-3xl text-white transition hover:scale-110 sm:right-6"
         aria-label="Próxima imagem do evento"
       >
         ›
       </button>
 
       <div
-        className="relative h-[70vh] w-[90vw] max-w-4xl"
+        className="relative h-[60vh] w-full max-w-4xl sm:h-[70vh] sm:w-[90vw]"
         onClick={(clickEvent) => clickEvent.stopPropagation()}
       >
         <Image
@@ -95,7 +95,7 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
         />
       </div>
 
-      <div className="absolute bottom-6 text-sm text-white">
+      <div className="absolute bottom-4 rounded-full bg-black/45 px-3 py-1 text-sm text-white sm:bottom-6">
         {index + 1} / {event.images.length}
       </div>
     </div>

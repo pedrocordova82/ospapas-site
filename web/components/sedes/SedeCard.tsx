@@ -1,9 +1,5 @@
 import Link from "next/link";
 
-/**
- * SECTION: Sede Card Props
- * Defines minimal data required to render a sede teaser card in lists.
- */
 type SedeCardProps = {
   name: string;
   city: string;
@@ -12,36 +8,18 @@ type SedeCardProps = {
   type?: string;
 }
 
-/**
- * SECTION: Sede Card
- * Visual preview card for a sede, including image background,
- * sede type label, and direct navigation to sede details.
- */
 export function SedeCard({ name, city, href, imageUrl, type = "Regional" }: SedeCardProps) {
   return (
     <Link
       href={href}
       className="group relative block overflow-hidden rounded-xl border border-white/10 bg-[color:var(--color-bg-900)]"
     >
-      {/**
-       * SECTION: Background Image
-       * Uses a cover image as visual context for each sede location.
-       */}
       <div
-        className="h-80 w-full bg-cover bg-center transition duration-500 group-hover:scale-105"
+        className="h-72 w-full bg-cover bg-center transition duration-500 group-hover:scale-105 sm:h-80"
         style={{ backgroundImage: `url('${imageUrl}')` }}
       />
-      {/**
-       * SECTION: Contrast Overlay + Hover Animation
-       * Dark gradient improves text readability over photography while
-       * the group hover scale adds a subtle cinematic interaction.
-       */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(11,11,11,0.18),transparent_45%),linear-gradient(180deg,rgba(11,11,11,0.58)_22%,rgba(11,11,11,0.98)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 p-6">
-        {/**
-         * SECTION: Sede Type Label
-         * Highlights if the unit is Sede, Regional, or Subsede.
-         */}
         <p className="text-xs uppercase tracking-[0.15em] text-[color:var(--color-gold-500)]">
   {type}
 </p>    <h3 className="mt-2 font-heading text-4xl uppercase tracking-[0.04em] text-[color:var(--color-text-100)]">{name}</h3>

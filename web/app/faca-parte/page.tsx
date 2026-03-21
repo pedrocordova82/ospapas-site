@@ -252,13 +252,13 @@ export default function FacaPartePage() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,11,11,0.3)_0%,rgba(11,11,11,0.8)_55%,rgba(11,11,11,0.95)_100%)]" />
 
-        <div className="relative mx-auto flex min-h-[52vh] w-full max-w-6xl items-end px-6 py-12">
+        <div className="relative mx-auto flex min-h-[52vh] w-full max-w-6xl items-end px-4 py-9 sm:px-6 sm:py-12">
           <div className="max-w-4xl">
             <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Convite</p>
-            <h1 className="mt-3 font-heading text-5xl uppercase tracking-[0.04em] text-white sm:text-6xl lg:text-7xl">
+            <h1 className="mt-3 text-balance font-heading text-4xl uppercase tracking-[0.04em] text-white sm:text-6xl lg:text-7xl">
               Faça Parte do MC Os Papas
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-white/85">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8">
               Mais do que um Moto Clube, somos uma irmandade.
             </p>
           </div>
@@ -266,7 +266,7 @@ export default function FacaPartePage() {
       </section>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 py-16 lg:py-20">
+        <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:py-20">
           <div className="mx-auto max-w-4xl rounded-2xl border border-white/10 bg-[color:var(--color-bg-900)]/80 p-8 sm:p-10">
             <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Irmandade</p>
             <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">
@@ -282,7 +282,7 @@ export default function FacaPartePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 pb-16">
+        <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
           <div className="grid gap-8 lg:grid-cols-2">
             <article className="rounded-2xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
               <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Opção 1</p>
@@ -394,7 +394,7 @@ export default function FacaPartePage() {
                         <div
                           id={cityListboxId}
                           role="listbox"
-                          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 max-h-64 overflow-y-auto rounded-md border border-white/10 bg-[color:var(--color-bg-900)]/95 p-2 shadow-2xl backdrop-blur-sm"
+                          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 max-h-48 overflow-y-auto rounded-md border border-white/10 bg-[color:var(--color-bg-900)]/95 p-2 shadow-2xl backdrop-blur-sm sm:max-h-64"
                         >
                           {filteredCities.length ? (
                             filteredCities.map((city, index) => {
@@ -449,7 +449,7 @@ export default function FacaPartePage() {
                         setPhoneDigits(event.target.value.replace(/\D/g, "").slice(0, 11));
                       }}
                     />
-                    <p className="mt-2 text-xs text-white/45">Digite apenas números</p>
+                    <p className="mt-2 pr-2 text-xs leading-5 text-white/45">Digite apenas números</p>
                   </label>
                 </div>
 
@@ -467,14 +467,14 @@ export default function FacaPartePage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center rounded-md border border-[color:var(--color-gold-500)] px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black"
+                  className="inline-flex w-full items-center justify-center rounded-md border border-[color:var(--color-gold-500)] px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black sm:w-auto"
                 >
                   {isSubmitting ? "Enviando..." : "Enviar Interesse"}
                 </button>
 
                 {statusMessage ? (
                   <p
-                    className={`text-sm ${
+                    className={`break-words pr-2 text-sm leading-6 ${
                       statusType === "error" ? "text-red-300" : "text-[color:var(--color-gold-500)]"
                     }`}
                   >
@@ -488,7 +488,7 @@ export default function FacaPartePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 pb-16">
+        <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
           <div className="rounded-2xl border border-white/10 bg-[color:var(--color-bg-900)] p-8 sm:p-10">
             <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
               Presença Nacional
@@ -501,7 +501,7 @@ export default function FacaPartePage() {
               propósito.
             </p>
 
-            <div className="mt-8 flex items-center justify-center">
+            <div className="mt-8 flex items-center justify-center overflow-visible">
               <BrazilMap className="w-full" />
             </div>
           </div>
@@ -514,7 +514,7 @@ export default function FacaPartePage() {
           onClick={() => setIsWhatsOpen(false)}
         >
           <div
-            className="relative w-full max-w-sm rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-3 shadow-2xl"
+            className="relative w-full max-w-sm rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-3 shadow-2xl max-h-[min(85vh,32rem)] overflow-y-auto"
             onClick={(event) => event.stopPropagation()}
           >
             <button

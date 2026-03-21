@@ -60,16 +60,26 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[color:var(--color-bg-900)]/85 backdrop-blur">
-        <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-2 px-3 sm:h-20 sm:gap-3 sm:px-6 lg:px-8">
           <Link
             href="/#top"
             onClick={handleLogoClick}
-            className="flex cursor-pointer items-center gap-3 text-[color:var(--color-text-100)]"
+            className="min-w-0 flex cursor-pointer items-center gap-2 text-[color:var(--color-text-100)] sm:gap-3"
           >
-            <Image src="/images/geral/logo-ospapas.png" alt="Logo do MC Os Papas" width={40} height={40} />
-            <div className="flex flex-col text-left">
-              <span className="font-heading text-3xl leading-none tracking-[0.08em]">MC OS PAPAS</span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--color-gold-500)]">FRATRES IN VIA</span>
+            <Image
+              src="/images/geral/logo-ospapas.png"
+              alt="Logo do MC Os Papas"
+              width={40}
+              height={40}
+              className="h-9 w-9 shrink-0 sm:h-10 sm:w-10"
+            />
+            <div className="min-w-0 flex flex-col text-left">
+              <span className="truncate font-heading text-[1.7rem] leading-none tracking-[0.08em] sm:text-3xl">
+                MC OS PAPAS
+              </span>
+              <span className="truncate text-[9px] uppercase tracking-[0.18em] text-[color:var(--color-gold-500)] sm:text-[10px] sm:tracking-[0.2em]">
+                FRATRES IN VIA
+              </span>
             </div>
           </Link>
 
@@ -93,10 +103,10 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-4">
             <Link
               href="/faca-parte"
-              className={`inline-flex items-center rounded-md border px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] transition md:hidden ${
+              className={`inline-flex shrink-0 items-center rounded-md border px-2.5 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition md:hidden ${
                 isScrolled
                   ? "border-[color:var(--color-gold-500)] bg-[color:var(--color-gold-500)] text-black shadow-[0_0_24px_rgba(212,175,55,0.22)]"
                   : "border-[color:var(--color-gold-500)]/80 text-[color:var(--color-gold-500)] shadow-[0_8px_24px_rgba(0,0,0,0.22)] hover:bg-[color:var(--color-gold-500)] hover:text-black"
@@ -105,7 +115,7 @@ export function Header() {
               Faça Parte
             </Link>
 
-            <button className="text-white md:hidden" onClick={() => setOpen((v) => !v)}>
+            <button className="shrink-0 p-1 text-white md:hidden" onClick={() => setOpen((v) => !v)}>
               {open ? <X size={26} /> : <Menu size={26} />}
             </button>
 
@@ -126,8 +136,8 @@ export function Header() {
       {open && <div className="fixed inset-0 z-30 bg-black/80 backdrop-blur-sm" onClick={() => setOpen(false)} />}
 
       {open && (
-        <div className="fixed left-0 top-20 z-50 w-full border-t border-white/10 bg-black md:hidden">
-          <nav className="flex flex-col items-center gap-6 py-6">
+        <div className="fixed left-0 top-16 z-50 max-h-[calc(100vh-4rem)] w-full overflow-y-auto border-t border-white/10 bg-black md:hidden">
+          <nav className="flex flex-col items-center gap-6 px-6 py-6">
             {navItems.map((item) => (
               <Link
                 key={item.label}

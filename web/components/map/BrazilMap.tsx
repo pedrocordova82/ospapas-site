@@ -169,7 +169,7 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
                     aria-expanded={isActive}
                     aria-describedby={isActive ? `tooltip-${hotspot.id}` : undefined}
                     className={[
-                      "group relative flex h-5 w-5 cursor-pointer items-center justify-center rounded-full",
+                      "group relative flex h-6 w-6 cursor-pointer items-center justify-center rounded-full md:h-5 md:w-5",
                       "transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2",
                       "focus-visible:ring-[color:var(--color-gold-500)]/70 focus-visible:ring-offset-2",
                       "focus-visible:ring-offset-black/60",
@@ -217,7 +217,7 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
                     id={`tooltip-${hotspot.id}`}
                     role="tooltip"
                     className={[
-                      "pointer-events-none absolute z-20 w-[min(16rem,calc(100vw-2rem))]",
+                      "pointer-events-none absolute z-20 w-[min(12rem,calc(100vw-1.25rem))] md:w-[min(16rem,calc(100vw-2rem))]",
                       "transition-all duration-300 ease-out",
                       getTooltipPositionClasses(hotspot.align),
                       isActive
@@ -237,7 +237,7 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
                         {hotspot.state}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-white">{hotspot.city}</p>
-                      <p className="mt-2 text-sm leading-6 text-white/72">{hotspot.description}</p>
+                      <p className="mt-2 text-xs leading-5 text-white/72 md:text-sm md:leading-6">{hotspot.description}</p>
                     </div>
                   </div>
                 </div>

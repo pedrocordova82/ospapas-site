@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
+      <body className={`${headingFont.variable} ${bodyFont.variable} overflow-x-hidden antialiased`}>
         {/**
          * SECTION: Global Background Styling
          * A dark base color plus a subtle radial gradient reinforces the visual

@@ -2,10 +2,6 @@
 
 import { MessageCircle } from "@/components/ui/icons/icons";
 
-/**
- * SECTION: Contact List Structure
- * Centralized sede contact data used to render WhatsApp quick actions.
- */
 export const whatsappContacts = [
   {
     name: "Sede Pará",
@@ -33,10 +29,6 @@ type WhatsAppSelectorPanelProps = {
   title?: string;
 };
 
-/**
- * SECTION: Shared WhatsApp Selector
- * Reusable selector panel used by the floating widget and other CTA surfaces.
- */
 export function WhatsAppSelectorPanel({
   title = "WhatsApp",
 }: WhatsAppSelectorPanelProps) {
@@ -52,10 +44,10 @@ export function WhatsAppSelectorPanel({
               href={contact.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex cursor-pointer items-center gap-3 rounded-lg border border-white/10 p-4 text-sm text-white/90 transition hover:border-green-500 hover:bg-green-500/10 hover:text-white"
+              className="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border border-white/10 p-4 text-sm text-white/90 transition hover:border-green-500 hover:bg-green-500/10 hover:text-white"
             >
               <MessageCircle size={18} className="text-green-500" />
-              <span>{contact.name}</span>
+              <span className="leading-5">{contact.name}</span>
             </a>
           </li>
         ))}

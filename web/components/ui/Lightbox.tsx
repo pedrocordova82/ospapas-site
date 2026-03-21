@@ -60,7 +60,7 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <button
@@ -68,7 +68,7 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
           e.stopPropagation();
           prev();
         }}
-        className="absolute left-6 top-1/2 -translate-y-1/2 text-4xl text-white"
+        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/45 p-2 text-4xl text-white sm:left-6"
         aria-label="Imagem anterior"
       >
         ‹
@@ -79,21 +79,21 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
           e.stopPropagation();
           next();
         }}
-        className="absolute right-6 top-1/2 -translate-y-1/2 text-4xl text-white"
+        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/45 p-2 text-4xl text-white sm:right-6"
         aria-label="Próxima imagem"
       >
         ›
       </button>
 
       <div
-        className="relative max-h-[90vh] max-w-[90vw]"
+        className="relative max-h-[90vh] w-full max-w-[90vw] sm:w-auto"
         onClick={(e) => e.stopPropagation()}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <button
           onClick={onClose}
-          className="absolute -top-10 right-0 text-3xl text-white"
+          className="absolute right-0 top-2 rounded-full bg-black/45 px-2 text-3xl text-white sm:-top-10 sm:bg-transparent sm:px-0"
           aria-label="Fechar imagem"
         >
           ×
@@ -108,7 +108,7 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
             e.stopPropagation();
             setZoomed((value) => !value);
           }}
-          className={`max-h-[90vh] rounded-xl object-contain shadow-2xl transition ${
+          className={`max-h-[80vh] rounded-xl object-contain shadow-2xl transition sm:max-h-[90vh] ${
             zoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
           }`}
         />

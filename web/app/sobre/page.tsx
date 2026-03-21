@@ -197,7 +197,7 @@ export default function SobrePage() {
         <div className="relative mx-auto flex min-h-[48vh] w-full max-w-6xl items-end px-4 py-12 sm:px-6 lg:px-8">
           <div>
             <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Sobre o Moto Clube</p>
-            <h1 className="mt-3 font-heading text-5xl uppercase tracking-[0.04em] text-white sm:text-6xl lg:text-7xl">
+            <h1 className="mt-3 text-balance font-heading text-4xl uppercase tracking-[0.04em] text-white sm:text-6xl lg:text-7xl">
               Irmandade, estrada e tradição
             </h1>
           </div>
@@ -301,7 +301,7 @@ export default function SobrePage() {
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto max-w-5xl px-6 py-16 text-center space-y-12">
+        <section className="mx-auto max-w-5xl space-y-12 px-4 py-16 text-center sm:px-6">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Lema do Moto Clube</p>
             <h2 className="text-3xl font-heading uppercase tracking-[0.06em] text-white">
