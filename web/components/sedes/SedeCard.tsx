@@ -22,7 +22,6 @@ export function SedeCard({ name, href, imageUrl, type = "Regional" }: SedeCardPr
         <p className="text-xs uppercase tracking-[0.15em] text-[color:var(--color-gold-500)]">
   {type}
 </p>    <h3 className="mt-2 font-heading text-4xl uppercase tracking-[0.04em] text-[color:var(--color-text-100)]">{name}</h3>
-        <p className="mt-2 text-sm text-white/95">{city}</p>
         <span className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.12em] text-white/90">
           Ver Sede
         </span>
