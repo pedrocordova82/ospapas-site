@@ -290,7 +290,7 @@ export default function FacaPartePage() {
                 Existe uma sede na sua região?
               </h2>
               <p className="mt-5 max-w-xl text-base leading-8 text-[color:var(--color-text-300)]">
-                Entre em contato direto com um dos nossos integrantes.
+                Veja abaixo se existe uma sede perto de você e entre em contato direto com um dos nossos integrantes.
               </p>
               <button
                 type="button"
