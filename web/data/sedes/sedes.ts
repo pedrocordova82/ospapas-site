@@ -1,7 +1,6 @@
 export type Sede = {
   slug: string
   name: string
-  city: string
   state: string
   type: "Sede" | "Regional" | "Subsede"
   description: string

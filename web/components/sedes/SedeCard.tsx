@@ -2,7 +2,6 @@ import Link from "next/link";
 
 type SedeCardProps = {
   name: string;
-  city: string;
   href: string;
   imageUrl: string;
   type?: string;
