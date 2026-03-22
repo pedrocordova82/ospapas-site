@@ -1,10 +1,5 @@
 import { Instagram, MessageCircle } from "@/components/ui/icons/icons";
 
-/**
- * SECTION: Footer
- * Global footer with brand summary, social entry point, and legal text.
- * The layout is intentionally compact to keep focus on sede content.
- */
 export function Footer() {
   return (
     <footer
@@ -59,6 +54,10 @@ export function Footer() {
           <div className="text-left sm:text-right">
             {new Date().getFullYear()} Os Papas MC. Todos os direitos reservados.
           </div>
+        </div>
+        {/* Mantém o aviso de demonstração discreto para não competir com os elementos institucionais. */}
+        <div className="mx-auto mt-2 w-full max-w-6xl px-4 text-[11px] text-white/35 sm:text-right">
+          Versão de preview para apresentação.
         </div>
       </div>
     </footer>
