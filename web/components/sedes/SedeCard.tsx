@@ -7,7 +7,7 @@ type SedeCardProps = {
   type?: string;
 }
 
-export function SedeCard({ name, city, href, imageUrl, type = "Regional" }: SedeCardProps) {
+export function SedeCard({ name, href, imageUrl, type = "Regional" }: SedeCardProps) {
   return (
     <Link
       href={href}
