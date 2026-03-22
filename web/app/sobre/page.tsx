@@ -180,6 +180,8 @@ export default function SobrePage() {
         </section>
       </Reveal>
 
+      {/* Ajusta a ordem das seções para reforçar a narrativa:
+          primeiro identidade, depois significado e por fim simbologia. */}
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-1">
           <div className="grid gap-8 lg:grid-cols-2">
@@ -200,6 +202,40 @@ export default function SobrePage() {
                 está representada em nosso Brasão.
               </p>
             </article>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section className="mx-auto w-full max-w-6xl px-6 py-6 sm:py-8">
+          <div className="overflow-hidden rounded-[28px] border border-[color:var(--color-gold-500)]/18 bg-[linear-gradient(180deg,rgba(20,20,20,0.96)_0%,rgba(11,11,11,0.98)_100%)] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+            <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
+              <div className="flex justify-center lg:justify-start">
+                <div className="relative w-full max-w-[220px] sm:max-w-[280px] lg:max-w-[340px]">
+                  <div className="absolute inset-0 rounded-full bg-[color:var(--color-gold-500)]/12 blur-3xl" />
+                  <Image
+                    src="/images/geral/opsop.png"
+                    alt="Emblema OPSOP do MC Os Papas"
+                    width={680}
+                    height={680}
+                    className="relative h-auto w-full object-contain drop-shadow-[0_18px_40px_rgba(0,0,0,0.35)]"
+                  />
+                </div>
+              </div>
+
+              <div className="max-w-2xl text-center lg:text-left">
+                <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Símbolos da Irmandade</p>
+                <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">OPSOP</h2>
+                <p className="mt-5 text-lg uppercase tracking-[0.18em] text-[color:var(--color-gold-500)] sm:text-xl">
+                  Os Papas Sempre Os Papas
+                </p>
+                <p className="mt-6 text-sm leading-8 text-[color:var(--color-text-300)] sm:text-base">
+                  Mais do que uma sigla, OPSOP representa permanência, lealdade e identidade. É a lembrança de que,
+                  independentemente da estrada, da distância ou do tempo, quem carrega a essência da irmandade segue sendo Os
+                  Papas — sempre com honra, respeito e compromisso com o Moto Clube.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
       </Reveal>
