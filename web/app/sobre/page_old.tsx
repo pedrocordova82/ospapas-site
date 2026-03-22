@@ -79,11 +79,17 @@ const leadership = [
     sede: "Rio de janeiro-RJ",
     image: "/images/diretoria/caveira-presidente-cardeal-regional-rio-de-janeiro.png",
   },
-    {
-    name: "Netanf",
-    rank: "Vice Presidente - Cardeal",
-    sede: "Rio de Janeiro-RJ",
-    image: "/images/diretoria/netanf-diretor-financeiro-cardeal-regional-rio-de-janeiro.png",
+  {
+    name: "Mardone",
+    rank: "Vice-Presidente - Cardeal",
+    sede: "Tomé Açu-PA",
+    image: "/images/diretoria/mardone-vice-cardeal-regional-tome-acu.png",
+  },
+  {
+    name: "Billau",
+    rank: "Diretor Sede Nacional - Cardela",
+    sede: "Belém-PA",
+    image: "/images/diretoria/billau-diretor-cardeal-sede-belem.png",
   },
   {
     name: "Verme",
@@ -98,12 +104,48 @@ const leadership = [
     image: "/images/diretoria/podle-diretor-cardeal-regional-brasilia.png",
   },
   {
+    name: "Gadeia",
+    rank: "Diretor Regional - Cardeal",
+    sede: "Tomé Açi-PA",
+    image: "/images/diretoria/gadeia-diretor-cardeal-regional-tome-acu.png",
+  },
+  {
+    name: "Netanf",
+    rank: "Diretor Financeiro - Cardeal",
+    sede: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/netanf-diretor-financeiro-cardeal-regional-rio-de-janeiro.png",
+  },
+  {
+    name: "sniper",
+    rank: "Diretor Social - Cardeal",
+    sede: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/sniper-diretor-social-regional-rio-de-janeiro.png",
+  },
+  {
+    name: "Careca",
+    rank: "Diretor de Marketing - Cardeal",
+    sede: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/careca-diretor-marketing-regional-rio-de-janeiro.png",
+  },
+  {
     name: "El Loco",
     rank: "Representante - Cardeal",
     sede: "São Luís-MA",
     image: "/images/diretoria/el-loco-representante-cardeal-subsede-sao-luis.png",
   },
- ];
+  {
+    name: "Bino",
+    rank: "Representante - Cardeal",
+    sede: "Macapá-AP",
+    image: "/images/diretoria/bino-representante-cardeal-subsede-macapa.png",
+  },
+  {
+    name: "Varejão",
+    rank: "Representante - Cardeal",
+    sede: "Porto de Moz-PA",
+    image: "/images/diretoria/varejao-representante-cardeal-subsede-porto-de-moz.png",
+  },
+];
 
 const hierarchy = [
   {
