@@ -78,7 +78,7 @@ export default function Home() {
     {
       label: "Irmandade",
       title: "FRATRES IN VIA",
-      text: "Como todoso são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim “FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.",
+      text: "Como todos são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim “FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.",
     },
   ];
 
@@ -121,12 +121,14 @@ export default function Home() {
           <h2 className="mt-4 max-w-4xl font-heading text-5xl uppercase leading-[0.95] tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-6xl lg:text-7xl">
             Estrada, Irmandade e Tradição
           </h2>
-          <p className="mt-6 max-w-[73ch] whitespace-pre-line text-justify text-base leading-6 text-[color:var(--color-text-300)] sm:text-lg">
+          {/* Ajusta a largura do texto para alinhar com os cards abaixo,
+              garantindo consistência visual e melhor ritmo de leitura. */}
+          <p className="mt-6 max-w-6xl whitespace-pre-line text-justify text-base leading-6 text-[color:var(--color-text-300)] sm:text-lg">
           {`Cinco amigos motociclistas...
 
             Unidos por laços de afinidade...
 
-            No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. E por que OS PAPAS? O nome seria uma forma de homenagem ao amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, e como todos são filhos do pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em Latim “ FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão. Dessa forma, em 20 de setembro de 2014 nasceu o MC OS PAPAS, entidade sem funs lucrativos, construída sob a forma de assosiação.`}
+            No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. Dessa forma, em 20 de setembro de 2014 nasceu o MC OS PAPAS, entidade sem funs lucrativos, construída sob a forma de assosiação.`}
           </p>
           <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-2">
             {identityCards.map((card) => (
