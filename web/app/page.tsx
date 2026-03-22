@@ -111,7 +111,7 @@ export default function Home() {
 
             Unidos por laços de afinidade...
 
-            No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. E por que OS PAPAS? O nome seria uma forma de homenagem ao amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, e como todos são filhos do pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em Latim “ FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.`}
+            No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. E por que OS PAPAS? O nome seria uma forma de homenagem ao amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, e como todos são filhos do pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em Latim “ FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão. Dessa forma, em 20 de setembro de 2014 nasceu o MC OS PAPAS, entidade sem funs lucrativos, construída sob a forma de assosiação.`}
           </p>
           <Link
             href="/sobre"

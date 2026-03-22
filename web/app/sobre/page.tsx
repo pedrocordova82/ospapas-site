@@ -224,7 +224,7 @@ export default function SobrePage() {
               </div>
 
               <div className="max-w-2xl text-center lg:text-left">
-                <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Símbolos da Irmandade</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Símbolo da Irmandade</p>
                 <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">OPSOP</h2>
                 <p className="mt-5 text-lg uppercase tracking-[0.18em] text-[color:var(--color-gold-500)] sm:text-xl">
                   Os Papas Sempre Os Papas
@@ -242,7 +242,7 @@ export default function SobrePage() {
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-10">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Símbolos</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Insígnias</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Brasão do Moto Clube</h2>
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {coatOfArmsItems.map((item) => {
