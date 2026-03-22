@@ -79,11 +79,17 @@ const leadership = [
     sede: "Rio de janeiro-RJ",
     image: "/images/diretoria/caveira-presidente-cardeal-regional-rio-de-janeiro.png",
   },
-    {
-    name: "Netanf",
-    rank: "Vice Presidente - Cardeal",
-    sede: "Rio de Janeiro-RJ",
-    image: "/images/diretoria/netanf-diretor-financeiro-cardeal-regional-rio-de-janeiro.png",
+  {
+    name: "Mardone",
+    rank: "Vice-Presidente - Cardeal",
+    sede: "Tomé Açu-PA",
+    image: "/images/diretoria/mardone-vice-cardeal-regional-tome-acu.png",
+  },
+  {
+    name: "Billau",
+    rank: "Diretor Sede Nacional - Cardela",
+    sede: "Belém-PA",
+    image: "/images/diretoria/billau-diretor-cardeal-sede-belem.png",
   },
   {
     name: "Verme",
@@ -98,12 +104,48 @@ const leadership = [
     image: "/images/diretoria/podle-diretor-cardeal-regional-brasilia.png",
   },
   {
+    name: "Gadeia",
+    rank: "Diretor Regional - Cardeal",
+    sede: "Tomé Açi-PA",
+    image: "/images/diretoria/gadeia-diretor-cardeal-regional-tome-acu.png",
+  },
+  {
+    name: "Netanf",
+    rank: "Diretor Financeiro - Cardeal",
+    sede: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/netanf-diretor-financeiro-cardeal-regional-rio-de-janeiro.png",
+  },
+  {
+    name: "sniper",
+    rank: "Diretor Social - Cardeal",
+    sede: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/sniper-diretor-social-regional-rio-de-janeiro.png",
+  },
+  {
+    name: "Careca",
+    rank: "Diretor de Marketing - Cardeal",
+    sede: "Rio de Janeiro-RJ",
+    image: "/images/diretoria/careca-diretor-marketing-regional-rio-de-janeiro.png",
+  },
+  {
     name: "El Loco",
     rank: "Representante - Cardeal",
     sede: "São Luís-MA",
     image: "/images/diretoria/el-loco-representante-cardeal-subsede-sao-luis.png",
   },
- ];
+  {
+    name: "Bino",
+    rank: "Representante - Cardeal",
+    sede: "Macapá-AP",
+    image: "/images/diretoria/bino-representante-cardeal-subsede-macapa.png",
+  },
+  {
+    name: "Varejão",
+    rank: "Representante - Cardeal",
+    sede: "Porto de Moz-PA",
+    image: "/images/diretoria/varejao-representante-cardeal-subsede-porto-de-moz.png",
+  },
+];
 
 const hierarchy = [
   {
@@ -164,64 +206,49 @@ export default function SobrePage() {
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-16">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Objetivo</p>
-          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Propósitos do Moto Clube</h2>
-          {/* Mantém a seção mais estreita para reduzir a largura de leitura
-              e deixar os propósitos mais leves de percorrer. */}
-          <div className="mx-auto mt-8 grid max-w-5xl gap-3">
-            {[
-              "Promover e proporcionar aos seus associados, atividades recreativas, sociais e esportivas.",
-              "Promover viagens, reuniões e eventos ligados ao motociclismo, no Brasil e no Exterior.",
-              "Promover e divulgar o Motociclismo como esporte sadio, bem como suas normas de segurança.",
-              "Buscar a fraternidade entre motociclistas em geral, promovendo a integração com outros motociclistas, moto grupos e moto clubes, participando de eventos destinados aos mesmos.",
-              "Empreender atividades e eventos educativos e culturais, destinados à filantropia e de ajuda à pessoas carentes e outras finalidades afins.",
-              "Receber e apoiar motociclistas estradeiros que porventura necessitem de apoio ou passem pela cidade onde está localizada a sede.",
-            ].map((purpose) => (
-              <article key={purpose} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-5 sm:p-6">
-                <p className="text-sm leading-7 text-[color:var(--color-text-200)] sm:text-base sm:leading-8">{purpose}</p>
-              </article>
-            ))}
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Origem</p>
+          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">A história do Moto Clube</h2>
+          <div className="mx-auto mt-6 max-w-3xl text-center text-lg font-semibold leading-8 text-[color:var(--color-text-200)]">
+            <p>
+              O Os Papas MC nasceu da união de motociclistas que encontraram na estrada muito mais do que destino: encontraram
+              propósito. A fundação do clube veio da vontade de construir uma irmandade sólida, baseada em respeito, lealdade e
+              compromisso com a comunidade.
+            </p>
+            <p className="mt-4">
+              Ao longo do tempo, cada sede e regional fortaleceu esse espírito, preservando tradição e disciplina, sem perder o
+              senso de liberdade que define a cultura biker. Hoje, o motoclube segue firme, conectando irmãos por todo o Brasil.
+            </p>
           </div>
         </section>
       </Reveal>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 py-6 sm:py-8">
-          <div className="overflow-hidden rounded-[28px] border border-[color:var(--color-gold-500)]/18 bg-[linear-gradient(180deg,rgba(20,20,20,0.96)_0%,rgba(11,11,11,0.98)_100%)] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-            <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
-              <div className="flex justify-center lg:justify-start">
-                <div className="relative w-full max-w-[220px] sm:max-w-[280px] lg:max-w-[340px]">
-                  <div className="absolute inset-0 rounded-full bg-[color:var(--color-gold-500)]/12 blur-3xl" />
-                  <Image
-                    src="/images/geral/opsop.png"
-                    alt="Emblema OPSOP do MC Os Papas"
-                    width={680}
-                    height={680}
-                    className="relative h-auto w-full object-contain drop-shadow-[0_18px_40px_rgba(0,0,0,0.35)]"
-                  />
-                </div>
-              </div>
+        <section className="mx-auto w-full max-w-6xl px-6 py-1">
+          <div className="grid gap-8 lg:grid-cols-2">
+            <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
+              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">NOME</p>
+              <h3 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">OS PAPAS</h3>
+              <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">
+                O nome surgiu como uma forma de homenagear o amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas,
+                era utilizada carinhosamente para designar a figura do Pai.
+              </p>
+            </article>
 
-              <div className="max-w-2xl text-center lg:text-left">
-                <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Símbolo da Irmandade</p>
-                <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">OPSOP</h2>
-                <p className="mt-5 text-lg uppercase tracking-[0.18em] text-[color:var(--color-gold-500)] sm:text-xl">
-                  Os Papas Sempre Os Papas
-                </p>
-                <p className="mt-6 text-sm leading-8 text-[color:var(--color-text-300)] sm:text-base">
-                  Mais do que uma sigla, OPSOP representa permanência, lealdade e identidade. É a lembrança de que,
-                  independentemente da estrada, da distância ou do tempo, quem carrega a essência da irmandade segue sendo Os
-                  Papas — sempre com honra, respeito e compromisso com o Moto Clube.
-                </p>
-              </div>
-            </div>
+            <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
+              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">IRMANDADE</p>
+              <h3 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">FRATRES IN VIA</h3>
+              <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">
+                Como todoso são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim &quot;FRATRES IN VIA&quot; escolhida por nosso vice, Da Pop,
+                está representada em nosso Brasão.
+              </p>
+            </article>
           </div>
         </section>
       </Reveal>
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-10">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Insígnias</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Símbolos</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Brasão do Moto Clube</h2>
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {coatOfArmsItems.map((item) => {

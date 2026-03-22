@@ -1,8 +1,3 @@
-/**
- * SECTION: Sede Type Definition
- * Defines the canonical sede schema used by the frontend.
- * These fields feed hero, contact, and map sections in `/sedes/[slug]`.
- */
 export type Sede = {
   slug: string
   name: string
@@ -17,11 +12,6 @@ export type Sede = {
   longitude: number
 }
 
-/**
- * SECTION: Sedes Data Source
- * Primary dataset used to render sede cards and dynamic sede pages.
- * `slug` values are route keys for the App Router path: `/sedes/[slug]`.
- */
 export const sedes: Sede[] = [
   {
     slug: "para",
