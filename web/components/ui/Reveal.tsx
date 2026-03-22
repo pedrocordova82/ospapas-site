@@ -10,7 +10,8 @@ export function Reveal({ children }: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Revela o conteúdo apenas na primeira vez para evitar animações repetidas.
+    // Antecipar um pouco o gatilho evita que seções próximas ao rodapé
+    // deixem de aparecer em telas menores com viewport mais curta.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -19,7 +20,8 @@ export function Reveal({ children }: RevealProps) {
         }
       },
       {
-        threshold: 0.2,
+        threshold: 0.08,
+        rootMargin: "0px 0px -10% 0px",
       },
     );
 
