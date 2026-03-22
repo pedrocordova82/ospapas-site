@@ -122,7 +122,7 @@ export default function Home() {
             Estrada, Irmandade e Tradição
           </h2>
           {/* Ajusta a largura do texto para alinhar com os cards abaixo,
-              garantindo consistência visual e melhor ritmo de leitura. */}
+              garantindo consistência visual e o melhor ritmo de leitura. */}
           <p className="mt-6 max-w-6xl whitespace-pre-line text-justify text-base leading-6 text-[color:var(--color-text-300)] sm:text-lg">
           {`Cinco amigos motociclistas...
 
