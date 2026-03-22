@@ -168,7 +168,7 @@ export default function SobrePage() {
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Propósitos do Moto Clube</h2>
           {/* Mantém a seção mais estreita para reduzir a largura de leitura
               e deixar os propósitos mais leves de percorrer. */}
-          <div className="mx-auto mt-8 grid max-w-5xl gap-4">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-3">
             {[
               "Promover e proporcionar aos seus associados, atividades recreativas, sociais e esportivas.",
               "Promover viagens, reuniões e eventos ligados ao motociclismo, no Brasil e no Exterior.",
