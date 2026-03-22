@@ -1,4 +1,4 @@
-// TESTE DEPLOY VERCEL - confirmar push automático
+// TESTE DEPLOY VERCEL - confirmar push
 import { SedeCard } from "@/components/sedes/SedeCard";
 import { Reveal } from "@/components/ui/Reveal";
 import Image from "next/image";
