@@ -164,44 +164,23 @@ export default function SobrePage() {
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-16">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Origem</p>
-          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">A história do Moto Clube</h2>
-          <div className="mx-auto mt-6 max-w-3xl text-center text-lg font-semibold leading-8 text-[color:var(--color-text-200)]">
-            <p>
-              O Os Papas MC nasceu da união de motociclistas que encontraram na estrada muito mais do que destino: encontraram
-              propósito. A fundação do clube veio da vontade de construir uma irmandade sólida, baseada em respeito, lealdade e
-              compromisso com a comunidade.
-            </p>
-            <p className="mt-4">
-              Ao longo do tempo, cada sede e regional fortaleceu esse espírito, preservando tradição e disciplina, sem perder o
-              senso de liberdade que define a cultura biker. Hoje, o motoclube segue firme, conectando irmãos por todo o Brasil.
-            </p>
-          </div>
-        </section>
-      </Reveal>
-
-      {/* Ajusta a ordem das seções para reforçar a narrativa:
-          primeiro identidade, depois significado e por fim simbologia. */}
-      <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 py-1">
-          <div className="grid gap-8 lg:grid-cols-2">
-            <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
-              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">NOME</p>
-              <h3 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">OS PAPAS</h3>
-              <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">
-                O nome surgiu como uma forma de homenagear o amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas,
-                era utilizada carinhosamente para designar a figura do Pai.
-              </p>
-            </article>
-
-            <article className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
-              <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">IRMANDADE</p>
-              <h3 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white">FRATRES IN VIA</h3>
-              <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">
-                Como todoso são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim &quot;FRATRES IN VIA&quot; escolhida por nosso vice, Da Pop,
-                está representada em nosso Brasão.
-              </p>
-            </article>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Objetivo</p>
+          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Propósitos do Moto Clube</h2>
+          {/* Mantém a seção mais estreita para reduzir a largura de leitura
+              e deixar os propósitos mais leves de percorrer. */}
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4">
+            {[
+              "Promover e proporcionar aos seus associados, atividades recreativas, sociais e esportivas.",
+              "Promover viagens, reuniões e eventos ligados ao motociclismo, no Brasil e no Exterior.",
+              "Promover e divulgar o Motociclismo como esporte sadio, bem como suas normas de segurança.",
+              "Buscar a fraternidade entre motociclistas em geral, promovendo a integração com outros motociclistas, moto grupos e moto clubes, participando de eventos destinados aos mesmos.",
+              "Empreender atividades e eventos educativos e culturais, destinados à filantropia e de ajuda à pessoas carentes e outras finalidades afins.",
+              "Receber e apoiar motociclistas estradeiros que porventura necessitem de apoio ou passem pela cidade onde está localizada a sede.",
+            ].map((purpose) => (
+              <article key={purpose} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-5 sm:p-6">
+                <p className="text-sm leading-7 text-[color:var(--color-text-200)] sm:text-base sm:leading-8">{purpose}</p>
+              </article>
+            ))}
           </div>
         </section>
       </Reveal>

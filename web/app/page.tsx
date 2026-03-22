@@ -67,6 +67,21 @@ export default function Home() {
   }
   ];
 
+  // Traz os blocos de identidade para a home para fortalecer a narrativa
+  // logo após a apresentação institucional do Moto Clube.
+  const identityCards = [
+    {
+      label: "Nome",
+      title: "OS PAPAS",
+      text: "O nome surgiu como uma forma de homenagear o amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai.",
+    },
+    {
+      label: "Irmandade",
+      title: "FRATRES IN VIA",
+      text: "Como todoso são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim “FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.",
+    },
+  ];
+
   return (
     <div className="pb-20">
       <section className="relative isolate overflow-hidden border-b border-white/10">
@@ -113,9 +128,21 @@ export default function Home() {
 
             No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. E por que OS PAPAS? O nome seria uma forma de homenagem ao amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, e como todos são filhos do pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em Latim “ FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão. Dessa forma, em 20 de setembro de 2014 nasceu o MC OS PAPAS, entidade sem funs lucrativos, construída sob a forma de assosiação.`}
           </p>
+          <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-2">
+            {identityCards.map((card) => (
+              <article key={card.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 sm:p-8">
+                <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">{card.label}</p>
+                <h3 className="mt-3 font-heading text-3xl uppercase tracking-[0.05em] text-white sm:text-4xl">{card.title}</h3>
+                <p className="mt-4 text-sm leading-7 text-[color:var(--color-text-300)]">{card.text}</p>
+              </article>
+            ))}
+          </div>
+
+          {/* Fecha o bloco institucional com a navegação para aprofundamento,
+              depois que a identidade principal já foi apresentada. */}
           <Link
             href="/sobre"
-            className="group mt-6 inline-flex items-center gap-2 rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition-all duration-200 hover:scale-105 hover:bg-[color:var(--color-gold-500)] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-900)]"
+            className="group mt-8 inline-flex items-center gap-2 rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition-all duration-200 hover:scale-105 hover:bg-[color:var(--color-gold-500)] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-900)]"
           >
             <span className="text-lg leading-none transition-transform duration-200 group-hover:rotate-90">
               +
