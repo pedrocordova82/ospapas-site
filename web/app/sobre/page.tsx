@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ComponentType, SVGProps } from "react";
 import {
   ResponsabilidadeIcon,
   FamiliaIcon,
@@ -249,7 +250,7 @@ export default function SobrePage() {
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Valores do Moto Clube</h2>
           <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {values.map((value) => {
-              const iconMap: Record<string, typeof Shield> = {
+              const iconMap: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
                 RESPONSABILIDADE: ResponsabilidadeIcon,
                 RESPEITO: Scale,
                 FAMÍLIA: UsersRound,
