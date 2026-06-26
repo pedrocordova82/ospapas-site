@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 import {
   ResponsabilidadeIcon,
@@ -312,23 +311,6 @@ No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam
         </section>
       </Reveal>
 
-      <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 py-16">
-          <div className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 sm:p-8">
-            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Membros</p>
-            <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Diretoria</h2>
-            <p className="mt-5 max-w-3xl text-sm leading-7 text-[color:var(--color-text-300)] sm:text-base sm:leading-8">
-              Conheça a Diretoria responsável por conduzir o Moto Clube Os Papas, preservando sua história, seus valores e sua irmandade.
-            </p>
-            <Link
-              href="/diretoria"
-              className="mt-7 inline-flex rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-900)]"
-            >
-              Conhecer Diretoria
-            </Link>
-          </div>
-        </section>
-      </Reveal>
     </div>
   );
 }
