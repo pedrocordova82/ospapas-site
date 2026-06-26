@@ -1,17 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 import {
   ResponsabilidadeIcon,
-  FamiliaIcon,
   Handshake,
   HeartHandshake,
   Scale,
-  Crown,
   Shield,
-  ShieldCheck,
-  Users,
-  User,
-  UserCircle,
   UsersRound,
 } from "@/components/ui/icons/icons";
 import { Reveal } from "@/components/ui/Reveal";
@@ -79,45 +74,6 @@ const identityCards = [
     text: "Como todos são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim “FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.",
   },
 ];
-
-const leadership = [
-  {
-    name: "Nômade Papa",
-    rank: "Fundador",
-    sede: "Belém-PA",
-    image: "/images/diretoria/nomade-papa-fundador-belem.png",
-  },
-  {
-    name: "Caveira",
-    rank: "Presidente - Cardeal",
-    sede: "Rio de janeiro-RJ",
-    image: "/images/diretoria/caveira-presidente-cardeal-regional-rio-de-janeiro.png",
-  },
-    {
-    name: "Netanf",
-    rank: "Vice Presidente - Cardeal",
-    sede: "Rio de Janeiro-RJ",
-    image: "/images/diretoria/netanf-diretor-financeiro-cardeal-regional-rio-de-janeiro.png",
-  },
-  {
-    name: "Verme",
-    rank: "Diretor Regional - Cardeal",
-    sede: "Rio de Janeiro-RJ",
-    image: "/images/diretoria/verme-diretor-cardeal-regional-regional-reio-de-janeiro.png",
-  },
-  {
-    name: "Poodle",
-    rank: "Diretor Regional - Cardela",
-    sede: "Brasília-DF",
-    image: "/images/diretoria/podle-diretor-cardeal-regional-brasilia.png",
-  },
-  {
-    name: "El Loco",
-    rank: "Representante - Cardeal",
-    sede: "São Luís-MA",
-    image: "/images/diretoria/el-loco-representante-cardeal-subsede-sao-luis.png",
-  },
- ];
 
 const hierarchy = [
   {
@@ -358,28 +314,18 @@ No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-16">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Membros</p>
-          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Diretoria</h2>
-          <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {leadership.map((leader) => (
-              <article key={leader.name} className="group text-center">
-                <div className="overflow-hidden rounded-lg aspect-[2/3] shadow-lg shadow-black/40">
-                  <div className="relative h-full w-full">
-                    <Image
-                      src={leader.image}
-                      alt={leader.name}
-                      fill
-                      className="object-cover transition duration-300 group-hover:scale-[1.03]"
-                    />
-                  </div>
-                </div>
-                <div className="mt-3 text-center">
-                  <p className="font-semibold text-white">{leader.name}</p>
-                  <p className="text-sm text-[color:var(--color-gold-500)]">{leader.rank}</p>
-                  <p className="mt-1 text-sm text-[color:var(--color-text-300)]">{leader.sede}</p>
-                </div>
-              </article>
-            ))}
+          <div className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 sm:p-8">
+            <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Membros</p>
+            <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Diretoria</h2>
+            <p className="mt-5 max-w-3xl text-sm leading-7 text-[color:var(--color-text-300)] sm:text-base sm:leading-8">
+              Conheça a Diretoria responsável por conduzir o Moto Clube Os Papas, preservando sua história, seus valores e sua irmandade.
+            </p>
+            <Link
+              href="/diretoria"
+              className="mt-7 inline-flex rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-900)]"
+            >
+              Conhecer Diretoria
+            </Link>
           </div>
         </section>
       </Reveal>

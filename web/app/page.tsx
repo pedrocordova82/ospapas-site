@@ -1,7 +1,6 @@
 // TESTE DEPLOY VERCEL - confirmar push
 import { SedeCard } from "@/components/sedes/SedeCard";
 import { Reveal } from "@/components/ui/Reveal";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -81,7 +80,7 @@ export default function Home() {
           </h1>
           <p className="mt-6 text-sm uppercase tracking-[0.2em] text-white/80 sm:text-base sm:tracking-[0.24em]">FRATRES IN VIA</p>
           <p className="mt-8 max-w-2xl text-base leading-7 text-white/80 sm:mt-10 sm:text-lg sm:leading-8">
-            Estar em um Moto Clube é muito mais do que "andar de moto em grupo", é pertencer a algo muito maior. É ter códigos, histórias, símbolos e identidade que constroem uma irmandade capaz de cruzar quilômetros de asfalto e décadas de convivência. Esse é o Moto Clube OS PAPAS!
+            Estar em um Moto Clube é muito mais do que &quot;andar de moto em grupo&quot;, é pertencer a algo muito maior. É ter códigos, histórias, símbolos e identidade que constroem uma irmandade capaz de cruzar quilômetros de asfalto e décadas de convivência. Esse é o Moto Clube OS PAPAS!
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:flex-wrap">
             <a

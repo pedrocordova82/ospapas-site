@@ -9,6 +9,7 @@ import { useEffect, useState, type MouseEvent } from "react";
 const navItems = [
   { label: "Home", href: "/#top", activePath: "/" },
   { label: "Sobre", href: "/sobre", activePath: "/sobre" },
+  { label: "Diretoria", href: "/diretoria", activePath: "/diretoria" },
   { label: "Sedes", href: "/#sedes", activePath: "/sedes" },
   { label: "Eventos", href: "/#eventos", activePath: "/eventos" },
   { label: "Filantropia", href: "/#filantropia", activePath: "/filantropia" },
@@ -83,8 +84,8 @@ export function Header() {
             </div>
           </Link>
 
-          <nav className="hidden md:block" aria-label="Navegacao principal">
-            <ul className="flex items-center gap-6">
+          <nav className="hidden lg:block" aria-label="Navegacao principal">
+            <ul className="flex items-center gap-5 xl:gap-6">
               {navItems.map((item) => (
                 <li key={item.label}>
                   <Link
@@ -106,7 +107,7 @@ export function Header() {
           <div className="flex shrink-0 items-center gap-2 sm:gap-4">
             <Link
               href="/faca-parte"
-              className={`inline-flex shrink-0 items-center rounded-md border px-2.5 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition md:hidden ${
+              className={`inline-flex shrink-0 items-center rounded-md border px-2.5 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition lg:hidden ${
                 isScrolled
                   ? "border-[color:var(--color-gold-500)] bg-[color:var(--color-gold-500)] text-black shadow-[0_0_24px_rgba(212,175,55,0.22)]"
                   : "border-[color:var(--color-gold-500)]/80 text-[color:var(--color-gold-500)] shadow-[0_8px_24px_rgba(0,0,0,0.22)] hover:bg-[color:var(--color-gold-500)] hover:text-black"
@@ -115,13 +116,13 @@ export function Header() {
               Faça Parte
             </Link>
 
-            <button className="shrink-0 p-1 text-white md:hidden" onClick={() => setOpen((v) => !v)}>
+            <button className="shrink-0 p-1 text-white lg:hidden" onClick={() => setOpen((v) => !v)}>
               {open ? <X size={26} /> : <Menu size={26} />}
             </button>
 
             <Link
               href="/faca-parte"
-              className={`hidden items-center rounded-md border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] transition duration-300 md:inline-flex ${
+              className={`hidden items-center rounded-md border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] transition duration-300 lg:inline-flex ${
                 isScrolled
                   ? "border-[color:var(--color-gold-500)] bg-[color:var(--color-gold-500)] text-black shadow-[0_0_28px_rgba(212,175,55,0.24)] hover:-translate-y-0.5 hover:shadow-[0_10px_34px_rgba(212,175,55,0.22)]"
                   : "border-[color:var(--color-gold-500)] text-[color:var(--color-gold-500)] shadow-[0_10px_28px_rgba(0,0,0,0.22)] hover:-translate-y-0.5 hover:bg-[color:var(--color-gold-500)] hover:text-black hover:shadow-[0_12px_32px_rgba(212,175,55,0.16)]"
@@ -133,10 +134,10 @@ export function Header() {
         </div>
       </header>
 
-      {open && <div className="fixed inset-0 z-30 bg-black/80 backdrop-blur-sm" onClick={() => setOpen(false)} />}
+      {open && <div className="fixed inset-0 z-30 bg-black/80 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
 
       {open && (
-        <div className="fixed left-0 top-16 z-50 max-h-[calc(100vh-4rem)] w-full overflow-y-auto border-t border-white/10 bg-black md:hidden">
+        <div className="fixed left-0 top-16 z-50 max-h-[calc(100vh-4rem)] w-full overflow-y-auto border-t border-white/10 bg-black sm:top-20 sm:max-h-[calc(100vh-5rem)] lg:hidden">
           <nav className="flex flex-col items-center gap-6 px-6 py-6">
             {navItems.map((item) => (
               <Link
