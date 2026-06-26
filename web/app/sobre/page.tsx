@@ -1,11 +1,9 @@
 import Image from "next/image";
-import type { ComponentType, SVGProps } from "react";
 import {
   ResponsabilidadeIcon,
   Handshake,
   HeartHandshake,
   Scale,
-  Shield,
   UsersRound,
 } from "@/components/ui/icons/icons";
 import { Reveal } from "@/components/ui/Reveal";
@@ -15,62 +13,79 @@ import { BishopIcon } from "@/components/ui/icons/icons";
 import { CardinalIcon } from "@/components/ui/icons/icons";
 import { PapaIcon } from "@/components/ui/icons/icons";
 
+const coatOfArmsImage = "/images/sobre/brasao.png";
+
 const coatOfArmsItems = [
   {
-    title: "O BRASÃO",
-    description: "Representa liderança espiritual, responsabilidade e compromisso com a irmandade.",
-    image: "/images/sobre/brasao.png",
-  },
-  {
     title: "OS PAPAS",
-    description: "A palavra \"Papas\", do grego, era utilizada carinhosamente para designar a figura do Pai.",
+    description: "Historicamente a palavra \"Papas\", do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, pois todos nós somos filhos do Pai, e assim nos tornamos “Irmãos de Estrada”",
     image: "/images/sobre/os-papas.png",
   },
   {
     title: "FRATRES IN VIA v",
-    description: "O lema do MC é representado pela frase \"Fratres in via\", do latim \"Irmãos na estrada\". O V representa os 5 membros fundadores.",
+    description: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos de Estrada”, que em latim é “FRATRES IN VIA”. O numeral V, em romano, significa os 5 fundadores do Moto Clube",
     image: "/images/sobre/fratres-in-via.png",
   },
   {
     title: "CHAVES",
-    description: "As chaves simbolizam a mudança, a abertura que nos permite acessar o outro lado, e também o fechamento. Em seu duplo papel, fazem referência ao 6exito, sabedoria e libertação.",
+    description: "As chaves possuem um duplo papel, ou seja, de abertura e fechamento, uma vez que permitem encontrar o outro lado, no caso de portas, cofres e tudo que contenha uma fechadura. Assim, em dupla, simbolizam os objetos relacionados às mudanças, ao êxito, à libertação, à sabedoria, ao conhecimento, à prosperidade e ao mistério.",
     image: "/images/sobre/chaves.png",
   },
   {
     title: "MITRA",
-    description: "A Mitra simboliza o capacete de defesa contra os adversários da verdade, a qual sempre defenderemos.",
+    description: "Palavra de origem grega, para designar a cobertura de cabeça litúrgica usada pelos bispos (sucessores dos apóstolos) e pelo Papa em celebrações solenes, como insígnia de autoridade e dignidade. Na mitologia foi um Deus da luz, justiça e aliança, representando a verdade e a disciplina, valores que o MC OS PAPAS defendem.",
     image: "/images/sobre/mitra.png",
   },
   {
     title: "FÊNIX",
-    description: "A Fênix, conhecida por nascer das cinzas, faz alusão à união dos membros fundadores em prol da criação do MC. Representando, assim, um novo nascimento.",
+    description: "A Fênix é uma ave mitológica que simboliza o renascimento, a imortalidade e o triunfo da vida sobre a morte. Ao se incendiar e renascer das próprias cinzas, simboliza a capacidade de superação, esperança e o eterno recomeço, fazendo assim alusão a decisão de seus membros fundadores, em se unirem na criação do MC OS PAPAS, representando assim, um novo nascimento.",
     image: "/images/sobre/fenix.png",
   },
   {
     title: "ESCUDO",
-    description: "O escudo, além de proteger, remete ao orgulho, a exemplo dos guerreiros nos tempos antigos, que ostentavam-os com grande honra e combate.",
+    description: "O escudo é um símbolo universal de proteção, defesa, segurança, honra e disciplina, historicamente usado para resguardar guerreiros em combate. Na heráldica representa identidade, nobreza e alianças familiares. Nesse contexto nosso Brasão possui dois escudos, que representam de forma honrosa cada um de seus membros, e reforça a ideia da participação de nossas Famílias no Moto Clube.",
     image: "/images/sobre/escudo.png",
   },
 ];
 
 const values = [
-  "RESPONSABILIDADE",
-  "RESPEITO",
-  "FAMÍLIA",
-  "FILANTROPIA",
-  "IRMANDADE",
+  {
+    id: "respeito",
+    label: "RESPEITO",
+    Icon: ResponsabilidadeIcon,
+  },
+  {
+    id: "igualdade",
+    label: "IGUALDADE",
+    Icon: Scale,
+  },
+  {
+    id: "irmandade",
+    label: "IRMANDADE",
+    Icon: Handshake,
+  },
+  {
+    id: "filantropia",
+    label: "FILANTROPIA",
+    Icon: HeartHandshake,
+  },
+  {
+    id: "familia",
+    label: "FAMÍLIA",
+    Icon: UsersRound,
+  },
 ];
 
 const identityCards = [
   {
-    label: "Nome",
+    label: "E por que OS PAPAS?",
     title: "OS PAPAS",
-    text: "O nome surgiu como uma forma de homenagear o amigo Papa XXIII, devido sua experiência no motociclismo, e a palavra Papas, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai.",
+    text: "O nome seria uma forma de homenagem a um dos fundadores, Papa XXIII, devido a sua experiência no motociclismo. Historicamente a palavra “Papas”, do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, pois todos nós somos filhos do Pai.",
   },
   {
     label: "Irmandade",
     title: "FRATRES IN VIA",
-    text: "Como todos são filhos do Pai, assim, nos tornaríamos IRMÃOS NA ESTRADA, cuja frase em latim “FRATRES IN VIA” escolhida por nosso vice, Da Pop, está representada em nosso Brasão.",
+    text: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos de Estrada”, que em latim é “FRATRES IN VIA”, frase escolhida a época, por um dos fundadores, “Da Pop”, e que está representada em nosso Brasão.",
   },
 ];
 
@@ -79,31 +94,31 @@ const hierarchy = [
     icon: PapaIcon,
     title: "Papa",
     description:
-      "O Papa representa o mais alto nível de hierarquia dentro do Moto Clube. São membros de extrema confiança, normalmente fundadores, líderes ou integrantes que possuem grande respeito e responsabilidade dentro da organização, podendo também atuar como representantes nômades do Moto Clube.",
+      "Representa o mais alto nível de hierarquia dentro do Moto Clube. São membros de extrema confiança, normalmente fundadores, ex-líderes ou integrantes que possuem grande respeito e responsabilidade dentro da organização, podendo também atuar como representantes nômades do Moto Clube.",
   },
   {
     icon: CardinalIcon,
     title: "Cardeal",
     description:
-      "O Cardeal é um membro escudado, que já recebeu o brasão completo do Moto Clube em seu colete. Esse nível representa confiança, lealdade e comprometimento comprovado com a irmandade e seus valores.",
+      "Conhecido no mundo do motociclismo como “Colete Fechado”, é um membro escudado, que já recebeu o brasão completo do Moto Clube em seu colete. Esse nível representa confiança, lealdade e comprometimento comprovado com a irmandade, bem como com seus valores.",
   },
   {
     icon: BishopIcon,
     title: "Bispo",
     description:
-      "O Bispo é o membro que já conquistou maior reconhecimento dentro do clube. Ele passa a utilizar o nome \"Os Papas\" na parte superior do colete, demonstrando que já possui maior nível de pertencimento e responsabilidade dentro da estrutura do Moto Clube.",
+      "Conhecido no mundo do motociclismo como “Meio Escudo”, é o membro que já conquistou maior reconhecimento dentro do clube. Ele passa a carregar em seu colete a inscrição \“OS PAPAS\", demonstrando que já possui maior nível de pertencimento e responsabilidade dentro da estrutura do Moto Clube.",
   },
   {
     icon: PriestIcon,
     title: "Padre",
     description:
-      "O Padre é o membro que já foi oficialmente aceito na irmandade. Ele passa a utilizar no colete a identificação do país e da cidade do capítulo ao qual pertence, representando sua base e sua ligação com o Moto Clube.",
+      "Conhecido no mundo do motociclismo como “PP” (Pretendente a Participante), é o membro que já foi oficialmente aceito na irmandade. Ele passa a utilizar no colete a identificação do seu País e da cidade de origem da Sede a que pertence, representando sua ligação com o Moto Clube.",
   },
   {
     icon: DeaconIcon,
     title: "Diácono",
     description:
-      "O Diácono é o membro em período de avaliação dentro do Moto Clube. Nesta fase ele demonstra comprometimento, disciplina e alinhamento com os valores do clube. Ainda não utiliza identificação no colete, pois está em processo de aprendizado e integração com a irmandade.",
+      "Conhecido no mundo do motociclismo como “Hangout” ou “Hang Around”, é o membro em período de avaliação dentro do Moto Clube. Nesta fase ele deve demonstrar comprometimento, disciplina e alinhamento com os valores do clube, e sendo assim, ainda não carrega os símbolos do Moto Clube, pois está em processo de aprendizado e integração com a irmandade.",
   },
 ];
 
@@ -178,6 +193,39 @@ No intervalo de um almoço, no restaurante Yamaga, na cidade de Ananindeua, no E
       </Reveal>
 
       <Reveal>
+        <section className="mx-auto w-full max-w-6xl px-6 py-10">
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Símbolos</p>
+          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <h2 className="max-w-2xl font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Brasão do Moto Clube</h2>
+            <Image
+              src={coatOfArmsImage}
+              alt="Brasão do Moto Clube Os Papas"
+              width={160}
+              height={160}
+              className="h-20 w-20 object-contain sm:h-24 sm:w-24 lg:h-28 lg:w-28"
+            />
+          </div>
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {coatOfArmsItems.map((item) => {
+              return (
+                <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={100}
+                    height={100}
+                    className="mb-4 object-contain"
+                  />
+                  <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.05em] text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-300)]">{item.description}</p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-6 sm:py-8">
           <div className="overflow-hidden rounded-[28px] border border-[color:var(--color-gold-500)]/18 bg-[linear-gradient(180deg,rgba(20,20,20,0.96)_0%,rgba(11,11,11,0.98)_100%)] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
             <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
@@ -201,9 +249,7 @@ No intervalo de um almoço, no restaurante Yamaga, na cidade de Ananindeua, no E
                   Os Papas Sempre Os Papas
                 </p>
                 <p className="mt-6 text-sm leading-8 text-[color:var(--color-text-300)] sm:text-base">
-                  Mais do que uma sigla, OPSOP representa permanência, lealdade e identidade. É a lembrança de que,
-                  independentemente da estrada, da distância ou do tempo, quem carrega a essência da irmandade segue sendo Os
-                  Papas — sempre com honra, respeito e compromisso com o Moto Clube.
+                  Mais que um lema/grito de guerra, representa lealdade, irmandade e a liberdade de escolha dos seus membros, reforçando que a sigla significa paixão e o compromisso com o Moto Clube, sem significar aprisionamento, e sim pertencimento, uma entrega de coração e alma.
                 </p>
               </div>
             </div>
@@ -213,50 +259,17 @@ No intervalo de um almoço, no restaurante Yamaga, na cidade de Ananindeua, no E
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-10">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Insígnias</p>
-          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Brasão do Moto Clube</h2>
-          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {coatOfArmsItems.map((item) => {
-              return (
-                <article key={item.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={100}
-                    height={100}
-                    className="mb-4 object-contain"
-                  />
-                  <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.05em] text-white">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-300)]">{item.description}</p>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-      </Reveal>
-
-      <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 py-10">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Princípios</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Valores do Moto Clube</h2>
           <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {values.map((value) => {
-              const iconMap: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
-                RESPONSABILIDADE: ResponsabilidadeIcon,
-                RESPEITO: Scale,
-                FAMÍLIA: UsersRound,
-                FILANTROPIA: HeartHandshake,
-                IRMANDADE: Handshake,
-              };
-              const Icon = iconMap[value] ?? Shield;
-
+            {values.map(({ id, label, Icon }) => {
               return (
-                <article key={value} className="w-full rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
+                <article key={id} className="w-full rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 text-center">
                   <div className="mb-4 flex justify-center">
                     <Icon width={32} height={32} className="text-[color:var(--color-gold-500)]" />
                   </div>
                   <h3 className="break-normal text-center font-heading text-2xl uppercase tracking-[0.01em] text-white [overflow-wrap:break-word]">
-                    {value}
+                    {label}
                   </h3>
                 </article>
               );
@@ -292,7 +305,7 @@ No intervalo de um almoço, no restaurante Yamaga, na cidade de Ananindeua, no E
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-16">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Estrutura</p>
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Organização</p>
           <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Hierarquia do Moto Clube</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-6">
             {hierarchy.map((item) => {
