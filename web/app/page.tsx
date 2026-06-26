@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   const sedeCards = [
     {
-      name: "Pará",
+      name: "Belém",
       href: "/sedes/para",
       imageUrl: "/images/para/capa.jpg",
       type: "Sede Nacional"
@@ -104,10 +104,10 @@ export default function Home() {
         <section id="sedes" className="mx-auto w-full max-w-6xl px-4 pt-20 sm:px-6 lg:px-8 lg:pt-24">
           <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Onde Estamos</p>
           <h2 className="mt-3 font-heading text-5xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-6xl">
-            Sedes
+            Sedes / SUBSEDES
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-[color:var(--color-text-300)]">
-            Presença em diferentes cidades do Brasil, mantendo o mesmo espírito de estrada e irmandade.
+            O Moto Clube está presente em nove (09) estados e no Distrito Federal, preservando sempre nossos valores.
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
