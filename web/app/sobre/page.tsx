@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import {
   ResponsabilidadeIcon,
   Handshake,
@@ -12,6 +13,11 @@ import { PriestIcon } from "@/components/ui/icons/icons";
 import { BishopIcon } from "@/components/ui/icons/icons";
 import { CardinalIcon } from "@/components/ui/icons/icons";
 import { PapaIcon } from "@/components/ui/icons/icons";
+
+export const metadata: Metadata = {
+  title: "Quem Somos | MC Os Papas",
+  description: "Conheça a história, os valores e a irmandade do Moto Clube Os Papas.",
+};
 
 const coatOfArmsImage = "/images/sobre/brasao.png";
 

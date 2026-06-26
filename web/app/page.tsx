@@ -38,7 +38,7 @@ export default function Home() {
     {
     id: "sobre",
     label: "Institucional",
-    title: "Sobre o Moto Clube",
+    title: "Quem Somos",
     text: "Irmandade que vive a estrada com respeito, liberdade e lealdade."
   },
   {
