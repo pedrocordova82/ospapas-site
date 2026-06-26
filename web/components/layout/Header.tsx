@@ -8,7 +8,7 @@ import { useEffect, useState, type MouseEvent } from "react";
 
 const navItems = [
   { label: "Home", href: "/#top", activePath: "/" },
-  { label: "Sobre", href: "/sobre", activePath: "/sobre" },
+  { label: "Quem Somos", href: "/sobre", activePath: "/sobre" },
   { label: "Diretoria", href: "/diretoria", activePath: "/diretoria" },
   { label: "Sedes", href: "/#sedes", activePath: "/sedes" },
   { label: "Eventos", href: "/#eventos", activePath: "/eventos" },

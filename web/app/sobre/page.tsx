@@ -123,9 +123,9 @@ export default function SobrePage() {
 
         <div className="relative mx-auto flex min-h-[48vh] w-full max-w-6xl items-end px-4 py-12 sm:px-6 lg:px-8">
           <div>
-            <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Sobre o Moto Clube</p>
+            <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Quem Somos</p>
             <h1 className="mt-3 text-balance font-heading text-4xl uppercase tracking-[0.04em] text-white sm:text-6xl lg:text-7xl">
-              Irmandade, estrada e tradição
+              Irmandade, filantropia e estrada
             </h1>
           </div>
         </div>
@@ -133,16 +133,14 @@ export default function SobrePage() {
 
       <Reveal>
         <section className="mx-auto w-full max-w-6xl px-6 py-16 lg:py-20">
-          <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Quem Somos</p>
+          <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Nossa Origem</p>
           <h2 className="mt-4 max-w-4xl font-heading text-5xl uppercase leading-[0.95] tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-6xl lg:text-7xl">
-            Estrada, Irmandade e Tradição
+            Como Tudo Começou
           </h2>
           <p className="mt-6 max-w-6xl whitespace-pre-line text-justify text-base leading-6 text-[color:var(--color-text-300)] sm:text-lg">
-            {`Cinco amigos motociclistas...
+            {`Cinco amigos motociclistas, unidos por laços de afinidade...
 
-Unidos por laços de afinidade...
-
-No intervalo de um almoço, no restaurante Yamaga, em Ananindeua-PA, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um moto clube. Dessa forma, em 20 de setembro de 2014 nasceu o MC OS PAPAS, entidade sem funs lucrativos, construída sob a forma de assosiação.`}
+No intervalo de um almoço, no restaurante Yamaga, na cidade de Ananindeua, no Estado do Pará, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um Moto Clube. Dessa forma, em 20 de setembro de 2014 nasceu o MC OS PAPAS, entidade sem fins lucrativos, construída sob a forma de Associação.`}
           </p>
           <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-2">
             {identityCards.map((card) => (
