@@ -96,6 +96,35 @@ export default function Home() {
         </section>
       </Reveal>
 
+      <section
+        aria-labelledby="representative-subsedes-callout-title"
+        className="mx-auto w-full max-w-6xl px-4 pt-10 sm:px-6 lg:px-8"
+      >
+        <div className="flex flex-col gap-6 border-y border-white/10 bg-[color:var(--color-bg-900)] px-5 py-6 sm:px-6 sm:py-8 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          <div className="max-w-2xl">
+            <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">
+              Representações Locais
+            </p>
+            <h3
+              id="representative-subsedes-callout-title"
+              className="mt-2 font-heading text-3xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-4xl"
+            >
+              Subsedes Representativas
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-[color:var(--color-text-300)] sm:text-base">
+              Conheça também as representações locais do MC Os Papas em diferentes cidades do Brasil.
+            </p>
+          </div>
+
+          <Link
+            href="/sedes#subsedes-representativas"
+            className="inline-flex min-h-11 w-full shrink-0 items-center justify-center self-start rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black sm:w-auto lg:self-auto"
+          >
+            Veja Mais
+          </Link>
+        </div>
+      </section>
+
       <section className="mx-auto grid w-full max-w-6xl gap-8 px-4 pt-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:pt-24">
         {baseSections.map((section) => (
           section.id === "sobre" ? (
