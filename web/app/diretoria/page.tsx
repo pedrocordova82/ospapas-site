@@ -7,7 +7,7 @@ export default function DiretoriaPage() {
     <div className="pb-16">
       <section className="relative isolate overflow-hidden border-b border-white/10">
         <Image
-          src="/images/diretoria/estrada.png"
+          src="/images/diretoria/bonde.jpg"
           alt="Moto Clube Os Papas"
           fill
           priority
