@@ -23,7 +23,7 @@ export default function Home() {
     id: "eventos",
     label: "Agenda",
     title: "Eventos",
-    text: "Calendário de rides, encontros e ações beneficentes."
+    text: "Calendário anual de encontros de motos pelo Brasil."
   },
   {
     id: "filantropia",
