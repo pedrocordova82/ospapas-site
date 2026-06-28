@@ -11,10 +11,11 @@ type HotspotAlign = "top" | "bottom" | "left" | "right";
 
 interface MapHotspot {
   id: string;
-  name: string;
-  city: string;
   state: string;
-  description: string;
+  presences: Array<{
+    city: string;
+    type: string;
+  }>;
   x: number;
   y: number;
   align?: HotspotAlign;
@@ -22,64 +23,93 @@ interface MapHotspot {
 
 const HOTSPOTS: MapHotspot[] = [
   {
-    id: "belem",
-    name: "Sede Belém",
-    city: "Belém",
+    id: "pa",
     state: "PA",
-    description: "Base ativa no Norte, sendo a sede nacional e origem do MC, conectando estrada, presença e irmandade.",
-    x: 53.5,
-    y: 28.5,
+    presences: [
+      { city: "Belém", type: "Sede Nacional" },
+      { city: "Tomé-Açu", type: "Regional" },
+      { city: "Porto de Moz", type: "Subsede Representativa" },
+      { city: "Almeirim", type: "Subsede Representativa" },
+      { city: "Umuarama", type: "Subsede Representativa" },
+    ],
+    x: 53.7,
+    y: 29,
+    align: "bottom",
+  },
+  {
+    id: "ma",
+    state: "MA",
+    presences: [{ city: "São Luís", type: "Subsede" }],
+    x: 72.6,
+    y: 30.4,
     align: "left",
   },
   {
-    id: "brasilia",
-    name: "Sede Brasília",
-    city: "Brasília",
+    id: "df",
     state: "DF",
-    description: "Centro estratégico da irmandade, ligando diferentes regiões do país.",
+    presences: [{ city: "Brasília", type: "Regional" }],
     x: 66.1,
     y: 56.6,
     align: "top",
   },
   {
-    id: "rio-de-janeiro",
-    name: "Sede Rio de Janeiro",
-    city: "Rio de Janeiro",
+    id: "rj",
     state: "RJ",
-    description: "Presença marcante no Sudeste, com estrada, união e representatividade.",
+    presences: [{ city: "Rio de Janeiro", type: "Regional" }],
     x: 76.5,
     y: 70.6,
     align: "left",
   },
   {
-    id: "sao-miguel-do-oeste",
-    name: "Sede São Miguel do Oeste",
-    city: "São Miguel do Oeste",
+    id: "sc",
     state: "SC",
-    description: "Extremo Sul com atuação forte, encontros familiares e espírito de missão.",
+    presences: [
+      { city: "São Miguel do Oeste", type: "Regional" },
+      { city: "Criciúma", type: "Subsede Representativa" },
+    ],
     x: 61.4,
     y: 83.9,
     align: "top",
   },
   {
-    id: "tome-acu",
-    name: "Regional Tomé-Açu",
-    city: "Tomé-Açu",
-    state: "PA",
-    description: "Instalada na Associação Agropecuária do Vale do Acará – AAVA.",
-    x: 53.8,
-    y: 30,
+    id: "ap",
+    state: "AP",
+    presences: [{ city: "Macapá", type: "Subsede Representativa" }],
+    x: 57.5,
+    y: 13.2,
     align: "bottom",
   },
   {
-    id: "sao-luis",
-    name: "Sede São Luís",
-    city: "São Luís",
-    state: "MA",
-    description: "Ponto de encontro no litoral, com rota forte para eventos e rolês.",
-    x: 72.6,
-    y: 30.4,
+    id: "pe",
+    state: "PE",
+    presences: [{ city: "Recife", type: "Subsede Representativa" }],
+    x: 89.2,
+    y: 34,
+    align: "left",
+  },
+  {
+    id: "sp",
+    state: "SP",
+    presences: [{ city: "São José dos Campos", type: "Subsede Representativa" }],
+    x: 68.5,
+    y: 71,
+    align: "left",
+  },
+  {
+    id: "pr",
+    state: "PR",
+    presences: [{ city: "Curitiba", type: "Subsede Representativa" }],
+    x: 64.5,
+    y: 78.4,
     align: "right",
+  },
+  {
+    id: "rs",
+    state: "RS",
+    presences: [{ city: "Rio Grande", type: "Subsede Representativa" }],
+    x: 57.8,
+    y: 91.5,
+    align: "top",
   },
 ];
 
@@ -175,7 +205,7 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
                 <div className="relative -translate-x-1/2 -translate-y-1/2">
                   <button
                     type="button"
-                    aria-label={`${hotspot.name} em ${hotspot.city}, ${hotspot.state}`}
+                    aria-label={`Presenças do MC Os Papas em ${hotspot.state}`}
                     aria-expanded={isActive}
                     aria-describedby={isActive ? `tooltip-${hotspot.id}` : undefined}
                     className={[
@@ -246,8 +276,20 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
                       <p className="text-[10px] uppercase tracking-[0.22em] text-[color:var(--color-gold-500)]/85">
                         {hotspot.state}
                       </p>
-                      <p className="mt-1 text-sm font-semibold text-white">{hotspot.city}</p>
-                      <p className="mt-2 text-xs leading-5 text-white/72 md:text-sm md:leading-6">{hotspot.description}</p>
+                      <p className="mt-1 text-sm font-semibold text-white">Presenças no estado</p>
+                      <ul className="mt-3 space-y-2">
+                        {hotspot.presences.map((presence) => (
+                          <li
+                            key={`${hotspot.state}-${presence.city}`}
+                            className="border-t border-white/10 pt-2 first:border-t-0 first:pt-0"
+                          >
+                            <p className="text-xs font-semibold text-white md:text-sm">{presence.city}</p>
+                            <p className="mt-0.5 text-[10px] uppercase tracking-[0.1em] text-[color:var(--color-gold-500)]/85 md:text-xs">
+                              {presence.type}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 </div>
