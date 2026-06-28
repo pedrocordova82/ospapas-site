@@ -49,9 +49,4 @@ export const brasiliaMembers = [
     role: "Padre",
     image: "/images/brasilia/members/spider-padre.png",
   },
-  {
-    name: "Índio",
-    role: "Diácono",
-    image: "/images/brasilia/members/indio-diacono.png",
-  },
 ];
