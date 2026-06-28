@@ -12,12 +12,6 @@ export default function Home() {
       type: "Sede Nacional"
     },
     {
-      name: "São Luís",
-      href: "/sedes/sao-luis",
-      imageUrl: "/images/sao-luis/capa.jpg?v=2",
-      type: "Subsede"
-    },    
-    {
       name: "Brasília",
       href: "/sedes/brasilia",
       imageUrl: "/images/brasilia/capa.jpg",
@@ -31,6 +25,12 @@ export default function Home() {
       name: "São Miguel do Oeste",
       href: "/sedes/sao-miguel-do-oeste",
       imageUrl: "/images/sao-miguel-do-oeste/capa.jpg",
+    },
+    {
+      name: "São Luís",
+      href: "/sedes/sao-luis",
+      imageUrl: "/images/sao-luis/capa.jpg?v=2",
+      type: "Subsede"
     },
   ];
 
