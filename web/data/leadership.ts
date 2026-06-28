@@ -25,14 +25,8 @@ export const leadership = [
   },
   {
     name: "Poodle",
-    rank: "Diretor Regional - Cardela",
+    rank: "Diretor Regional - Cardeal",
     sede: "Brasília-DF",
     image: "/images/diretoria/podle-diretor-cardeal-regional-brasilia.png",
-  },
-  {
-    name: "El Loco",
-    rank: "Representante - Cardeal",
-    sede: "São Luís-MA",
-    image: "/images/diretoria/el-loco-representante-cardeal-subsede-sao-luis.png",
   },
 ];
