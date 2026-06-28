@@ -1,3 +1,5 @@
+import { officialWhatsappNumbers } from "@/data/whatsapp";
+
 export type RepresentativeSubsede = {
   id: string;
   city: string;
@@ -36,7 +38,7 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "Macapá",
     state: "AP",
     representative: "Cardeal Bino",
-    whatsapp: temporaryWhatsapp,
+    whatsapp: officialWhatsappNumbers.macapa,
   },
   {
     id: "porto-de-moz-pa",
@@ -50,7 +52,7 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "Recife",
     state: "PE",
     representative: "Cardeal Carcará",
-    whatsapp: temporaryWhatsapp,
+    whatsapp: officialWhatsappNumbers.recife,
   },
   {
     id: "rio-grande-rs",
@@ -64,7 +66,7 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "São José dos Campos",
     state: "SP",
     representative: "Cardeal Velasco",
-    whatsapp: temporaryWhatsapp,
+    whatsapp: officialWhatsappNumbers.saoJoseDosCampos,
   },
   {
     id: "umuarama-pa",

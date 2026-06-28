@@ -1,3 +1,5 @@
+import { officialWhatsappNumbers } from "@/data/whatsapp";
+
 export type Sede = {
   slug: string
   name: string
@@ -21,7 +23,7 @@ export const sedes: Sede[] = [
     type: "Sede",
     description: "Localizada na cidade de Ananindeua, Região Metropolitana de Belém, no Estado do Pará, onde em 20 de setembro de 2014, foi fundado o MC OS PAPAS, e por isso é chamada de Nacional, pois deu origem ao Moto Clube.",
     instagram: "@mc_os_papas",
-    whatsapp: "+5561999999999",
+    whatsapp: officialWhatsappNumbers.sedePara,
     image: "/images/para/capa.jpg",
     latitude: -1.365,
     longitude: -48.38759981349188
@@ -34,7 +36,7 @@ export const sedes: Sede[] = [
     type: "Regional",
     description: "A Regional de Brasília foi criada em 19 de março de 2018, a partir da vontade da Presidência do Moto Clube em se expandir, quando da oportunidade da transferência à trabalho de um dos membros da Regional do Rio de Janeiro para a Capital Federal.",
     instagram: "@mc_os_papas_brasilia",
-    whatsapp: "+5561999999999",
+    whatsapp: officialWhatsappNumbers.brasilia,
     image: "/images/brasilia/capa.jpg",
     latitude: -15.825362906642775,
     longitude: -48.08714023817274
@@ -47,7 +49,7 @@ export const sedes: Sede[] = [
     type: "Regional",
     description: "Localizada na Região Administrativa de Jacarepaguá, na cidade do Rio de Janeiro, foi criada em 19 de maio de 2016, quando o atual Presidente do Moto Clube, Cardeal Caveira, foi transferido à trabalho da cidade de Belém - PA, para a cidade do Rio de Janeiro.",
     instagram: "@mc_os_papas_regional_rj",
-    whatsapp: "+5561999999999",
+    whatsapp: officialWhatsappNumbers.rioDeJaneiro,
     image: "/images/rio-de-janeiro/capa.jpeg",
     latitude: -22.92471083409714,
     longitude: -43.34784851349188
@@ -86,7 +88,7 @@ export const sedes: Sede[] = [
     state: "Maranhão",
     type: "Subsede",
     description: "Subsede São Luís",
-    whatsapp: "+5561999999999",
+    whatsapp: officialWhatsappNumbers.saoLuis,
     image: "/images/sao-luis/capa.jpg",
     latitude: -2.530806224441873,
     longitude: -44.242222017196426
