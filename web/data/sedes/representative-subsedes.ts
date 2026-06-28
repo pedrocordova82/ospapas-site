@@ -11,45 +11,10 @@ const temporaryWhatsapp = "999999999";
 
 export const representativeSubsedes: RepresentativeSubsede[] = [
   {
-    id: "porto-de-moz-pa",
-    city: "Porto de Moz",
-    state: "PA",
-    representative: "Bispo Feroz",
-    whatsapp: temporaryWhatsapp,
-  },
-  {
     id: "almeirim-pa",
     city: "Almeirim",
     state: "PA",
     representative: "Padre Aqueiro",
-    whatsapp: temporaryWhatsapp,
-  },
-  {
-    id: "macapa-ap",
-    city: "Macapá",
-    state: "AP",
-    representative: "Cardeal Bino",
-    whatsapp: temporaryWhatsapp,
-  },
-  {
-    id: "recife-pe",
-    city: "Recife",
-    state: "PE",
-    representative: "Cardeal Carcará",
-    whatsapp: temporaryWhatsapp,
-  },
-  {
-    id: "sao-jose-dos-campos-sp",
-    city: "São José dos Campos",
-    state: "SP",
-    representative: "Cardeal Velasco",
-    whatsapp: temporaryWhatsapp,
-  },
-  {
-    id: "curitiba-pr",
-    city: "Curitiba",
-    state: "PR",
-    representative: "Bispa Miminha e Bispo Cabelo de Freira",
     whatsapp: temporaryWhatsapp,
   },
   {
@@ -60,10 +25,31 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     whatsapp: temporaryWhatsapp,
   },
   {
-    id: "umuarama-pa",
-    city: "Umuarama",
+    id: "curitiba-pr",
+    city: "Curitiba",
+    state: "PR",
+    representative: "Bispa Miminha e Bispo Cabelo de Freira",
+    whatsapp: temporaryWhatsapp,
+  },
+  {
+    id: "macapa-ap",
+    city: "Macapá",
+    state: "AP",
+    representative: "Cardeal Bino",
+    whatsapp: temporaryWhatsapp,
+  },
+  {
+    id: "porto-de-moz-pa",
+    city: "Porto de Moz",
     state: "PA",
-    representative: "Cardeal Jota",
+    representative: "Bispo Feroz",
+    whatsapp: temporaryWhatsapp,
+  },
+  {
+    id: "recife-pe",
+    city: "Recife",
+    state: "PE",
+    representative: "Cardeal Carcará",
     whatsapp: temporaryWhatsapp,
   },
   {
@@ -71,6 +57,20 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "Rio Grande",
     state: "RS",
     representative: "Cardeal Freedie",
+    whatsapp: temporaryWhatsapp,
+  },
+  {
+    id: "sao-jose-dos-campos-sp",
+    city: "São José dos Campos",
+    state: "SP",
+    representative: "Cardeal Velasco",
+    whatsapp: temporaryWhatsapp,
+  },
+  {
+    id: "umuarama-pa",
+    city: "Umuarama",
+    state: "PA",
+    representative: "Cardeal Jota",
     whatsapp: temporaryWhatsapp,
   },
 ];
