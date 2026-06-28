@@ -32,16 +32,6 @@ const HOTSPOTS: MapHotspot[] = [
     align: "left",
   },
   {
-    id: "sao-luis",
-    name: "Sede São Luís",
-    city: "São Luís",
-    state: "MA",
-    description: "Ponto de encontro no litoral, com rota forte para eventos e rolês.",
-    x: 72.6,
-    y: 30.4,
-    align: "right",
-  },
-  {
     id: "brasilia",
     name: "Sede Brasília",
     city: "Brasília",
@@ -70,6 +60,26 @@ const HOTSPOTS: MapHotspot[] = [
     x: 61.4,
     y: 83.9,
     align: "top",
+  },
+  {
+    id: "tome-acu",
+    name: "Regional Tomé-Açu",
+    city: "Tomé-Açu",
+    state: "PA",
+    description: "Instalada na Associação Agropecuária do Vale do Acará – AAVA.",
+    x: 53.8,
+    y: 30,
+    align: "bottom",
+  },
+  {
+    id: "sao-luis",
+    name: "Sede São Luís",
+    city: "São Luís",
+    state: "MA",
+    description: "Ponto de encontro no litoral, com rota forte para eventos e rolês.",
+    x: 72.6,
+    y: 30.4,
+    align: "right",
   },
 ];
 

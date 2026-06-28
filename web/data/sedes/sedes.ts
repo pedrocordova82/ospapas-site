@@ -5,10 +5,12 @@ export type Sede = {
   type: "Sede" | "Regional" | "Subsede"
   description: string
   instagram?: string
-  whatsapp: string
+  whatsapp?: string
   image: string
+  imageAlt?: string
   latitude: number
   longitude: number
+  mapsUrl?: string
 }
 
 export const sedes: Sede[] = [
@@ -62,6 +64,20 @@ export const sedes: Sede[] = [
     image: "/images/sao-miguel-do-oeste/capa.jpg",
     latitude: -26.695630322051688,
     longitude: -53.554433515344144
+  },
+
+  {
+    slug: "tome-acu",
+    name: "Tomé-Açu",
+    state: "Pará",
+    type: "Regional",
+    description: "Foi criada em 11 de julho de 2023, e está instalada na Associação Agropecuária do Vale do Acará – AAVA, situado na Rodovia PA-140, Nº 6005, Bairro Industrial.",
+    instagram: "@mc_os_papas",
+    whatsapp: "+5561999999999",
+    image: "/images/tome-acu/capa.jpeg",
+    latitude: -2.41474,
+    longitude: -48.1499,
+    mapsUrl: "https://maps.app.goo.gl/MqffHyYujgMVUCzx9"
   },
 
   {

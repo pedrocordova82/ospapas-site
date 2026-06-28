@@ -1,38 +1,16 @@
 // TESTE DEPLOY VERCEL - confirmar push
 import { SedeCard } from "@/components/sedes/SedeCard";
 import { Reveal } from "@/components/ui/Reveal";
+import { sedes } from "@/data/sedes/sedes";
 import Link from "next/link";
 
 export default function Home() {
-  const sedeCards = [
-    {
-      name: "Belém",
-      href: "/sedes/para",
-      imageUrl: "/images/para/capa.jpg",
-      type: "Sede Nacional"
-    },
-    {
-      name: "Brasília",
-      href: "/sedes/brasilia",
-      imageUrl: "/images/brasilia/capa.jpg",
-    },
-    {
-      name: "Rio de Janeiro",
-      href: "/sedes/rio-de-janeiro",
-      imageUrl: "/images/rio-de-janeiro/capa.jpeg",
-    },
-    {
-      name: "São Miguel do Oeste",
-      href: "/sedes/sao-miguel-do-oeste",
-      imageUrl: "/images/sao-miguel-do-oeste/capa.jpg",
-    },
-    {
-      name: "São Luís",
-      href: "/sedes/sao-luis",
-      imageUrl: "/images/sao-luis/capa.jpg?v=2",
-      type: "Subsede"
-    },
-  ];
+  const sedeCards = sedes.map((sede) => ({
+    name: sede.name,
+    href: `/sedes/${sede.slug}`,
+    imageUrl: sede.image,
+    type: sede.type === "Sede" ? "Sede Nacional" : sede.type,
+  }));
 
   const baseSections = [
     {

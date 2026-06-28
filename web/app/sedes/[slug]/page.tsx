@@ -25,7 +25,7 @@ export default async function SedePage({ params }: SedePageProps) {
   }
 
   const mapSrc = `https://www.google.com/maps?q=${sede.latitude},${sede.longitude}&output=embed`;
-  const mapsLink = `https://www.google.com/maps?q=${sede.latitude},${sede.longitude}`;
+  const mapsLink = sede.mapsUrl ?? `https://www.google.com/maps?q=${sede.latitude},${sede.longitude}`;
   const sedeEvents = slug === "brasilia" ? brasiliaEvents : [];
   const sedeGallery = slug === "brasilia" ? brasiliaGallery : [];
   const sedeMembers = slug === "brasilia" ? brasiliaMembers : [];
@@ -35,7 +35,7 @@ export default async function SedePage({ params }: SedePageProps) {
       <section className="relative isolate min-h-[48vh] overflow-hidden border-b border-white/10">
         <Image
           src={sede.image}
-          alt={`Capa da ${sede.name}`}
+          alt={sede.imageAlt ?? `Capa da ${sede.name}`}
           fill
           priority
           className="object-cover"
@@ -78,14 +78,16 @@ export default async function SedePage({ params }: SedePageProps) {
               </div>
             ) : null}
 
-            <a
-              href={toWaMe(sede.whatsapp)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600"
-            >
-              Falar no WhatsApp
-            </a>
+            {sede.whatsapp ? (
+              <a
+                href={toWaMe(sede.whatsapp)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-green-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600"
+              >
+                Falar no WhatsApp
+              </a>
+            ) : null}
           </div>
         </article>
 
