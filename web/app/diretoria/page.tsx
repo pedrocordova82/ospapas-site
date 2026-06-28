@@ -18,7 +18,7 @@ export default function DiretoriaPage() {
 
         <div className="relative mx-auto flex min-h-[42vh] w-full max-w-6xl items-end px-4 py-12 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Institucional</p>
+            <p className="text-base uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">Estrutura</p>
             <h1 className="mt-3 text-balance font-heading text-5xl uppercase tracking-[0.05em] text-white sm:text-6xl lg:text-7xl">
               Conheça a Diretoria
             </h1>
@@ -30,10 +30,8 @@ export default function DiretoriaPage() {
       </section>
 
       <Reveal>
-        <section className="mx-auto w-full max-w-6xl px-6 py-16">
-          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Estrutura</p>
-          <h2 className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl">Diretoria</h2>
-          <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <section className="mx-auto w-full max-w-6xl px-6 py-12 sm:py-16">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {leadership.map((leader) => (
               <article key={leader.name} className="group text-center">
                 <div className="aspect-[2/3] overflow-hidden rounded-lg shadow-lg shadow-black/40">
@@ -49,8 +47,12 @@ export default function DiretoriaPage() {
                 </div>
                 <div className="mt-3 text-center">
                   <p className="font-semibold text-white">{leader.name}</p>
-                  <p className="text-sm text-[color:var(--color-gold-500)]">{leader.rank}</p>
-                  <p className="mt-1 text-sm text-[color:var(--color-text-300)]">{leader.sede}</p>
+                  <p className="text-sm text-[color:var(--color-gold-500)]">{leader.role}</p>
+                  {leader.rank ? (
+                    <p className="mt-1 text-sm text-[color:var(--color-text-300)]">
+                      {leader.rank}
+                    </p>
+                  ) : null}
                 </div>
               </article>
             ))}
