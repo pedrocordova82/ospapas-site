@@ -2,9 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import localFont from "next/font/local";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "@/components/ui/icons/icons";
 import { useEffect, useState, type MouseEvent } from "react";
+
+const algerian = localFont({
+  src: "../../public/fonts/algerian-regular.woff2",
+  display: "swap",
+  weight: "400",
+});
 
 const navItems = [
   { label: "Home", href: "/#top", activePath: "/" },
@@ -75,7 +82,7 @@ export function Header() {
               className="h-9 w-9 shrink-0 sm:h-10 sm:w-10"
             />
             <div className="min-w-0 flex flex-col text-left">
-              <span className="truncate font-heading text-[1.7rem] leading-none tracking-[0.08em] sm:text-3xl">
+              <span className={`${algerian.className} truncate text-[1.4rem] leading-none tracking-[-0.03em] [word-spacing:-0.08em] sm:text-[1.65rem]`}>
                 MC OS PAPAS
               </span>
               <span className="truncate text-[9px] uppercase tracking-[0.18em] text-[color:var(--color-gold-500)] sm:text-[10px] sm:tracking-[0.2em]">
