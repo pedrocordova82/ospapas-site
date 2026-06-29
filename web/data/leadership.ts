@@ -8,7 +8,7 @@ export type Leader = {
 
 export const leadership: Leader[] = [
   {
-    name: "Papa",
+    name: "Papa XXIII",
     role: "Fundador",
     rank: "Nômade",
     sede: "Belém-PA",

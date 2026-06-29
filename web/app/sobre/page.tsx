@@ -24,7 +24,7 @@ const coatOfArmsImage = "/images/sobre/brasao.png";
 const coatOfArmsItems = [
   {
     title: "OS PAPAS",
-    description: "Historicamente a palavra \"Papas\", do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, pois todos nós somos filhos do Pai, e assim nos tornamos “Irmãos de Estrada”",
+    description: "Historicamente a palavra \"Papas\", do grego Pappas, era utilizada carinhosamente para designar a figura do Pai, pois todos nós somos filhos do Pai, e assim nos tornamos “Irmãos na Estrada”",
     image: "/images/sobre/os-papas.png",
   },
   {
