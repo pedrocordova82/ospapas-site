@@ -11,7 +11,7 @@ export function Footer() {
           <p className="font-heading text-3xl tracking-[0.08em] text-[color:var(--color-text-100)]">OS PAPAS MC</p>
           <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[color:var(--color-gold-500)]">Fratres in Via</p>
           <p className="mt-4 max-w-lg text-sm text-[color:var(--color-text-300)]">
-            Irmandade, estrada e compromisso com a comunidade.
+            Fraternidade, Filantropia e Muita Estrada.
           </p>
         </div>
 
