@@ -1,6 +1,6 @@
 export const brasiliaEvents = [
     {
-    title: "Inauguração Sede brasília",
+    title: "Inauguração da Nova Sede de Brasília",
     date: "14/03/2026",
     location: "Brasília",
     coverImage: "/images/brasilia/events/inauguracao-sede-14-03-2026/imagem-01.png",
@@ -38,7 +38,7 @@ export const brasiliaEvents = [
     ],
   },
   {
-    title: "Passeio Pad Bier",
+    title: "BV Pad Bier",
     date: "30/03/2025",
     location: "Brasília",
     coverImage: "/images/brasilia/events/pad-bier-2025-03-30.jpg",
