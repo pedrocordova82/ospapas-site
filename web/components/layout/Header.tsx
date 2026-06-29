@@ -82,7 +82,7 @@ export function Header() {
               className="h-9 w-9 shrink-0 sm:h-10 sm:w-10"
             />
             <div className="min-w-0 flex flex-col text-left">
-              <span className={`${algerian.className} truncate text-[1.4rem] leading-none tracking-[-0.03em] [word-spacing:-0.08em] sm:text-[1.65rem]`}>
+              <span className={`${algerian.className} truncate text-[1.4rem] leading-none tracking-[-0.03em] [word-spacing:-0.20em] sm:text-[1.65rem]`}>
                 MC OS PAPAS
               </span>
               <span className="truncate text-[9px] uppercase tracking-[0.18em] text-[color:var(--color-gold-500)] sm:text-[10px] sm:tracking-[0.2em]">
