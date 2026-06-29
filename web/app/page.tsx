@@ -60,7 +60,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.15),transparent_60%)]" />
         <div className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16 xl:py-20">
           <img src="/images/geral/logo-ospapas.png" alt="Logo do MC Os Papas" className="mb-6 h-36 w-36 sm:mb-8 sm:h-44 sm:w-44 md:h-48 md:w-48 lg:h-52 lg:w-52" />
-          <h1 className={`${algerian.className} mt-2 max-w-3xl text-balance text-5xl uppercase leading-[0.9] tracking-[0.03em] text-white sm:text-7xl lg:text-8xl`}>
+          <h1 className={`${algerian.className} mt-2 max-w-3xl text-balance text-5xl uppercase leading-[0.9] tracking-[-0.03em] text-white [word-spacing:-0.28em] sm:text-7xl lg:text-8xl`}>
             MC OS PAPAS
           </h1>
           <p className="mt-6 text-sm uppercase tracking-[0.2em] text-white/80 sm:text-base sm:tracking-[0.24em]">FRATRES IN VIA</p>
