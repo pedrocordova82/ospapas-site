@@ -28,9 +28,9 @@ const coatOfArmsItems = [
     image: "/images/sobre/os-papas.png",
   },
   {
-    title: "FRATRES IN VIA v",
-    description: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos de Estrada”, que em latim é “FRATRES IN VIA”. O numeral V, em romano, significa os 5 fundadores do Moto Clube",
-    image: "/images/sobre/fratres-in-via.png",
+    title: "ESCUDO",
+    description: "O escudo é um símbolo universal de proteção, defesa, segurança, honra e disciplina, historicamente usado para resguardar guerreiros em combate. Na heráldica representa identidade, nobreza e alianças familiares. Nesse contexto nosso Brasão possui dois escudos, que representam de forma honrosa cada um de seus membros, e reforça a ideia da participação de nossas Famílias no Moto Clube.",
+    image: "/images/sobre/escudo.png",
   },
   {
     title: "CHAVES",
@@ -48,9 +48,9 @@ const coatOfArmsItems = [
     image: "/images/sobre/fenix.png",
   },
   {
-    title: "ESCUDO",
-    description: "O escudo é um símbolo universal de proteção, defesa, segurança, honra e disciplina, historicamente usado para resguardar guerreiros em combate. Na heráldica representa identidade, nobreza e alianças familiares. Nesse contexto nosso Brasão possui dois escudos, que representam de forma honrosa cada um de seus membros, e reforça a ideia da participação de nossas Famílias no Moto Clube.",
-    image: "/images/sobre/escudo.png",
+    title: "FRATRES IN VIA v",
+    description: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos de Estrada”, que em latim é “FRATRES IN VIA”. O numeral V, em romano, significa os 5 fundadores do Moto Clube",
+    image: "/images/sobre/fratres-in-via.png",
   },
 ];
 
