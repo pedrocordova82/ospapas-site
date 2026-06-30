@@ -65,7 +65,7 @@ export const whatsappGroups: WhatsAppGroup[] = [
       {
         id: "subsede-almeirim",
         label: "Almeirim",
-        href: temporaryRepresentativeHref,
+        href: toWhatsappHref(officialWhatsappNumbers.almeirim),
       },
       {
         id: "subsede-criciuma",
@@ -85,7 +85,7 @@ export const whatsappGroups: WhatsAppGroup[] = [
       {
         id: "subsede-porto-de-moz",
         label: "Porto de Moz",
-        href: temporaryRepresentativeHref,
+        href: toWhatsappHref(officialWhatsappNumbers.portoDeMoz),
       },
       {
         id: "subsede-recife",
@@ -96,6 +96,11 @@ export const whatsappGroups: WhatsAppGroup[] = [
         id: "subsede-rio-grande",
         label: "Rio Grande",
         href: temporaryRepresentativeHref,
+      },
+      {
+        id: "subsede-salinopolis",
+        label: "Salinópolis",
+        href: toWhatsappHref(officialWhatsappNumbers.salinopolis),
       },
       {
         id: "subsede-sao-jose-dos-campos",

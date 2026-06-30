@@ -1,10 +1,13 @@
 export const officialWhatsappNumbers = {
   sedePara: "5591982287730",
+  almeirim: "5593984338079",
   brasilia: "5521999823424",
   rioDeJaneiro: "5521987967627",
   saoLuis: "5598982046967",
   macapa: "5596981255293",
+  portoDeMoz: "5593984390212",
   recife: "5581991307887",
+  salinopolis: "5591981796053",
   saoJoseDosCampos: "5521980926664",
 } as const;
 

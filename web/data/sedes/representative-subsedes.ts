@@ -17,7 +17,7 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "Almeirim",
     state: "PA",
     representative: "Padre Aqueiro",
-    whatsapp: temporaryWhatsapp,
+    whatsapp: officialWhatsappNumbers.almeirim,
   },
   {
     id: "criciuma-sc",
@@ -45,7 +45,7 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "Porto de Moz",
     state: "PA",
     representative: "Bispo Feroz",
-    whatsapp: temporaryWhatsapp,
+    whatsapp: officialWhatsappNumbers.portoDeMoz,
   },
   {
     id: "recife-pe",
@@ -60,6 +60,13 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     state: "RS",
     representative: "Cardeal Freedie",
     whatsapp: temporaryWhatsapp,
+  },
+  {
+    id: "salinopolis-pa",
+    city: "Salinópolis",
+    state: "PA",
+    representative: "Bispo Tubarão",
+    whatsapp: officialWhatsappNumbers.salinopolis,
   },
   {
     id: "sao-jose-dos-campos-sp",

@@ -30,6 +30,7 @@ const HOTSPOTS: MapHotspot[] = [
       { city: "Tomé-Açu", type: "Regional" },
       { city: "Porto de Moz", type: "Subsede Representativa" },
       { city: "Almeirim", type: "Subsede Representativa" },
+      { city: "Salinópolis", type: "Subsede Representativa" },
       { city: "Umuarama", type: "Subsede Representativa" },
     ],
     x: 53.7,
