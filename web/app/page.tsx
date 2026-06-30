@@ -68,12 +68,12 @@ export default function Home() {
             Estar em um Moto Clube é muito mais do que &quot;andar de moto em grupo&quot;, é pertencer a algo muito maior. É ter códigos, histórias, símbolos e identidade que constroem uma irmandade capaz de cruzar quilômetros de asfalto e décadas de convivência. Esse é o Moto Clube OS PAPAS!
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:flex-wrap">
-            <a
-              href="#eventos"
+            <Link
+              href="/eventos"
               className="rounded-md bg-[color:var(--color-gold-500)] px-6 py-3 text-center text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[color:var(--color-gold-400)]"
             >
               Ver Eventos
-            </a>
+            </Link>
             <Link
               id="entrar"
               href="/#sedes"
