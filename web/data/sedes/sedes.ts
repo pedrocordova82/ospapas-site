@@ -87,7 +87,7 @@ export const sedes: Sede[] = [
     name: "São Luís",
     state: "Maranhão",
     type: "Subsede",
-    description: "Subsede São Luís",
+    description: "Foi criada em 05 de março de 2022 com apenas um representante no Estado: Cardeal El Loco, motociclista raiz, apaixonado pelo motoclubismo, juntamente com sua família e ajuda de sua Papita Teca, fizeram um espaço destinado aos Papas e também à irmandade motociclista.",
     whatsapp: officialWhatsappNumbers.saoLuis,
     image: "/images/sao-luis/capa.jpg",
     latitude: -2.530806224441873,
