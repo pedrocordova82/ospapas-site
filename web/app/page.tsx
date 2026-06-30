@@ -55,9 +55,9 @@ export default function Home() {
   return (
     <div className="pb-20">
       <section className="relative isolate overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 scale-105 bg-[url('/images/geral/capa-inicial-page.png')] bg-cover bg-center brightness-75 lg:scale-110" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black/90" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.15),transparent_60%)]" />
+        <div className="absolute inset-0 scale-105 bg-[url('/images/geral/capa-inicial-page.png')] bg-cover bg-center brightness-45 lg:scale-110" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/60 to-black/90" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(212,175,55,0.15),transparent_30%)]" />
         <div className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16 xl:py-20">
           <img src="/images/geral/logo-ospapas.png" alt="Logo do MC Os Papas" className="mb-6 h-36 w-36 sm:mb-8 sm:h-44 sm:w-44 md:h-48 md:w-48 lg:h-52 lg:w-52" />
           <h1 className={`${algerian.className} mt-2 max-w-3xl text-balance text-5xl uppercase leading-[0.9] tracking-[-0.03em] text-white [word-spacing:-0.28em] sm:text-7xl lg:text-8xl`}>
