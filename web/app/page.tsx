@@ -146,7 +146,19 @@ export default function Home() {
                 </article>
               </Link>
             </Reveal>
-          ) : section.id === "eventos" || section.id === "filantropia" ? (
+          ) : section.id === "filantropia" ? (
+            <Reveal key={section.id}>
+              <Link href="/filantropia" className="group block cursor-pointer">
+                <article id={section.id} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
+                  <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">{section.label}</p>
+                  <h2 className="mt-4 font-heading text-4xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-5xl">
+                    {section.title}
+                  </h2>
+                  <p className="mt-5 text-sm leading-7 text-[color:var(--color-text-300)]">{section.text}</p>
+                </article>
+              </Link>
+            </Reveal>
+          ) : section.id === "eventos" ? (
             <Reveal key={section.id}>
               <article id={section.id} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
                 <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">{section.label}</p>
