@@ -75,7 +75,7 @@ export const whatsappGroups: WhatsAppGroup[] = [
       {
         id: "subsede-curitiba",
         label: "Curitiba",
-        href: temporaryRepresentativeHref,
+        href: toWhatsappHref(officialWhatsappNumbers.curitiba),
       },
       {
         id: "subsede-macapa",

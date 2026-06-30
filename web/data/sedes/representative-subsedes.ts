@@ -31,7 +31,7 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "Curitiba",
     state: "PR",
     representative: "Bispa Miminha e Bispo Cabelo de Freira",
-    whatsapp: temporaryWhatsapp,
+    whatsapp: officialWhatsappNumbers.curitiba,
   },
   {
     id: "macapa-ap",

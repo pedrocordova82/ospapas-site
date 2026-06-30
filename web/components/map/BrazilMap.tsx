@@ -176,7 +176,7 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
     <div ref={rootRef} className={`w-full ${className}`}>
       <div className="relative mx-auto w-full">
         <Image
-          src="/images/geral/mapa.png"
+          src="/images/geral/mapa.svg"
           alt="Mapa do Brasil com sedes do MC Os Papas"
           className="h-auto w-full select-none brightness-110 contrast-110"
           width={2049}
