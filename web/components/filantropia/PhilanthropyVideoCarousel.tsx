@@ -4,7 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 type PhilanthropyVideoCarouselProps = {
   actionTitle: string;
-  videos: string[];
+  videos: {
+    src: string;
+    poster: string;
+  }[];
 };
 
 export function PhilanthropyVideoCarousel({ actionTitle, videos }: PhilanthropyVideoCarouselProps) {
@@ -63,16 +66,17 @@ export function PhilanthropyVideoCarousel({ actionTitle, videos }: PhilanthropyV
     <>
       <div className="-mx-4 mt-5 overflow-x-auto px-4 pb-3 [scrollbar-color:rgba(242,183,5,0.45)_rgba(255,255,255,0.08)] [scrollbar-width:thin] sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
         <div className="flex w-max snap-x snap-mandatory gap-4">
-          {videos.map((src, videoIndex) => (
+          {videos.map((video, videoIndex) => (
             <button
-              key={src}
+              key={video.src}
               type="button"
               onClick={(event) => openModal(videoIndex, event.currentTarget)}
               aria-label={`Reproduzir vídeo ${videoIndex + 1} da ação ${actionTitle}`}
               className="group relative aspect-[9/16] w-40 shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-black text-left shadow-lg shadow-black/20 transition hover:border-[color:var(--color-gold-500)]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)] sm:w-48"
             >
               <video
-                src={src}
+                src={video.src}
+                poster={video.poster}
                 muted
                 playsInline
                 preload="metadata"
@@ -142,7 +146,7 @@ export function PhilanthropyVideoCarousel({ actionTitle, videos }: PhilanthropyV
             onClick={(event) => event.stopPropagation()}
           >
             <video
-              key={videos[selectedIndex]}
+              key={videos[selectedIndex].src}
               controls
               controlsList="nodownload"
               playsInline
@@ -150,7 +154,7 @@ export function PhilanthropyVideoCarousel({ actionTitle, videos }: PhilanthropyV
               aria-label={`Reprodução do vídeo ${selectedIndex + 1} da ação ${actionTitle}`}
               className="max-h-full max-w-full rounded-lg border border-white/10 bg-black object-contain shadow-2xl shadow-black/60"
             >
-              <source src={videos[selectedIndex]} type="video/mp4" />
+              <source src={videos[selectedIndex].src} type="video/mp4" />
               Seu navegador não oferece suporte à reprodução deste vídeo.
             </video>
           </div>

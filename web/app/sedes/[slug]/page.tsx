@@ -16,6 +16,12 @@ function toWaMe(phone: string) {
   return `https://wa.me/${phone.replace(/\D/g, "")}`;
 }
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return sedes.map(({ slug }) => ({ slug }));
+}
+
 export default async function SedePage({ params }: SedePageProps) {
   const { slug } = await params;
   const sede = sedes.find((item) => item.slug === slug);

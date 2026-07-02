@@ -8,6 +8,9 @@ import { Reveal } from "@/components/ui/Reveal";
 import { X } from "@/components/ui/icons/icons";
 import { WhatsAppSelectorPanel } from "@/components/ui/WhatsAppSelectorPanel";
 
+// A API é externa porque o frontend será publicado como site estático em S3 + CloudFront.
+const joinApiUrl = process.env.NEXT_PUBLIC_JOIN_API_URL?.trim();
+
 const joinText = [
   "Mais do que um Moto Clube, somos uma irmandade.",
   "Unidos pela paixão pelas duas rodas, pelo respeito e pela liberdade da estrada.",
@@ -199,14 +202,19 @@ export default function FacaPartePage() {
     const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
 
+    if (!joinApiUrl) {
+      setStatusType("error");
+      setStatusMessage("O envio está temporariamente indisponível. Tente novamente em instantes.");
+      return;
+    }
+
     setIsSubmitting(true);
     setStatusMessage("");
     setStatusType(null);
 
-    // O envio acontece via API interna para manter credenciais e validações fora do cliente.
     void (async () => {
       try {
-        const response = await fetch("/api/join", {
+        const response = await fetch(joinApiUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -8,7 +8,10 @@ type PhilanthropyAction = {
   title: string;
   description: string;
   images: string[];
-  videos: string[];
+  videos: {
+    src: string;
+    poster: string;
+  }[];
 };
 
 const philanthropyActions: PhilanthropyAction[] = [
@@ -32,12 +35,30 @@ const philanthropyActions: PhilanthropyAction[] = [
       "/images/filantropia/abrigo-redentor/imagem-11.jpeg",
     ],
     videos: [
-      "/images/filantropia/abrigo-redentor/video-00.mp4",
-      "/images/filantropia/abrigo-redentor/video-01.mp4",
-      "/images/filantropia/abrigo-redentor/video-02.mp4",
-      "/images/filantropia/abrigo-redentor/video-03.mp4",
-      "/images/filantropia/abrigo-redentor/video-05.mp4",
-      "/images/filantropia/abrigo-redentor/video-06.mp4",
+      {
+        src: "/images/filantropia/abrigo-redentor/video-00.mp4",
+        poster: "/images/filantropia/abrigo-redentor/imagem-00.jpeg",
+      },
+      {
+        src: "/images/filantropia/abrigo-redentor/video-01.mp4",
+        poster: "/images/filantropia/abrigo-redentor/imagem-01.jpeg",
+      },
+      {
+        src: "/images/filantropia/abrigo-redentor/video-02.mp4",
+        poster: "/images/filantropia/abrigo-redentor/imagem-02.jpeg",
+      },
+      {
+        src: "/images/filantropia/abrigo-redentor/video-03.mp4",
+        poster: "/images/filantropia/abrigo-redentor/imagem-03.jpeg",
+      },
+      {
+        src: "/images/filantropia/abrigo-redentor/video-05.mp4",
+        poster: "/images/filantropia/abrigo-redentor/imagem-04.jpeg",
+      },
+      {
+        src: "/images/filantropia/abrigo-redentor/video-06.mp4",
+        poster: "/images/filantropia/abrigo-redentor/imagem_05.jpeg",
+      },
     ],
   },
   {
