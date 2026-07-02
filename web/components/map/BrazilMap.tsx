@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface BrazilMapProps {
   className?: string;
@@ -126,7 +126,7 @@ function getTooltipPositionClasses(align: HotspotAlign = "top") {
       "md:top-full md:left-1/2 md:mt-4 md:-translate-x-1/2",
     ].join(" "),
     left: [
-      "bottom-full left-1/2 mb-4 -translate-x-1/2",
+      "bottom-full right-0 mb-4",
       "md:bottom-auto md:left-auto md:right-full md:top-1/2 md:mb-0 md:mr-4 md:-translate-y-1/2 md:translate-x-0",
     ].join(" "),
     right: [
@@ -142,7 +142,7 @@ function getArrowPositionClasses(align: HotspotAlign = "top") {
   const positions: Record<HotspotAlign, string> = {
     top: "left-1/2 top-full -translate-x-1/2 -translate-y-1/2",
     bottom: "left-1/2 bottom-full -translate-x-1/2 translate-y-1/2",
-    left: "left-1/2 top-full -translate-x-1/2 -translate-y-1/2 md:left-full md:top-1/2 md:-translate-y-1/2 md:-translate-x-1/2",
+    left: "right-4 top-full -translate-y-1/2 md:right-auto md:left-full md:top-1/2 md:-translate-x-1/2",
     right: "left-1/2 top-full -translate-x-1/2 -translate-y-1/2 md:left-0 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2",
   };
 
@@ -170,8 +170,6 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
     return () => document.removeEventListener("pointerdown", handlePointerDown);
   }, []);
 
-  const hotspots = useMemo(() => HOTSPOTS, []);
-
   return (
     <div ref={rootRef} className={`w-full ${className}`}>
       <div className="relative mx-auto w-full">
@@ -186,10 +184,9 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
         />
 
         <div className="absolute inset-0">
-          {hotspots.map((hotspot) => {
+          {HOTSPOTS.map((hotspot) => {
             const isPinned = pinnedId === hotspot.id;
             const isActive = displayedId === hotspot.id;
-            const shouldDim = displayedId !== null && !isActive;
 
             return (
               <div
@@ -209,14 +206,7 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
                     aria-label={`Presenças do MC Os Papas em ${hotspot.state}`}
                     aria-expanded={isActive}
                     aria-describedby={isActive ? `tooltip-${hotspot.id}` : undefined}
-                    className={[
-                      "group relative flex h-6 w-6 cursor-pointer items-center justify-center rounded-full md:h-5 md:w-5",
-                      "transition-all duration-300 ease-out focus:outline-none focus-visible:ring-2",
-                      "focus-visible:ring-[color:var(--color-gold-500)]/70 focus-visible:ring-offset-2",
-                      "focus-visible:ring-offset-black/60",
-                      shouldDim ? "scale-95 opacity-35" : "opacity-100",
-                      isActive ? "scale-110" : "hover:scale-105",
-                    ].join(" ")}
+                    className="relative h-11 w-11 cursor-pointer rounded-md bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black/60"
                     onFocus={() => setActiveId(hotspot.id)}
                     onBlur={() => {
                       if (!isPinned) setActiveId(null);
@@ -226,33 +216,7 @@ export function BrazilMap({ className = "" }: BrazilMapProps) {
                       setPinnedId(nextPinnedId);
                       setActiveId(nextPinnedId ?? hotspot.id);
                     }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={[
-                        "absolute inset-0 rounded-full border border-[color:var(--color-gold-500)]/55",
-                        "bg-[color:var(--color-gold-500)]/12 blur-[1px] transition-all duration-300",
-                        isActive ? "scale-[2.4] opacity-100" : "scale-[1.9] opacity-45",
-                      ].join(" ")}
-                    />
-                    <span
-                      aria-hidden="true"
-                      className={[
-                        "absolute inset-0 rounded-full border border-[color:var(--color-gold-500)]/30",
-                        "transition-all duration-300",
-                        isActive ? "scale-[3.4] opacity-100" : "scale-[2.6] opacity-0 group-hover:opacity-70",
-                      ].join(" ")}
-                    />
-                    <span
-                      aria-hidden="true"
-                      className={[
-                        "relative z-10 h-2.5 w-2.5 rounded-full border border-[color:var(--color-gold-500)]/75",
-                        "bg-[color:var(--color-gold-500)] shadow-[0_0_18px_rgba(255,215,0,0.45)]",
-                        "transition-all duration-300",
-                        isActive ? "scale-110" : "scale-100",
-                      ].join(" ")}
-                    />
-                  </button>
+                  />
 
                   <div
                     id={`tooltip-${hotspot.id}`}
