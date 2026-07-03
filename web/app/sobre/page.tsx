@@ -95,6 +95,40 @@ const identityCards = [
   },
 ];
 
+const founders = [
+  {
+    id: "cangaceiro",
+    name: "Cangaceiro",
+    image: "/images/fundadores/Cangaceiro.jpg",
+    alt: "Foto histórica de Cangaceiro, fundador do MC Os Papas",
+  },
+  {
+    id: "carnica",
+    name: "Carniça",
+    image: "/images/fundadores/Carniça.jpg",
+    alt: "Foto histórica de Carniça, fundador do MC Os Papas",
+  },
+  {
+    id: "da-pop",
+    name: "Da Pop",
+    image: "/images/fundadores/Da-Pop.jpg",
+    alt: "Foto histórica de Da Pop, fundador do MC Os Papas",
+    objectPosition: "center top",
+  },
+  {
+    id: "papa-xxiii",
+    name: "Papa XXIII",
+    image: "/images/fundadores/Papa-XXIII.jpg",
+    alt: "Foto histórica de Papa XXIII, fundador do MC Os Papas",
+  },
+  {
+    id: "tio-chico",
+    name: "Tio Chico",
+    image: "/images/fundadores/Tio-Chico.jpg",
+    alt: "Foto histórica de Tio Chico, fundador do MC Os Papas",
+  },
+];
+
 const hierarchy = [
   {
     icon: PapaIcon,
@@ -163,6 +197,40 @@ export default function SobrePage() {
 
 No intervalo de um almoço, no restaurante Yamaga, na cidade de Ananindeua, no Estado do Pará, conversavam como fariam para fazer seus passeios de moto, se carregariam algum Brasão em seus coletes ou usariam coletes lisos. Foi assim que surgiu a ideia de montar um grupo, um Moto Clube. Dessa forma, em 20 de setembro de 2014 nasceu o MC OS PAPAS, entidade sem fins lucrativos, construída sob a forma de Associação.`}
           </p>
+
+          <section
+            aria-labelledby="founders-title"
+            className="mt-12 border-t border-white/10 pt-10"
+          >
+            <h3
+              id="founders-title"
+              className="font-heading text-3xl uppercase tracking-[0.05em] text-white sm:text-4xl"
+            >
+              Os Cinco Fundadores
+            </h3>
+            <ul className="mt-6 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+              {founders.map((founder) => (
+                <li key={founder.id}>
+                  <article className="h-full overflow-hidden rounded-lg border border-white/10 bg-[color:var(--color-bg-900)]">
+                    <div className="relative aspect-[3/4] overflow-hidden bg-black/30">
+                      <Image
+                        src={founder.image}
+                        alt={founder.alt}
+                        fill
+                        className="object-cover"
+                        style={{ objectPosition: founder.objectPosition ?? "center center" }}
+                        sizes="(max-width: 359px) 100vw, (max-width: 767px) 50vw, (max-width: 1279px) 33vw, 20vw"
+                      />
+                    </div>
+                    <h4 className="border-t border-[color:var(--color-gold-500)]/25 px-4 py-4 text-base font-semibold text-white">
+                      {founder.name}
+                    </h4>
+                  </article>
+                </li>
+              ))}
+            </ul>
+          </section>
+
           <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-2">
             {identityCards.map((card) => (
               <article key={card.title} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-6 sm:p-8">
