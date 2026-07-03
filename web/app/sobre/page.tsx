@@ -105,7 +105,7 @@ const founders = [
   {
     id: "carnica",
     name: "Carniça",
-    image: "/images/fundadores/Carniça.jpg",
+    image: "/images/fundadores/Carnica.jpg",
     alt: "Foto histórica de Carniça, fundador do MC Os Papas",
   },
   {
