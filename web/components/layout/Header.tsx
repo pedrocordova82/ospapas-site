@@ -15,7 +15,7 @@ const algerian = localFont({
 
 const navItems = [
   { label: "Home", href: "/#top", activePath: "/" },
-  { label: "Quem Somos", href: "/sobre", activePath: "/sobre" },
+  { label: "Quem Somos", href: "/quem-somos", activePath: "/quem-somos" },
   { label: "Diretoria", href: "/diretoria", activePath: "/diretoria" },
   { label: "Sedes", href: "/sedes", activePath: "/sedes" },
   { label: "Eventos", href: "/eventos", activePath: "/eventos" },

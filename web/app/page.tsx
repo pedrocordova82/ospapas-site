@@ -136,7 +136,7 @@ export default function Home() {
         {baseSections.map((section) => (
           section.id === "sobre" ? (
             <Reveal key={section.id}>
-              <Link href="/sobre" className="group block cursor-pointer">
+              <Link href="/quem-somos" className="group block cursor-pointer">
                 <article id={section.id} className="rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] p-8">
                  <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">{section.label}</p>
                   <h2 className="mt-4 font-heading text-4xl uppercase tracking-[0.05em] text-[color:var(--color-text-100)] sm:text-5xl">
