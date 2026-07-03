@@ -76,9 +76,9 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     whatsapp: officialWhatsappNumbers.saoJoseDosCampos,
   },
   {
-    id: "umuarama-pa",
+    id: "umuarama-pr",
     city: "Umuarama",
-    state: "PA",
+    state: "PR",
     representative: "Cardeal Jota",
     whatsapp: temporaryWhatsapp,
   },

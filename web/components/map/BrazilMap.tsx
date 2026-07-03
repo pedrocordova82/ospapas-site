@@ -31,7 +31,6 @@ const HOTSPOTS: MapHotspot[] = [
       { city: "Porto de Moz", type: "Subsede Representativa" },
       { city: "Almeirim", type: "Subsede Representativa" },
       { city: "Salinópolis", type: "Subsede Representativa" },
-      { city: "Umuarama", type: "Subsede Representativa" },
     ],
     x: 53.7,
     y: 29,
@@ -99,7 +98,10 @@ const HOTSPOTS: MapHotspot[] = [
   {
     id: "pr",
     state: "PR",
-    presences: [{ city: "Curitiba", type: "Subsede Representativa" }],
+    presences: [
+      { city: "Curitiba", type: "Subsede Representativa" },
+      { city: "Umuarama", type: "Subsede Representativa" },
+    ],
     x: 57.5,
     y: 73.4,
     align: "right",
