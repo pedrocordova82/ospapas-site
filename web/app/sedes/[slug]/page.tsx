@@ -122,6 +122,53 @@ export default async function SedePage({ params }: SedePageProps) {
         </article>
       </section>
 
+      {sede.openHouseEvents?.length ? (
+        <section
+          aria-labelledby="open-house-events-title"
+          className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8"
+        >
+          <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
+            Agenda local
+          </p>
+          <h2
+            id="open-house-events-title"
+            className="mt-3 font-heading text-4xl uppercase tracking-[0.05em] text-white sm:text-5xl"
+          >
+            Sedes Abertas
+          </h2>
+          <p className="mt-5 max-w-3xl text-base leading-7 text-[color:var(--color-text-300)]">
+            Encontros abertos da Regional Brasília para receber irmãos, convidados, motociclistas e
+            amigos do MC Os Papas.
+          </p>
+
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+            {sede.openHouseEvents.map((event) => (
+              <li key={event.id}>
+                <article className="h-full rounded-lg border border-white/10 bg-[color:var(--color-bg-900)] p-4 sm:p-5">
+                  <time
+                    dateTime={event.date}
+                    className="font-heading text-2xl uppercase leading-tight text-white sm:text-3xl"
+                  >
+                    {event.dateLabel}
+                  </time>
+                  <time
+                    dateTime="18:00"
+                    className="mt-3 block text-base font-semibold text-[color:var(--color-gold-500)]"
+                  >
+                    {event.time}
+                  </time>
+                </article>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-5 text-sm italic text-white/55">
+            Todos os eventos são realizados na sede da regional, na localização acima. Datas sujeitas a
+            alteração com aviso prévio.
+          </p>
+        </section>
+      ) : null}
+
       {sedeMembers.length > 0 ? (
         <section className="mx-auto w-full max-w-6xl px-4 pt-14 sm:px-6 lg:px-8">
           <p className="text-xs uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">Irmandade</p>

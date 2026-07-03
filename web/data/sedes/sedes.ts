@@ -1,4 +1,8 @@
 import { officialWhatsappNumbers } from "@/data/whatsapp";
+import {
+  brasiliaOpenHouseEvents,
+  type OpenHouseEvent,
+} from "@/data/sedes/brasilia/open-house-events";
 
 export type Sede = {
   slug: string
@@ -13,6 +17,7 @@ export type Sede = {
   latitude: number
   longitude: number
   mapsUrl?: string
+  openHouseEvents?: OpenHouseEvent[]
 }
 
 export const sedes: Sede[] = [
@@ -39,7 +44,8 @@ export const sedes: Sede[] = [
     whatsapp: officialWhatsappNumbers.brasilia,
     image: "/images/brasilia/capa.jpg",
     latitude: -15.825362906642775,
-    longitude: -48.08714023817274
+    longitude: -48.08714023817274,
+    openHouseEvents: brasiliaOpenHouseEvents
   },
 
   {

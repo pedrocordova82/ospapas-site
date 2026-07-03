@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { brasiliaOpenHouseEvents } from "@/data/sedes/brasilia/open-house-events";
 
 const months = [
   { id: "julho", label: "Julho", shortLabel: "JUL" },
@@ -25,6 +26,15 @@ type Event = {
 };
 
 const events: Event[] = [
+  ...brasiliaOpenHouseEvents.map((event) => ({
+    id: event.id,
+    month: event.month,
+    dateLabel: event.dayLabel,
+    title: "Sede Aberta da Regional Brasília",
+    organizer: "Regional Brasília",
+    location: `${event.location}, ${event.time}`,
+    type: event.title,
+  })),
   {
     id: "petropolis-motofest-2026",
     month: "julho",
@@ -274,7 +284,17 @@ export default function EventosPage() {
 
         <div className="mt-4 space-y-14">
           {months.map((month) => {
-            const monthEvents = events.filter((event) => event.month === month.id);
+            const monthEvents = events
+              .filter((event) => event.month === month.id)
+              .sort((firstEvent, secondEvent) => {
+                const firstDay = Number.parseInt(firstEvent.dateLabel, 10);
+                const secondDay = Number.parseInt(secondEvent.dateLabel, 10);
+
+                if (Number.isNaN(firstDay)) return 1;
+                if (Number.isNaN(secondDay)) return -1;
+
+                return firstDay - secondDay;
+              });
 
             return (
               <section key={month.id} aria-labelledby={`month-${month.id}`} className="border-t border-white/10 pt-8">
