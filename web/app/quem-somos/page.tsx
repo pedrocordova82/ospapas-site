@@ -52,7 +52,7 @@ const coatOfArmsItems = [
   },
   {
     title: "FRATRES IN VIA v",
-    description: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos de Estrada”, que em latim é “FRATRES IN VIA”. O numeral V, em romano, significa os 5 fundadores do Moto Clube",
+    description: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos na Estrada”, que em latim é “FRATRES IN VIA”. O numeral V, em romano, significa os 5 fundadores do Moto Clube",
     image: "/images/sobre/fratres-in-via.png",
   },
 ];
