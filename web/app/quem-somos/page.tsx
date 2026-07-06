@@ -94,7 +94,7 @@ const identityCards = [
   {
     label: "Irmandade",
     title: "FRATRES IN VIA",
-    text: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos de Estrada”, que em latim é “FRATRES IN VIA”, frase escolhida a época, por um dos fundadores, “Da Pop”, e que está representada em nosso Brasão.",
+    text: "Como todos somos filhos do Pai, nos tornamos assim “Irmãos na Estrada”, que em latim é “FRATRES IN VIA”, frase escolhida a época, por um dos fundadores, “Da Pop”, e que está representada em nosso Brasão.",
   },
 ];
 
