@@ -100,17 +100,11 @@ const identityCards = [
 
 const founders = [
   {
-    id: "cangaceiro",
-    name: "Cangaceiro",
-    image: "/images/fundadores/Cangaceiro.jpg",
-    alt: "Foto histórica de Cangaceiro, fundador do MC Os Papas",
-  },
-  {
-    id: "carnica",
-    name: "Carniça",
-    image: "/images/fundadores/Carnica.jpg",
-    alt: "Foto histórica de Carniça, fundador do MC Os Papas",
-  },
+    id: "papa-xxiii",
+    name: "Papa XXIII",
+    image: "/images/fundadores/Papa-XXIII.jpg",
+    alt: "Foto histórica de Papa XXIII, fundador do MC Os Papas",
+  },  
   {
     id: "da-pop",
     name: "Da Pop",
@@ -119,16 +113,22 @@ const founders = [
     objectPosition: "center top",
   },
   {
-    id: "papa-xxiii",
-    name: "Papa XXIII",
-    image: "/images/fundadores/Papa-XXIII.jpg",
-    alt: "Foto histórica de Papa XXIII, fundador do MC Os Papas",
+    id: "carnica",
+    name: "Carniça",
+    image: "/images/fundadores/Carnica.jpg",
+    alt: "Foto histórica de Carniça, fundador do MC Os Papas",
   },
-  {
+    {
     id: "tio-chico",
     name: "Tio Chico",
     image: "/images/fundadores/Tio-Chico.jpg",
     alt: "Foto histórica de Tio Chico, fundador do MC Os Papas",
+  },
+  {
+    id: "cangaceiro",
+    name: "Cangaceiro",
+    image: "/images/fundadores/Cangaceiro.jpg",
+    alt: "Foto histórica de Cangaceiro, fundador do MC Os Papas",
   },
 ];
 
