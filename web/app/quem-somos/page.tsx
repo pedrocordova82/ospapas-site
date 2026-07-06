@@ -232,6 +232,31 @@ No intervalo de um almoço, no restaurante Yamaga, na cidade de Ananindeua, no E
                 </li>
               ))}
             </ul>
+
+            <div className="mx-auto mt-10 w-full max-w-xl sm:mt-12">
+              <h4
+                id="historical-record-title"
+                className="text-center text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]"
+              >
+                Registro Histórico
+              </h4>
+              <figure
+                aria-labelledby="historical-record-title"
+                className="mt-4 overflow-hidden rounded-xl border border-white/10 bg-[color:var(--color-bg-900)]"
+              >
+                <Image
+                  src="/images/fundadores/amigos-fundadores-monocromatica.jpeg"
+                  alt="Registro histórico monocromático dos cinco fundadores do MC Os Papas"
+                  width={1080}
+                  height={1440}
+                  className="h-auto w-full"
+                  sizes="(max-width: 639px) calc(100vw - 3rem), 576px"
+                />
+                <figcaption className="border-t border-white/10 px-5 py-4 text-center text-sm leading-6 text-[color:var(--color-text-300)] sm:px-6">
+                  Fratres in Via — registro afetivo dos cinco amigos que deram origem ao MC Os Papas.
+                </figcaption>
+              </figure>
+            </div>
           </section>
 
           <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-2">
