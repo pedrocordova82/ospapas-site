@@ -45,6 +45,7 @@ export const sedes: Sede[] = [
     image: "/images/brasilia/capa.jpg",
     latitude: -15.825362906642775,
     longitude: -48.08714023817274,
+    mapsUrl: "https://maps.app.goo.gl/6vPTFeUimKh7z2FFA",
     openHouseEvents: brasiliaOpenHouseEvents
   },
 
