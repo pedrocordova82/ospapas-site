@@ -3,12 +3,22 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+export type EventGalleryVideo = {
+  src: string;
+  poster?: string;
+  label: string;
+  type?: string;
+};
+
 export type EventGalleryItem = {
   title: string;
   date: string;
   location: string;
   coverImage: string;
+  coverImageAlt?: string;
   images: string[];
+  imageAlts?: string[];
+  videos?: EventGalleryVideo[];
 };
 
 type EventGalleryModalProps = {
@@ -20,14 +30,26 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
   const [index, setIndex] = useState(0);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const touchStartX = useRef(0);
+  const mediaItems = [
+    ...event.images.map((src, imageIndex) => ({
+      kind: "image" as const,
+      src,
+      alt: event.imageAlts?.[imageIndex] ?? `${event.title} - imagem ${imageIndex + 1}`,
+    })),
+    ...(event.videos ?? []).map((video) => ({
+      kind: "video" as const,
+      ...video,
+    })),
+  ];
+  const currentMedia = mediaItems[index];
 
   const prev = useCallback(() => {
-    setIndex((current) => (current === 0 ? event.images.length - 1 : current - 1));
-  }, [event.images.length]);
+    setIndex((current) => (current === 0 ? mediaItems.length - 1 : current - 1));
+  }, [mediaItems.length]);
 
   const next = useCallback(() => {
-    setIndex((current) => (current === event.images.length - 1 ? 0 : current + 1));
-  }, [event.images.length]);
+    setIndex((current) => (current === mediaItems.length - 1 ? 0 : current + 1));
+  }, [mediaItems.length]);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -55,6 +77,10 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
     if (distance > 50) prev();
     if (distance < -50) next();
   };
+
+  if (!currentMedia || mediaItems.length === 0) {
+    return null;
+  }
 
   return (
     <div
@@ -102,24 +128,40 @@ export default function EventGalleryModal({ event, onClose }: EventGalleryModalP
       </button>
 
       <div
-        className="relative h-[78vh] w-[calc(100vw-2rem)] max-w-4xl sm:h-[84vh] sm:w-[calc(100vw-8rem)]"
+        className="relative flex h-[78vh] w-[calc(100vw-2rem)] max-w-4xl items-center justify-center sm:h-[84vh] sm:w-[calc(100vw-8rem)]"
         onClick={(clickEvent) => clickEvent.stopPropagation()}
         onTouchStart={(eventTouch) => {
           touchStartX.current = eventTouch.changedTouches[0].clientX;
         }}
         onTouchEnd={handleTouchEnd}
       >
-        <Image
-          src={event.images[index]}
-          alt={`${event.title} - imagem ${index + 1}`}
-          fill
-          className="rounded-lg object-contain"
-          sizes="(max-width: 639px) calc(100vw - 2rem), calc(100vw - 8rem)"
-        />
+        {currentMedia.kind === "image" ? (
+          <Image
+            src={currentMedia.src}
+            alt={currentMedia.alt}
+            fill
+            className="rounded-lg object-contain"
+            sizes="(max-width: 639px) calc(100vw - 2rem), calc(100vw - 8rem)"
+          />
+        ) : (
+          <video
+            key={currentMedia.src}
+            controls
+            controlsList="nodownload"
+            playsInline
+            preload="metadata"
+            poster={currentMedia.poster}
+            aria-label={currentMedia.label}
+            className="max-h-full max-w-full rounded-lg border border-white/10 bg-black object-contain shadow-2xl shadow-black/60"
+          >
+            <source src={currentMedia.src} type={currentMedia.type ?? "video/mp4"} />
+            Seu navegador não oferece suporte à reprodução deste vídeo.
+          </video>
+        )}
       </div>
 
       <div className="absolute bottom-4 z-20 rounded-full border border-white/15 bg-black/70 px-3 py-1 text-sm text-white sm:bottom-6">
-        {index + 1} / {event.images.length}
+        {index + 1} / {mediaItems.length}
       </div>
     </div>
   );

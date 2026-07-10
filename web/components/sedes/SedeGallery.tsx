@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import EventGalleryModal, { type EventGalleryItem } from "@/components/ui/EventGalleryModal";
 import Lightbox from "@/components/ui/Lightbox";
 
@@ -12,16 +12,23 @@ type SedeGalleryProps = {
 };
 
 /**
- * SECTION: Interactive Sede Gallery
- * Keeps the same gallery grid layout while splitting interactions:
- * event cards open a carousel modal and gallery images open the shared lightbox.
+ * SECTION: Galeria interativa da sede
+ * A galeria reutiliza o mesmo fluxo de Brasília para manter navegação,
+ * acessibilidade e comportamento mobile consistentes entre as regionais.
  */
 export function SedeGallery({ images, sedeName, events }: SedeGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventGalleryItem | null>(null);
+  const lastEventTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  const openEvent = (event: EventGalleryItem) => {
+  const openEvent = (event: EventGalleryItem, trigger: HTMLButtonElement) => {
+    lastEventTriggerRef.current = trigger;
     setSelectedEvent(event);
+  };
+
+  const closeEvent = () => {
+    setSelectedEvent(null);
+    window.requestAnimationFrame(() => lastEventTriggerRef.current?.focus());
   };
 
   return (
@@ -35,14 +42,14 @@ export function SedeGallery({ images, sedeName, events }: SedeGalleryProps) {
               <button
                 key={event.title}
                 type="button"
-                onClick={() => openEvent(event)}
+                onClick={(clickEvent) => openEvent(event, clickEvent.currentTarget)}
                 className="group overflow-hidden rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] text-left cursor-pointer transition"
                 aria-label={`Abrir galeria do evento ${event.title}`}
               >
                 <div className="relative h-48 w-full overflow-hidden sm:h-52">
                   <Image
                     src={event.coverImage}
-                    alt={event.title}
+                    alt={event.coverImageAlt ?? event.title}
                     fill
                     className="object-cover transition duration-300 group-hover:scale-[1.03]"
                   />
@@ -85,7 +92,7 @@ export function SedeGallery({ images, sedeName, events }: SedeGalleryProps) {
         <EventGalleryModal
           key={selectedEvent.title}
           event={selectedEvent}
-          onClose={() => setSelectedEvent(null)}
+          onClose={closeEvent}
         />
       ) : null}
     </>

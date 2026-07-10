@@ -5,6 +5,7 @@ import { sedes } from "@/data/sedes/sedes";
 import { brasiliaEvents } from "@/data/sedes/brasilia/events";
 import { brasiliaGallery } from "@/data/sedes/brasilia/gallery";
 import { brasiliaMembers } from "@/data/sedes/brasilia/members";
+import { events as rioDeJaneiroEvents } from "@/data/sedes/rio-de-janeiro/events";
 import { SedeGallery } from "@/components/sedes/SedeGallery";
 type SedePageProps = {
   params: Promise<{
@@ -32,7 +33,7 @@ export default async function SedePage({ params }: SedePageProps) {
 
   const mapSrc = `https://www.google.com/maps?q=${sede.latitude},${sede.longitude}&output=embed`;
   const mapsLink = sede.mapsUrl ?? `https://www.google.com/maps?q=${sede.latitude},${sede.longitude}`;
-  const sedeEvents = slug === "brasilia" ? brasiliaEvents : [];
+  const sedeEvents = slug === "brasilia" ? brasiliaEvents : slug === "rio-de-janeiro" ? rioDeJaneiroEvents : [];
   const sedeGallery = slug === "brasilia" ? brasiliaGallery : [];
   const sedeMembers = slug === "brasilia" ? brasiliaMembers : [];
 
