@@ -14,6 +14,31 @@ type PhilanthropyAction = {
   }[];
 };
 
+type HistoricalAction = {
+  id: string;
+  year: string;
+  location: string;
+  title: string;
+  description: string;
+  impact: string;
+  image: string;
+  alt: string;
+};
+
+const historicalActions: HistoricalAction[] = [
+  {
+    id: "capital-moto-week-2017",
+    year: "2017",
+    location: "Brasília",
+    title: "Capital Moto Week",
+    description:
+      "Em 2017, o MC Os Papas proporcionou a 100 crianças de uma creche a experiência de participar do Capital Moto Week, em Brasília. A ação uniu solidariedade, inclusão e a paixão pelo motociclismo em um dia de convivência e alegria.",
+    impact: "100 crianças participantes",
+    image: "/images/filantropia/cmw-2017/filantropia-cmw-2017.jpeg",
+    alt: "Ação filantrópica do MC Os Papas com crianças no Capital Moto Week em Brasília, em 2017",
+  },
+];
+
 const philanthropyActions: PhilanthropyAction[] = [
   {
     id: "abrigo-redentor",
@@ -112,6 +137,67 @@ export default function FilantropiaPage() {
               Ações sociais realizadas pelo MC Os Papas, fortalecendo a solidariedade, a irmandade e o
               compromisso de servir.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="historical-actions-title"
+        className="border-t border-white/10 py-16 lg:py-20"
+      >
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">
+              Memória filantrópica
+            </p>
+            <h2
+              id="historical-actions-title"
+              className="mt-3 font-heading text-3xl uppercase tracking-[0.05em] text-white sm:text-5xl"
+            >
+              Ações que marcaram nossa história
+            </h2>
+            <p className="mt-5 text-base leading-7 text-[color:var(--color-text-300)]">
+              Iniciativas que registram o compromisso do MC Os Papas com presença, cuidado e
+              impacto social ao longo da nossa caminhada.
+            </p>
+          </div>
+
+          <div className="mt-10 space-y-6">
+            {historicalActions.map((action) => (
+              <article
+                key={action.id}
+                className="overflow-hidden rounded-lg border border-white/10 bg-[color:var(--color-bg-900)]"
+              >
+                <div className="grid gap-0 lg:grid-cols-[minmax(0,0.43fr)_minmax(0,0.57fr)]">
+                  <div className="bg-black/45 p-3 sm:p-4 lg:p-5">
+                    <div className="relative mx-auto aspect-[9/16] w-full max-w-sm overflow-hidden rounded-md bg-black lg:max-w-none">
+                      <Image
+                        src={action.image}
+                        alt={action.alt}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 1023px) calc(100vw - 2rem), 470px"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--color-gold-500)]">
+                      {action.location} • {action.year}
+                    </p>
+                    <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.05em] text-white sm:text-4xl">
+                      {action.title}
+                    </h3>
+                    <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--color-text-300)] sm:text-lg sm:leading-8">
+                      {action.description}
+                    </p>
+                    <p className="mt-8 border-l-2 border-[color:var(--color-gold-500)] pl-4 text-sm font-semibold uppercase tracking-[0.14em] text-[color:var(--color-gold-400)] sm:text-base">
+                      {action.impact}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
