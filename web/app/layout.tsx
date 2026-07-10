@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
+import { ClarityConsent } from "@/components/analytics/ClarityConsent";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import FloatingWhatsApp from "@/components/layout/FloatingWhatsApp";
@@ -60,6 +61,7 @@ export default function RootLayout({
              * sedes from any page in the site.
              */}
             <FloatingWhatsApp />
+            <ClarityConsent />
           </div>
         </div>
       </body>

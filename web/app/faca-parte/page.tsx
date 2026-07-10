@@ -318,7 +318,8 @@ export default function FacaPartePage() {
                 Deixe seus dados e entraremos em contato com você.
               </p>
 
-              <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+              {/* Todo o formulário é mascarado para impedir que dados pessoais apareçam nas gravações de sessão. */}
+              <form className="mt-8 space-y-5" data-clarity-mask="True" onSubmit={handleSubmit}>
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute left-[-9999px] top-auto h-px w-px overflow-hidden opacity-0"
