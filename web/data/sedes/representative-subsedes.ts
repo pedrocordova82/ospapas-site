@@ -80,6 +80,6 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     city: "Umuarama",
     state: "PR",
     representative: "Cardeal Jota",
-    whatsapp: temporaryWhatsapp,
+    whatsapp: officialWhatsappNumbers.umuarama,
   },
 ];

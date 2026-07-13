@@ -48,7 +48,7 @@ export const whatsappGroups: WhatsAppGroup[] = [
       {
         id: "regional-sao-miguel-do-oeste",
         label: "São Miguel do Oeste",
-        href: "https://wa.me/5549999999999",
+        href: toWhatsappHref(officialWhatsappNumbers.saoMiguelDoOeste),
       },
       {
         id: "regional-tome-acu",
@@ -115,7 +115,7 @@ export const whatsappGroups: WhatsAppGroup[] = [
       {
         id: "subsede-umuarama",
         label: "Umuarama",
-        href: temporaryRepresentativeHref,
+        href: toWhatsappHref(officialWhatsappNumbers.umuarama),
       },
     ],
   },

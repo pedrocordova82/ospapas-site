@@ -69,7 +69,7 @@ export const sedes: Sede[] = [
     type: "Regional",
     description: "Foi criada em 21 de novembro de 2020, Sua localização está nas proximidades da Rodovia BR 282, na Linha Gramadinho, S/N.",
     instagram: "@mc_os_papas_sc",
-    whatsapp: "+5561999999999",
+    whatsapp: officialWhatsappNumbers.saoMiguelDoOeste,
     image: "/images/sao-miguel-do-oeste/capa.jpg",
     latitude: -26.695630322051688,
     longitude: -53.554433515344144
