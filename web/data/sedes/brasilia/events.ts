@@ -1,5 +1,78 @@
-export const brasiliaEvents = [
-    {
+import type { EventGalleryItem } from "@/components/ui/EventGalleryModal";
+
+const sedeAberta110426BasePath = "/images/brasilia/events/sede-aberta-11-04-26";
+
+const sedeAberta110426Images = [
+  `${sedeAberta110426BasePath}/imagem-01.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-02.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-03.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-04.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-05.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-06.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-07.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-08.jpeg`,
+  `${sedeAberta110426BasePath}/imagem-09.jpeg`,
+];
+
+const sedeAberta110426ImageAlts = sedeAberta110426Images.map(
+  () => "Integrantes e convidados durante a Sede Aberta da Regional Brasília em 11 de abril de 2026",
+);
+
+export const brasiliaEvents: EventGalleryItem[] = [
+  {
+    title: "SEDE ABERTA",
+    date: "11 DE ABRIL DE 2026",
+    location: "Brasília",
+    coverImage: sedeAberta110426Images[0],
+    coverImageAlt: "Integrantes e convidados durante a Sede Aberta da Regional Brasília em 11 de abril de 2026",
+    images: sedeAberta110426Images,
+    imageAlts: sedeAberta110426ImageAlts,
+    videos: [
+      {
+        src: `${sedeAberta110426BasePath}/video-01.mp4`,
+        poster: sedeAberta110426Images[0],
+        label: "Vídeo da Sede Aberta da Regional Brasília em 11 de abril de 2026",
+        type: "video/quicktime",
+      },
+      {
+        src: `${sedeAberta110426BasePath}/video-02.mp4`,
+        poster: sedeAberta110426Images[1],
+        label: "Vídeo da Sede Aberta da Regional Brasília em 11 de abril de 2026",
+        type: "video/quicktime",
+      },
+      {
+        src: `${sedeAberta110426BasePath}/video-03.mp4`,
+        poster: sedeAberta110426Images[2],
+        label: "Vídeo da Sede Aberta da Regional Brasília em 11 de abril de 2026",
+        type: "video/quicktime",
+      },
+      {
+        src: `${sedeAberta110426BasePath}/video-04.mp4`,
+        poster: sedeAberta110426Images[3],
+        label: "Vídeo da Sede Aberta da Regional Brasília em 11 de abril de 2026",
+        type: "video/quicktime",
+      },
+      {
+        src: `${sedeAberta110426BasePath}/video-05.mp4`,
+        poster: sedeAberta110426Images[4],
+        label: "Vídeo da Sede Aberta da Regional Brasília em 11 de abril de 2026",
+        type: "video/quicktime",
+      },
+      {
+        src: `${sedeAberta110426BasePath}/video-06.mp4`,
+        poster: sedeAberta110426Images[5],
+        label: "Vídeo da Sede Aberta da Regional Brasília em 11 de abril de 2026",
+        type: "video/quicktime",
+      },
+      {
+        src: `${sedeAberta110426BasePath}/video-07.mp4`,
+        poster: sedeAberta110426Images[6],
+        label: "Vídeo da Sede Aberta da Regional Brasília em 11 de abril de 2026",
+        type: "video/quicktime",
+      },
+    ],
+  },
+  {
     title: "Inauguração da Nova Sede de Brasília",
     date: "14/03/2026",
     location: "Brasília",

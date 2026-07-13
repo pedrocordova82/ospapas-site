@@ -2,3 +2,11 @@
 *.mp4
 *.avi
 *.mkv
+
+# Vídeos institucionais precisam ser versionados para o deploy estático via GitHub Actions.
+!web/public/images/**/*.mp4
+!web/public/images/**/*.mov
+!web/public/images/**/*.webm
+!web/public/images/**/*.m4v
+!web/public/images/**/*.avi
+!web/public/images/**/*.mkv

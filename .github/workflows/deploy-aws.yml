@@ -23,6 +23,7 @@ jobs:
       S3_BUCKET: mcospapas-site-prod
       CLOUDFRONT_DISTRIBUTION_ID: E3BOWBQ0Q2TMRG
       NEXT_PUBLIC_JOIN_API_URL: https://lxyf3negm2.execute-api.us-east-1.amazonaws.com/join
+      NEXT_PUBLIC_CLARITY_PROJECT_ID: xke0s0w0wc
 
     steps:
       - name: Checkout repository
