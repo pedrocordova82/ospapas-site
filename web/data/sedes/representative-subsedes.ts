@@ -23,8 +23,8 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     id: "criciuma-sc",
     city: "Criciúma",
     state: "SC",
-    representative: "Bispo Rocky",
-    whatsapp: temporaryWhatsapp,
+    representative: "Bispo Rock",
+    whatsapp: officialWhatsappNumbers.criciuma,
   },
   {
     id: "curitiba-pr",
