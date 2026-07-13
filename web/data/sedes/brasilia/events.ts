@@ -1,6 +1,7 @@
 import type { EventGalleryItem } from "@/components/ui/EventGalleryModal";
 
 const sedeAberta110426BasePath = "/images/brasilia/events/sede-aberta-11-04-26";
+const visitaMcbda210326BasePath = "/images/brasilia/events/visita-mcbda-11-03-26";
 
 const sedeAberta110426Images = [
   `${sedeAberta110426BasePath}/imagem-01.jpeg`,
@@ -16,6 +17,16 @@ const sedeAberta110426Images = [
 
 const sedeAberta110426ImageAlts = sedeAberta110426Images.map(
   () => "Integrantes e convidados durante a Sede Aberta da Regional Brasília em 11 de abril de 2026",
+);
+
+const visitaMcbda210326Images = [
+  `${visitaMcbda210326BasePath}/imagem-01.jpeg`,
+  `${visitaMcbda210326BasePath}/imagem-02.jpeg`,
+  `${visitaMcbda210326BasePath}/imagem-03.jpeg`,
+];
+
+const visitaMcbda210326ImageAlts = visitaMcbda210326Images.map(
+  () => "Integrantes do MC Os Papas Regional Brasília durante a visita ao aniversário do MC Bodes do Asfalto — Facção Taguatinga, em 21 de março de 2026",
 );
 
 export const brasiliaEvents: EventGalleryItem[] = [
@@ -71,6 +82,14 @@ export const brasiliaEvents: EventGalleryItem[] = [
         type: "video/quicktime",
       },
     ],
+  },
+  {
+    title: "VISITA AO ANIVERSÁRIO DO MC BODES DO ASFALTO — FACÇÃO TAGUATINGA",
+    date: "21 DE MARÇO DE 2026",
+    coverImage: visitaMcbda210326Images[0],
+    coverImageAlt: "Integrantes do MC Os Papas Regional Brasília durante a visita ao aniversário do MC Bodes do Asfalto — Facção Taguatinga, em 21 de março de 2026",
+    images: visitaMcbda210326Images,
+    imageAlts: visitaMcbda210326ImageAlts,
   },
   {
     title: "Inauguração da Nova Sede de Brasília",
