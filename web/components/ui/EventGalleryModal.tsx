@@ -13,7 +13,7 @@ export type EventGalleryVideo = {
 export type EventGalleryItem = {
   title: string;
   date: string;
-  location: string;
+  location?: string;
   coverImage: string;
   coverImageAlt?: string;
   images: string[];

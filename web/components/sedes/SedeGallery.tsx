@@ -57,7 +57,7 @@ export function SedeGallery({ images, sedeName, events }: SedeGalleryProps) {
                 <div className="p-5">
                   <h3 className="font-heading text-2xl uppercase tracking-[0.04em] text-white sm:text-3xl">{event.title}</h3>
                   <p className="mt-3 text-xs uppercase tracking-[0.12em] text-[color:var(--color-gold-500)]">{event.date}</p>
-                  <p className="mt-1 text-sm text-white/80">{event.location}</p>
+                  {event.location ? <p className="mt-1 text-sm text-white/80">{event.location}</p> : null}
                 </div>
               </button>
             ))}
