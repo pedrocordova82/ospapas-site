@@ -58,8 +58,8 @@ export const representativeSubsedes: RepresentativeSubsede[] = [
     id: "rio-grande-rs",
     city: "Rio Grande",
     state: "RS",
-    representative: "Cardeal Freedie",
-    whatsapp: temporaryWhatsapp,
+    representative: "Cardeal Freddie",
+    whatsapp: officialWhatsappNumbers.rioGrande,
   },
   {
     id: "salinopolis-pa",

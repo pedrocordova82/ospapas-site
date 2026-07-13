@@ -95,7 +95,7 @@ export const whatsappGroups: WhatsAppGroup[] = [
       {
         id: "subsede-rio-grande",
         label: "Rio Grande",
-        href: temporaryRepresentativeHref,
+        href: toWhatsappHref(officialWhatsappNumbers.rioGrande),
       },
       {
         id: "subsede-salinopolis",

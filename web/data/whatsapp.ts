@@ -10,6 +10,7 @@ export const officialWhatsappNumbers = {
   macapa: "5596981255293",
   portoDeMoz: "5593984390212",
   recife: "5581991307887",
+  rioGrande: "5521995149022",
   salinopolis: "5591981796053",
   saoJoseDosCampos: "5521980926664",
   umuarama: "5544998476721",
