@@ -41,12 +41,12 @@ export const brasiliaMembers = [
   },
   {
     name: "Panthro",
-    role: "Padre",
+    role: "Bispo",
     image: "/images/brasilia/members/panthro-padre.png",
   },
   {
     name: "Spider",
-    role: "Padre",
+    role: "Bispo",
     image: "/images/brasilia/members/spider-padre.png",
   },
 ];
