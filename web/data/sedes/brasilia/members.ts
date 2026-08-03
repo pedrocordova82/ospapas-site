@@ -31,12 +31,12 @@ export const brasiliaMembers = [
   },
   {
     name: "Feijão",
-    role: "Bispo",
+    role: "Cardeal",
     image: "/images/brasilia/members/feijao-bispo.png",
   },
   {
     name: "Miminha",
-    role: "Bispo",
+    role: "Bispa",
     image: "/images/brasilia/members/miminha-bispo.png",
   },
   {
