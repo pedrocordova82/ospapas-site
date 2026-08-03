@@ -24,15 +24,15 @@ export const brasiliaMembers = [
     role: "Cardeal",
     image: "/images/brasilia/members/woody-cardeal.png",
   },
+    {
+    name: "Feijão",
+    role: "Cardeal",
+    image: "/images/brasilia/members/feijao-bispo.png",
+  },
   {
     name: "Cabelo de Freira",
     role: "Bispo",
     image: "/images/brasilia/members/cabelo-de-freira-bispo.png",
-  },
-  {
-    name: "Feijão",
-    role: "Cardeal",
-    image: "/images/brasilia/members/feijao-bispo.png",
   },
   {
     name: "Miminha",
