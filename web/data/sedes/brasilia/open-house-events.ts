@@ -11,11 +11,11 @@ export type OpenHouseEvent = {
 
 export const brasiliaOpenHouseEvents: OpenHouseEvent[] = [
   {
-    id: "brasilia-sede-aberta-2026-08-08",
-    date: "2026-08-08",
+    id: "brasilia-sede-aberta-2026-08-22",
+    date: "2026-08-22",
     month: "agosto",
-    dateLabel: "08 de agosto",
-    dayLabel: "08",
+    dateLabel: "22 de agosto",
+    dayLabel: "22",
     title: "Sede Aberta",
     location: "Ruta 40",
     time: "18h",
@@ -46,16 +46,6 @@ export const brasiliaOpenHouseEvents: OpenHouseEvent[] = [
     month: "novembro",
     dateLabel: "14 de novembro",
     dayLabel: "14",
-    title: "Sede Aberta",
-    location: "Ruta 40",
-    time: "18h",
-  },
-  {
-    id: "brasilia-sede-aberta-2026-12-12",
-    date: "2026-12-12",
-    month: "dezembro",
-    dateLabel: "12 de dezembro",
-    dayLabel: "12",
     title: "Sede Aberta",
     location: "Ruta 40",
     time: "18h",
