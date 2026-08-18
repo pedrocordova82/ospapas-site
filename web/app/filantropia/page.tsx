@@ -76,6 +76,21 @@ const institutoDoCarinhoImageAlts = institutoDoCarinhoImages.map(
   () => "Ação filantrópica do MC Os Papas no Instituto do Carinho, em Ceilândia/DF",
 );
 
+const paroquiaRainhaDaPazBasePath = "/images/filantropia/paroquia-ns-rainha-da-paz";
+const paroquiaRainhaDaPazImages = [
+  `${paroquiaRainhaDaPazBasePath}/imagem_01.jpg`,
+  `${paroquiaRainhaDaPazBasePath}/imagem_02.jpg`,
+  `${paroquiaRainhaDaPazBasePath}/imagem_03.jpg`,
+  `${paroquiaRainhaDaPazBasePath}/imagem_04.jpg`,
+  `${paroquiaRainhaDaPazBasePath}/imagem_05.jpg`,
+  `${paroquiaRainhaDaPazBasePath}/imagem_06.jpeg`,
+  `${paroquiaRainhaDaPazBasePath}/imagem_07.jpg`,
+] as const;
+
+const paroquiaRainhaDaPazImageAlts = paroquiaRainhaDaPazImages.map(
+  () => "Ação filantrópica de Natal do MC Os Papas na Paróquia Nossa Senhora Rainha da Paz, em Belém/PA",
+);
+
 const philanthropyActions: PhilanthropyAction[] = [
   {
     id: "instituto-do-carinho",
@@ -97,6 +112,31 @@ const philanthropyActions: PhilanthropyAction[] = [
         src: `${institutoDoCarinhoBasePath}/Video_02.mp4`,
         poster: institutoDoCarinhoImages[1],
         label: "Vídeo da ação filantrópica do MC Os Papas no Instituto do Carinho",
+      },
+    ],
+    videoPreviewLimit: 2,
+    videoGridVariant: "compact",
+  },
+  {
+    id: "paroquia-nossa-senhora-rainha-da-paz",
+    eyebrow: "Belém/PA",
+    title: "Paróquia Nossa Senhora Rainha da Paz",
+    description:
+      "No Natal de 2025, o MC Os Papas realizou uma ação filantrópica na Paróquia Nossa Senhora Rainha da Paz, em Belém/PA. A iniciativa reforçou o compromisso do motoclube com a solidariedade, a presença fraterna e o cuidado com a comunidade.",
+    impact: "Natal 2025",
+    images: [...paroquiaRainhaDaPazImages],
+    imageAlts: paroquiaRainhaDaPazImageAlts,
+    photoPreviewLimit: 6,
+    videos: [
+      {
+        src: `${paroquiaRainhaDaPazBasePath}/video_01.mp4`,
+        poster: paroquiaRainhaDaPazImages[0],
+        label: "Vídeo da ação filantrópica de Natal do MC Os Papas na Paróquia Nossa Senhora Rainha da Paz",
+      },
+      {
+        src: `${paroquiaRainhaDaPazBasePath}/video_02.mp4`,
+        poster: paroquiaRainhaDaPazImages[1],
+        label: "Vídeo da ação filantrópica de Natal do MC Os Papas na Paróquia Nossa Senhora Rainha da Paz",
       },
     ],
     videoPreviewLimit: 2,
