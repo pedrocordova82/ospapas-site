@@ -29,7 +29,7 @@ export default function Home() {
   {
     id: "eventos",
     label: "Agenda",
-    title: "Eventos",
+    title: "Agenda",
     text: "Calendário anual de encontros de motos pelo Brasil."
   },
   {
@@ -69,10 +69,10 @@ export default function Home() {
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:flex-wrap">
             <Link
-              href="/eventos"
+              href="/agenda"
               className="rounded-md bg-[color:var(--color-gold-500)] px-6 py-3 text-center text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[color:var(--color-gold-400)]"
             >
-              Ver Eventos
+              Ver Agenda
             </Link>
             <Link
               id="entrar"

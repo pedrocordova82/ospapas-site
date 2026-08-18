@@ -76,6 +76,7 @@ const bvRioMaricaImageAlts = bvRioMaricaImages.map(
 
 export const events: EventGalleryItem[] = [
   {
+    id: "sede-aberta-10-07-26",
     title: "SEDE ABERTA",
     date: "10 DE JULHO DE 2026",
     coverImage: sedeAbertaImages[0],
@@ -84,6 +85,7 @@ export const events: EventGalleryItem[] = [
     imageAlts: sedeAbertaImageAlts,
   },
   {
+    id: "bv-04-07-26",
     title: "BV RIO DE JANEIRO — MARICÁ",
     date: "04 DE JULHO DE 2026",
     coverImage: bvRioMaricaImages[0],

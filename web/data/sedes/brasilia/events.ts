@@ -31,6 +31,7 @@ const visitaMcbda210326ImageAlts = visitaMcbda210326Images.map(
 
 export const brasiliaEvents: EventGalleryItem[] = [
   {
+    id: "sede-aberta-11-04-26",
     title: "SEDE ABERTA",
     date: "11 DE ABRIL DE 2026",
     location: "Brasília",
@@ -84,6 +85,7 @@ export const brasiliaEvents: EventGalleryItem[] = [
     ],
   },
   {
+    id: "visita-mcbda-21-03-26",
     title: "VISITA AO ANIVERSÁRIO DO MC BODES DO ASFALTO — FACÇÃO TAGUATINGA",
     date: "21 DE MARÇO DE 2026",
     coverImage: visitaMcbda210326Images[0],
@@ -92,6 +94,7 @@ export const brasiliaEvents: EventGalleryItem[] = [
     imageAlts: visitaMcbda210326ImageAlts,
   },
   {
+    id: "inauguracao-sede-14-03-26",
     title: "Inauguração da Nova Sede de Brasília",
     date: "14/03/2026",
     location: "Brasília",
@@ -116,6 +119,7 @@ export const brasiliaEvents: EventGalleryItem[] = [
     ],
   },
   {
+    id: "filantropia-15-04-25",
     title: "Filantropia",
     date: "15/04/2025",
     location: "Brasília",
@@ -130,6 +134,7 @@ export const brasiliaEvents: EventGalleryItem[] = [
     ],
   },
   {
+    id: "bv-pad-bier-30-03-25",
     title: "BV Pad Bier",
     date: "30/03/2025",
     location: "Brasília",

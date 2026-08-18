@@ -41,6 +41,7 @@ export function SedeGallery({ images, sedeName, events }: SedeGalleryProps) {
             {events.map((event) => (
               <button
                 key={event.title}
+                id={event.id}
                 type="button"
                 onClick={(clickEvent) => openEvent(event, clickEvent.currentTarget)}
                 className="group overflow-hidden rounded-xl border border-white/10 bg-[color:var(--color-bg-900)] text-left cursor-pointer transition"

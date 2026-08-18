@@ -11,6 +11,7 @@ export type EventGalleryVideo = {
 };
 
 export type EventGalleryItem = {
+  id?: string;
   title: string;
   date: string;
   location?: string;
