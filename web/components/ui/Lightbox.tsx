@@ -5,11 +5,12 @@ import { useEffect, useRef, useState } from "react";
 
 type LightboxProps = {
   images: string[];
+  imageAlts?: string[];
   index: number;
   onClose: () => void;
 };
 
-export default function Lightbox({ images, index, onClose }: LightboxProps) {
+export default function Lightbox({ images, imageAlts, index, onClose }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(index);
   const [zoomed, setZoomed] = useState(false);
   const touchStartX = useRef(0);
@@ -25,6 +26,7 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
   };
 
   const image = images[currentIndex];
+  const imageAlt = imageAlts?.[currentIndex] ?? "Imagem ampliada da galeria";
 
   useEffect(() => {
     // Mantém a navegação disponível no teclado enquanto o lightbox estiver aberto.
@@ -101,7 +103,7 @@ export default function Lightbox({ images, index, onClose }: LightboxProps) {
 
         <Image
           src={image}
-          alt="Imagem ampliada da galeria"
+          alt={imageAlt}
           width={1600}
           height={1200}
           onClick={(e) => {

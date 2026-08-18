@@ -10,6 +10,7 @@ type PhilanthropyVideoCarouselProps = {
     label?: string;
   }[];
   previewLimit?: number;
+  previewGridVariant?: "default" | "compact";
   completeGalleryAriaLabel?: string;
 };
 
@@ -17,6 +18,7 @@ export function PhilanthropyVideoCarousel({
   actionTitle,
   videos,
   previewLimit,
+  previewGridVariant = "default",
   completeGalleryAriaLabel,
 }: PhilanthropyVideoCarouselProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -25,6 +27,11 @@ export function PhilanthropyVideoCarousel({
   const isOpen = selectedIndex !== null;
   const visibleVideos = previewLimit ? videos.slice(0, previewLimit) : videos;
   const hasCompleteVideoCta = previewLimit ? videos.length > previewLimit : false;
+  const previewGridClassName =
+    previewGridVariant === "compact"
+      ? "mt-5 grid max-w-48 grid-cols-1 gap-4 sm:max-w-[25rem] sm:grid-cols-2"
+      : "mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4";
+  const showPreviewLabels = previewGridVariant !== "compact";
 
   const closeModal = useCallback(() => {
     setSelectedIndex(null);
@@ -109,8 +116,8 @@ export function PhilanthropyVideoCarousel({
   return (
     <>
       {previewLimit ? (
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {visibleVideos.map((video, videoIndex) => renderVideoButton(video, videoIndex, true))}
+        <div className={previewGridClassName}>
+          {visibleVideos.map((video, videoIndex) => renderVideoButton(video, videoIndex, showPreviewLabels))}
         </div>
       ) : (
         <div className="-mx-4 mt-5 overflow-x-auto px-4 pb-3 [scrollbar-color:rgba(242,183,5,0.45)_rgba(255,255,255,0.08)] [scrollbar-width:thin] sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">

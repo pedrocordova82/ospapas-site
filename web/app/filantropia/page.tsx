@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { HistoricalActionCard } from "@/components/filantropia/HistoricalActionCard";
 import { PhilanthropyGallery } from "@/components/filantropia/PhilanthropyGallery";
 import { PhilanthropyVideoCarousel } from "@/components/filantropia/PhilanthropyVideoCarousel";
 
 type PhilanthropyAction = {
   id: string;
+  eyebrow?: string;
   title: string;
   description: string;
+  impact?: string;
   images: string[];
+  imageAlts?: string[];
+  photoPreviewLimit?: number;
   videos: {
     src: string;
     poster: string;
+    label?: string;
   }[];
+  videoPreviewLimit?: number;
+  videoGridVariant?: "default" | "compact";
 };
 
 type HistoricalAction = {
@@ -39,9 +47,64 @@ const historicalActions: HistoricalAction[] = [
   },
 ];
 
+const institutoDoCarinhoBasePath = "/images/filantropia/instituto-do-carinho";
+const institutoDoCarinhoImages = [
+  `${institutoDoCarinhoBasePath}/Imagem_01.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_02.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_03.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_04.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_05.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_06.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_07.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_08.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_09.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_10.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_11.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_12.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_13.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_14.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_15.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_16.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_17.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_18.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_19.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_20.jpg`,
+  `${institutoDoCarinhoBasePath}/Imagem_21.jpg`,
+] as const;
+
+const institutoDoCarinhoImageAlts = institutoDoCarinhoImages.map(
+  () => "Ação filantrópica do MC Os Papas no Instituto do Carinho, em Ceilândia/DF",
+);
+
 const philanthropyActions: PhilanthropyAction[] = [
   {
+    id: "instituto-do-carinho",
+    eyebrow: "Ceilândia/DF",
+    title: "Instituto do Carinho",
+    description:
+      "Durante o 5º Encontro Nacional do MC Os Papas, realizado em Brasília, membros de diferentes regionais participaram de uma ação filantrópica no Instituto do Carinho, em Ceilândia/DF. O momento reforçou o compromisso do motoclube com a solidariedade, a presença fraterna e o cuidado com quem mais precisa.",
+    impact: "Ação realizada durante o 5º Encontro Nacional",
+    images: [...institutoDoCarinhoImages],
+    imageAlts: institutoDoCarinhoImageAlts,
+    photoPreviewLimit: 6,
+    videos: [
+      {
+        src: `${institutoDoCarinhoBasePath}/Video_01.mp4`,
+        poster: institutoDoCarinhoImages[0],
+        label: "Vídeo da ação filantrópica do MC Os Papas no Instituto do Carinho",
+      },
+      {
+        src: `${institutoDoCarinhoBasePath}/Video_02.mp4`,
+        poster: institutoDoCarinhoImages[1],
+        label: "Vídeo da ação filantrópica do MC Os Papas no Instituto do Carinho",
+      },
+    ],
+    videoPreviewLimit: 2,
+    videoGridVariant: "compact",
+  },
+  {
     id: "abrigo-redentor",
+    eyebrow: "Rio de Janeiro/RJ",
     title: "Abrigo Redentor",
     description:
       "Registro da ação filantrópica realizada no Abrigo Redentor, marcada por presença, solidariedade e cuidado.",
@@ -88,6 +151,7 @@ const philanthropyActions: PhilanthropyAction[] = [
   },
   {
     id: "viver-associacao",
+    eyebrow: "Cidade Estrutural/DF",
     title: "Viver Associação",
     description:
       "Registro da ação filantrópica realizada na Viver Associação, reforçando o compromisso do MC Os Papas com solidariedade, presença e serviço.",
@@ -115,7 +179,7 @@ export default function FilantropiaPage() {
     <div>
       <section className="relative isolate h-[420px] overflow-hidden sm:h-[460px] lg:h-[500px]">
         <Image
-          src="/images/geral/maos.jpg"
+          src="/images/geral/filantropia.jpg"
           alt="Mãos unidas representando solidariedade e cuidado"
           fill
           priority
@@ -164,39 +228,7 @@ export default function FilantropiaPage() {
 
           <div className="mt-10 space-y-6">
             {historicalActions.map((action) => (
-              <article
-                key={action.id}
-                className="overflow-hidden rounded-lg border border-white/10 bg-[color:var(--color-bg-900)]"
-              >
-                <div className="grid gap-0 lg:grid-cols-[minmax(0,0.43fr)_minmax(0,0.57fr)]">
-                  <div className="bg-black/45 p-3 sm:p-4 lg:p-5">
-                    <div className="relative mx-auto aspect-[9/16] w-full max-w-sm overflow-hidden rounded-md bg-black lg:max-w-none">
-                      <Image
-                        src={action.image}
-                        alt={action.alt}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 1023px) calc(100vw - 2rem), 470px"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 lg:px-10">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--color-gold-500)]">
-                      {action.location} • {action.year}
-                    </p>
-                    <h3 className="mt-4 font-heading text-3xl uppercase tracking-[0.05em] text-white sm:text-4xl">
-                      {action.title}
-                    </h3>
-                    <p className="mt-5 max-w-2xl text-base leading-7 text-[color:var(--color-text-300)] sm:text-lg sm:leading-8">
-                      {action.description}
-                    </p>
-                    <p className="mt-8 border-l-2 border-[color:var(--color-gold-500)] pl-4 text-sm font-semibold uppercase tracking-[0.14em] text-[color:var(--color-gold-400)] sm:text-base">
-                      {action.impact}
-                    </p>
-                  </div>
-                </div>
-              </article>
+              <HistoricalActionCard key={action.id} action={action} />
             ))}
           </div>
         </div>
@@ -212,7 +244,7 @@ export default function FilantropiaPage() {
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--color-gold-500)]">
-                Ação filantrópica
+                {action.eyebrow ?? "Ação filantrópica"}
               </p>
               <h2
                 id={`${action.id}-title`}
@@ -223,13 +255,24 @@ export default function FilantropiaPage() {
               <p className="mt-5 text-base leading-7 text-[color:var(--color-text-300)]">
                 {action.description}
               </p>
+              {action.impact ? (
+                <p className="mt-6 border-l-2 border-[color:var(--color-gold-500)] pl-4 text-sm font-semibold uppercase tracking-[0.14em] text-[color:var(--color-gold-400)]">
+                  {action.impact}
+                </p>
+              ) : null}
             </div>
 
             <div className="mt-10">
               <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-white">
                 Registros da ação
               </h3>
-              <PhilanthropyGallery actionTitle={action.title} images={action.images} />
+              <PhilanthropyGallery
+                actionTitle={action.title}
+                images={action.images}
+                imageAlts={action.imageAlts}
+                previewLimit={action.photoPreviewLimit}
+                completeGalleryAriaLabel={`Abrir galeria completa da ação no ${action.title}`}
+              />
             </div>
 
             {action.videos.length > 0 ? (
@@ -237,7 +280,13 @@ export default function FilantropiaPage() {
                 <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-white">
                   Vídeos da ação
                 </h3>
-                <PhilanthropyVideoCarousel actionTitle={action.title} videos={action.videos} />
+                <PhilanthropyVideoCarousel
+                  actionTitle={action.title}
+                  videos={action.videos}
+                  previewLimit={action.videoPreviewLimit}
+                  previewGridVariant={action.videoGridVariant}
+                  completeGalleryAriaLabel={`Abrir todos os vídeos da ação no ${action.title}`}
+                />
               </div>
             ) : null}
           </div>
