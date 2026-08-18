@@ -6,13 +6,30 @@ import { useCallback, useEffect, useRef, useState } from "react";
 type PhilanthropyGalleryProps = {
   actionTitle: string;
   images: string[];
+  imageAlts?: string[];
+  galleryLabel?: string;
+  previewLimit?: number;
+  completeGalleryAriaLabel?: string;
 };
 
-export function PhilanthropyGallery({ actionTitle, images }: PhilanthropyGalleryProps) {
+export function PhilanthropyGallery({
+  actionTitle,
+  images,
+  imageAlts,
+  galleryLabel,
+  previewLimit,
+  completeGalleryAriaLabel,
+}: PhilanthropyGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastTriggerRef = useRef<HTMLButtonElement | null>(null);
   const isOpen = selectedIndex !== null;
+  const lightboxTitle = galleryLabel ?? `Foto ampliada da ação ${actionTitle}`;
+  const visibleImages = previewLimit ? images.slice(0, previewLimit) : images;
+  const hasCompleteGalleryCta = previewLimit ? images.length > previewLimit : false;
+
+  const getImageAlt = (imageIndex: number) =>
+    imageAlts?.[imageIndex] ?? `Registro da ação do MC Os Papas no ${actionTitle}, foto ${imageIndex + 1}`;
 
   const closeLightbox = useCallback(() => {
     setSelectedIndex(null);
@@ -60,20 +77,25 @@ export function PhilanthropyGallery({ actionTitle, images }: PhilanthropyGallery
     setSelectedIndex(index);
   };
 
+  const openCompleteGallery = (trigger: HTMLButtonElement) => {
+    lastTriggerRef.current = trigger;
+    setSelectedIndex(0);
+  };
+
   return (
     <>
       <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-        {images.map((src, imageIndex) => (
+        {visibleImages.map((src, imageIndex) => (
           <button
             key={src}
             type="button"
             onClick={(event) => openLightbox(imageIndex, event.currentTarget)}
-            aria-label={`Ampliar foto ${imageIndex + 1} da ação ${actionTitle}`}
+            aria-label={`Ampliar ${getImageAlt(imageIndex)}`}
             className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-[color:var(--color-bg-900)] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)]"
           >
             <Image
               src={src}
-              alt={`Registro da ação do MC Os Papas no ${actionTitle}, foto ${imageIndex + 1}`}
+              alt={getImageAlt(imageIndex)}
               fill
               className="object-cover transition duration-300 group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
               sizes="(max-width: 639px) 50vw, (max-width: 1023px) 50vw, 33vw"
@@ -85,6 +107,22 @@ export function PhilanthropyGallery({ actionTitle, images }: PhilanthropyGallery
         ))}
       </div>
 
+      {hasCompleteGalleryCta ? (
+        <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--color-text-300)]">
+            {images.length} fotos
+          </p>
+          <button
+            type="button"
+            onClick={(event) => openCompleteGallery(event.currentTarget)}
+            aria-label={completeGalleryAriaLabel ?? `Abrir galeria completa de ${actionTitle}`}
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)] sm:w-auto"
+          >
+            VER GALERIA COMPLETA
+          </button>
+        </div>
+      ) : null}
+
       {selectedIndex !== null ? (
         <div
           role="dialog"
@@ -94,7 +132,7 @@ export function PhilanthropyGallery({ actionTitle, images }: PhilanthropyGallery
           onClick={closeLightbox}
         >
           <h2 id="philanthropy-lightbox-title" className="sr-only">
-            Foto ampliada da ação {actionTitle}
+            {lightboxTitle}
           </h2>
 
           <button
@@ -140,7 +178,7 @@ export function PhilanthropyGallery({ actionTitle, images }: PhilanthropyGallery
           >
             <Image
               src={images[selectedIndex]}
-              alt={`Registro ampliado da ação ${actionTitle}, foto ${selectedIndex + 1}`}
+              alt={`Registro ampliado: ${getImageAlt(selectedIndex)}`}
               fill
               priority
               className="object-contain"

@@ -7,14 +7,24 @@ type PhilanthropyVideoCarouselProps = {
   videos: {
     src: string;
     poster: string;
+    label?: string;
   }[];
+  previewLimit?: number;
+  completeGalleryAriaLabel?: string;
 };
 
-export function PhilanthropyVideoCarousel({ actionTitle, videos }: PhilanthropyVideoCarouselProps) {
+export function PhilanthropyVideoCarousel({
+  actionTitle,
+  videos,
+  previewLimit,
+  completeGalleryAriaLabel,
+}: PhilanthropyVideoCarouselProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastTriggerRef = useRef<HTMLButtonElement | null>(null);
   const isOpen = selectedIndex !== null;
+  const visibleVideos = previewLimit ? videos.slice(0, previewLimit) : videos;
+  const hasCompleteVideoCta = previewLimit ? videos.length > previewLimit : false;
 
   const closeModal = useCallback(() => {
     setSelectedIndex(null);
@@ -62,35 +72,73 @@ export function PhilanthropyVideoCarousel({ actionTitle, videos }: PhilanthropyV
     setSelectedIndex(index);
   };
 
+  const openCompleteVideoGallery = (trigger: HTMLButtonElement) => {
+    lastTriggerRef.current = trigger;
+    setSelectedIndex(0);
+  };
+
+  const renderVideoButton = (video: (typeof videos)[number], videoIndex: number, showLabel = false) => (
+    <button
+      key={video.src}
+      type="button"
+      onClick={(event) => openModal(videoIndex, event.currentTarget)}
+      aria-label={`Abrir ${video.label ?? `vídeo ${videoIndex + 1}`} de ${actionTitle}`}
+      className="group relative aspect-[9/16] w-full overflow-hidden rounded-lg border border-white/10 bg-black text-left shadow-lg shadow-black/20 transition hover:border-[color:var(--color-gold-500)]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)]"
+    >
+      <video
+        src={video.src}
+        poster={video.poster}
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        className="pointer-events-none h-full w-full object-cover opacity-80 transition duration-300 group-hover:scale-[1.03] group-hover:opacity-100 group-focus-visible:scale-[1.03] group-focus-visible:opacity-100"
+      />
+      <span className="absolute inset-0 bg-black/20 transition group-hover:bg-black/10 group-focus-visible:bg-black/10" />
+      <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[color:var(--color-gold-500)]/70 bg-black/65 text-xl text-[color:var(--color-gold-500)] transition group-hover:scale-105 group-hover:bg-black/80">
+        ▶
+      </span>
+      {showLabel ? (
+        <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-3 pb-3 pt-10 text-xs font-semibold uppercase tracking-[0.12em] text-white">
+          {video.label ?? `Vídeo ${String(videoIndex + 1).padStart(2, "0")}`}
+        </span>
+      ) : null}
+    </button>
+  );
+
   return (
     <>
-      <div className="-mx-4 mt-5 overflow-x-auto px-4 pb-3 [scrollbar-color:rgba(242,183,5,0.45)_rgba(255,255,255,0.08)] [scrollbar-width:thin] sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
-        <div className="flex w-max snap-x snap-mandatory gap-4">
-          {videos.map((video, videoIndex) => (
-            <button
-              key={video.src}
-              type="button"
-              onClick={(event) => openModal(videoIndex, event.currentTarget)}
-              aria-label={`Reproduzir vídeo ${videoIndex + 1} da ação ${actionTitle}`}
-              className="group relative aspect-[9/16] w-40 shrink-0 snap-start overflow-hidden rounded-lg border border-white/10 bg-black text-left shadow-lg shadow-black/20 transition hover:border-[color:var(--color-gold-500)]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)] sm:w-48"
-            >
-              <video
-                src={video.src}
-                poster={video.poster}
-                muted
-                playsInline
-                preload="metadata"
-                aria-hidden="true"
-                className="pointer-events-none h-full w-full object-cover opacity-80 transition duration-300 group-hover:scale-[1.03] group-hover:opacity-100 group-focus-visible:scale-[1.03] group-focus-visible:opacity-100"
-              />
-              <span className="absolute inset-0 bg-black/20 transition group-hover:bg-black/10 group-focus-visible:bg-black/10" />
-              <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[color:var(--color-gold-500)]/70 bg-black/65 text-xl text-[color:var(--color-gold-500)] transition group-hover:scale-105 group-hover:bg-black/80">
-                ▶
-              </span>
-            </button>
-          ))}
+      {previewLimit ? (
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {visibleVideos.map((video, videoIndex) => renderVideoButton(video, videoIndex, true))}
         </div>
-      </div>
+      ) : (
+        <div className="-mx-4 mt-5 overflow-x-auto px-4 pb-3 [scrollbar-color:rgba(242,183,5,0.45)_rgba(255,255,255,0.08)] [scrollbar-width:thin] sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
+          <div className="flex w-max snap-x snap-mandatory gap-4">
+            {visibleVideos.map((video, videoIndex) => (
+              <div key={video.src} className="w-40 shrink-0 snap-start sm:w-48">
+                {renderVideoButton(video, videoIndex)}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {hasCompleteVideoCta ? (
+        <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--color-text-300)]">
+            {videos.length} vídeos
+          </p>
+          <button
+            type="button"
+            onClick={(event) => openCompleteVideoGallery(event.currentTarget)}
+            aria-label={completeGalleryAriaLabel ?? `Abrir todos os vídeos de ${actionTitle}`}
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-[color:var(--color-gold-500)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[color:var(--color-gold-500)] transition hover:bg-[color:var(--color-gold-500)] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)] sm:w-auto"
+          >
+            VER TODOS OS VÍDEOS
+          </button>
+        </div>
+      ) : null}
 
       {selectedIndex !== null ? (
         <div
@@ -151,7 +199,8 @@ export function PhilanthropyVideoCarousel({ actionTitle, videos }: PhilanthropyV
               controlsList="nodownload"
               playsInline
               preload="metadata"
-              aria-label={`Reprodução do vídeo ${selectedIndex + 1} da ação ${actionTitle}`}
+              poster={videos[selectedIndex].poster}
+              aria-label={`Reprodução de ${videos[selectedIndex].label ?? `vídeo ${selectedIndex + 1}`} da ação ${actionTitle}`}
               className="max-h-full max-w-full rounded-lg border border-white/10 bg-black object-contain shadow-2xl shadow-black/60"
             >
               <source src={videos[selectedIndex].src} type="video/mp4" />

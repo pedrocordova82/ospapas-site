@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { brasiliaOpenHouseEvents } from "@/data/sedes/brasilia/open-house-events";
 
 const months = [
@@ -23,6 +24,7 @@ type Event = {
   type: string;
   status?: string;
   featured?: boolean;
+  href?: string;
 };
 
 const events: Event[] = [
@@ -62,6 +64,7 @@ const events: Event[] = [
     organizer: "Regional Brasília",
     location: "CMW",
     type: "Encontro Nacional",
+    href: "/eventos/encontro-nacional",
   },
   {
     id: "rio-das-flores-motofest-2026",
@@ -194,13 +197,13 @@ export const metadata: Metadata = {
 function EventCard({ event, featured = false }: { event: Event; featured?: boolean }) {
   const month = months.find((item) => item.id === event.month);
 
-  return (
+  const card = (
     <article
-      className={`flex h-full flex-col border bg-[color:var(--color-bg-900)] ${
+      className={`flex h-full flex-col border bg-[color:var(--color-bg-900)] transition ${
         featured
           ? "rounded-lg border-[color:var(--color-gold-500)]/35 p-6"
           : "rounded-lg border-white/10 p-5"
-      }`}
+      } ${event.href ? "group-hover:border-[color:var(--color-gold-500)]/70" : ""}`}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -227,9 +230,28 @@ function EventCard({ event, featured = false }: { event: Event; featured?: boole
             {event.status}
           </p>
         ) : null}
+        {event.href ? (
+          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-[color:var(--color-gold-500)]">
+            Ver registros
+          </p>
+        ) : null}
       </div>
     </article>
   );
+
+  if (event.href) {
+    return (
+      <Link
+        href={event.href}
+        aria-label={`Ver registros de ${event.title}`}
+        className="group block h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)]"
+      >
+        {card}
+      </Link>
+    );
+  }
+
+  return card;
 }
 
 export default function EventosPage() {

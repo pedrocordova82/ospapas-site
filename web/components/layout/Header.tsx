@@ -13,12 +13,34 @@ const algerian = localFont({
   weight: "400",
 });
 
-const navItems = [
+type NavItem = {
+  label: string;
+  href: string;
+  activePath: string;
+  children?: {
+    label: string;
+    href: string;
+    activePath: string;
+  }[];
+};
+
+const navItems: NavItem[] = [
   { label: "Home", href: "/#top", activePath: "/" },
   { label: "Quem Somos", href: "/quem-somos", activePath: "/quem-somos" },
   { label: "Diretoria", href: "/diretoria", activePath: "/diretoria" },
   { label: "Sedes", href: "/sedes", activePath: "/sedes" },
-  { label: "Eventos", href: "/eventos", activePath: "/eventos" },
+  {
+    label: "Eventos",
+    href: "/eventos",
+    activePath: "/eventos",
+    children: [
+      {
+        label: "Encontro Nacional",
+        href: "/eventos/encontro-nacional",
+        activePath: "/eventos/encontro-nacional",
+      },
+    ],
+  },
   { label: "Filantropia", href: "/filantropia", activePath: "/filantropia" },
   // Removido item "Contato" para evitar redundância,
   // já que o site possui CTA via WhatsApp e formulário de interesse.
@@ -94,7 +116,7 @@ export function Header() {
           <nav className="hidden lg:block" aria-label="Navegacao principal">
             <ul className="flex items-center gap-5 xl:gap-6">
               {navItems.map((item) => (
-                <li key={item.label}>
+                <li key={item.label} className="group relative">
                   <Link
                     href={item.href}
                     scroll={true}
@@ -106,6 +128,25 @@ export function Header() {
                   >
                     {item.label}
                   </Link>
+                  {item.children ? (
+                    <div className="pointer-events-none absolute left-1/2 top-full w-56 -translate-x-1/2 pt-4 opacity-0 transition group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+                      <div className="rounded-md border border-white/10 bg-[color:var(--color-bg-900)] p-2 shadow-2xl shadow-black/40">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className={`block rounded-sm px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] ${
+                              isActive(child.activePath)
+                                ? "bg-[color:var(--color-gold-500)] text-black"
+                                : "text-[color:var(--color-text-300)] hover:bg-white/5 hover:text-[color:var(--color-gold-500)]"
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -147,16 +188,29 @@ export function Header() {
         <div className="fixed left-0 top-16 z-50 max-h-[calc(100vh-4rem)] w-full overflow-y-auto border-t border-white/10 bg-black sm:top-20 sm:max-h-[calc(100vh-5rem)] lg:hidden">
           <nav className="flex flex-col items-center gap-6 px-6 py-6">
             {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`text-lg uppercase tracking-[0.12em] ${
-                  isActive(item.activePath) ? "text-[color:var(--color-gold-500)]" : "text-white"
-                }`}
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
+              <div key={item.label} className="flex flex-col items-center gap-4">
+                <Link
+                  href={item.href}
+                  className={`text-lg uppercase tracking-[0.12em] ${
+                    isActive(item.activePath) ? "text-[color:var(--color-gold-500)]" : "text-white"
+                  }`}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+                {item.children?.map((child) => (
+                  <Link
+                    key={child.href}
+                    href={child.href}
+                    className={`text-sm font-semibold uppercase tracking-[0.12em] ${
+                      isActive(child.activePath) ? "text-[color:var(--color-gold-500)]" : "text-white/70"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {child.label}
+                  </Link>
+                ))}
+              </div>
             ))}
 
             <Link
