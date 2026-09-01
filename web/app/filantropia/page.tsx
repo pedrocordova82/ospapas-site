@@ -15,7 +15,7 @@ type PhilanthropyAction = {
   photoPreviewLimit?: number;
   videos: {
     src: string;
-    poster: string;
+    poster?: string;
     label?: string;
   }[];
   videoPreviewLimit?: number;
@@ -91,7 +91,26 @@ const paroquiaRainhaDaPazImageAlts = paroquiaRainhaDaPazImages.map(
   () => "Ação filantrópica de Natal do MC Os Papas na Paróquia Nossa Senhora Rainha da Paz, em Belém/PA",
 );
 
+const casaraoDosIdososBasePath = "/images/filantropia/casarao-dos-idosos";
+
 const philanthropyActions: PhilanthropyAction[] = [
+  {
+    id: "casarao-dos-idosos-irma-benigna",
+    eyebrow: "Santa Maria do Pará/PA",
+    title: "Casarão dos Idosos Irmã Benigna",
+    description:
+      "Em 30 de agosto de 2026, o MC Os Papas realizou uma ação filantrópica no Casarão dos Idosos Irmã Benigna, em Santa Maria do Pará/PA, município localizado a aproximadamente 100 km de Belém. A instituição atende atualmente 98 idosos, e a ação contou com a doação de materiais de higiene.",
+    impact: "98 idosos atendidos • Doação de materiais de higiene",
+    images: [],
+    videos: [
+      {
+        src: `${casaraoDosIdososBasePath}/video-01.mp4`,
+        label: "Vídeo da ação filantrópica do MC Os Papas no Casarão dos Idosos Irmã Benigna",
+      },
+    ],
+    videoPreviewLimit: 1,
+    videoGridVariant: "compact",
+  },
   {
     id: "instituto-do-carinho",
     eyebrow: "Ceilândia/DF",
@@ -302,23 +321,25 @@ export default function FilantropiaPage() {
               ) : null}
             </div>
 
-            <div className="mt-10">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-white">
-                Registros da ação
-              </h3>
-              <PhilanthropyGallery
-                actionTitle={action.title}
-                images={action.images}
-                imageAlts={action.imageAlts}
-                previewLimit={action.photoPreviewLimit}
-                completeGalleryAriaLabel={`Abrir galeria completa da ação no ${action.title}`}
-              />
-            </div>
+            {action.images.length > 0 ? (
+              <div className="mt-10">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-white">
+                  Registros da ação
+                </h3>
+                <PhilanthropyGallery
+                  actionTitle={action.title}
+                  images={action.images}
+                  imageAlts={action.imageAlts}
+                  previewLimit={action.photoPreviewLimit}
+                  completeGalleryAriaLabel={`Abrir galeria completa da ação no ${action.title}`}
+                />
+              </div>
+            ) : null}
 
             {action.videos.length > 0 ? (
               <div className="mt-12">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-white">
-                  Vídeos da ação
+                  {action.videos.length === 1 ? "Vídeo da ação" : "Vídeos da ação"}
                 </h3>
                 <PhilanthropyVideoCarousel
                   actionTitle={action.title}

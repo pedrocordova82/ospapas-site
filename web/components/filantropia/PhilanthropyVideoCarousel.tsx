@@ -6,7 +6,7 @@ type PhilanthropyVideoCarouselProps = {
   actionTitle: string;
   videos: {
     src: string;
-    poster: string;
+    poster?: string;
     label?: string;
   }[];
   previewLimit?: number;
@@ -93,14 +93,15 @@ export function PhilanthropyVideoCarousel({
       className="group relative aspect-[9/16] w-full overflow-hidden rounded-lg border border-white/10 bg-black text-left shadow-lg shadow-black/20 transition hover:border-[color:var(--color-gold-500)]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-gold-500)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-bg-950)]"
     >
       <video
-        src={video.src}
-        poster={video.poster}
         muted
         playsInline
         preload="metadata"
         aria-hidden="true"
         className="pointer-events-none h-full w-full object-cover opacity-80 transition duration-300 group-hover:scale-[1.03] group-hover:opacity-100 group-focus-visible:scale-[1.03] group-focus-visible:opacity-100"
-      />
+        {...(video.poster ? { poster: video.poster } : {})}
+      >
+        <source src={video.src} type="video/mp4" />
+      </video>
       <span className="absolute inset-0 bg-black/20 transition group-hover:bg-black/10 group-focus-visible:bg-black/10" />
       <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[color:var(--color-gold-500)]/70 bg-black/65 text-xl text-[color:var(--color-gold-500)] transition group-hover:scale-105 group-hover:bg-black/80">
         ▶
@@ -206,9 +207,9 @@ export function PhilanthropyVideoCarousel({
               controlsList="nodownload"
               playsInline
               preload="metadata"
-              poster={videos[selectedIndex].poster}
               aria-label={`Reprodução de ${videos[selectedIndex].label ?? `vídeo ${selectedIndex + 1}`} da ação ${actionTitle}`}
               className="max-h-full max-w-full rounded-lg border border-white/10 bg-black object-contain shadow-2xl shadow-black/60"
+              {...(videos[selectedIndex].poster ? { poster: videos[selectedIndex].poster } : {})}
             >
               <source src={videos[selectedIndex].src} type="video/mp4" />
               Seu navegador não oferece suporte à reprodução deste vídeo.
