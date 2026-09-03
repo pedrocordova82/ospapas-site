@@ -10,3 +10,6 @@
 !web/public/images/**/*.m4v
 !web/public/images/**/*.avi
 !web/public/images/**/*.mkv
+
+# macOS
+.DS_Store
