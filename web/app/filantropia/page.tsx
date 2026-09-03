@@ -110,7 +110,7 @@ const philanthropyActions: PhilanthropyAction[] = [
       },
       {
         src: `${casaraoDosIdososBasePath}/video_02.mp4`,
-        poster: `${casaraoDosIdososBasePath}/poster-video-02.jpg`,
+        poster: `${casaraoDosIdososBasePath}/poster-video-01.jpg`,
         label: "Vídeo 02 da ação filantrópica do MC Os Papas no Casarão dos Idosos Irmã Benigna",
       },
     ],
