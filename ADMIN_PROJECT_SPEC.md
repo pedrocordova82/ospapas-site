@@ -63,7 +63,7 @@ Exibir indicadores de conteúdo relevantes, próximos eventos, atividades admini
 
 ### RF-03 — Diretoria Nacional
 
-**Campos.** Nome de exibição, cargo, ordem de exibição e situação ativo/inativo são obrigatórios. Graduação, unidade regional e vínculo com um membro regional são opcionais. A fotografia é obrigatória para publicação.
+**Campos.** Nome de exibição, cargo, ordem de exibição e situação ativo/inativo são obrigatórios. Patente, unidade regional e vínculo com um membro regional são opcionais. A fotografia é obrigatória para publicação.
 
 **Operações.** Permitir ao Geral criar, editar, desativar e reativar diretores, substituir fotos, ordenar cartões com controles acessíveis e reaproveitar dados e fotos de um membro vinculado. Vários diretores podem exercer o mesmo cargo. A retirada da Diretoria preserva o cadastro regional do membro. Alterações regionais em membros ou mídias compartilhadas devem preservar os dados e a mídia publicados na Diretoria até uma ação autorizada do Geral.
 
@@ -84,13 +84,17 @@ Validar os dados de contato e as URLs externas e gerar automaticamente o link do
 
 ### RF-05 — Membros
 
-**Campos.** Nome de exibição ou apelido, graduação, unidade regional, ordem de exibição e situação ativo/inativo são obrigatórios. Cargo ou função é opcional. A fotografia é obrigatória para publicação.
+**Campos.** Nome de exibição ou apelido, patente, unidade regional, ordem de exibição e situação ativo/inativo são obrigatórios. Cargo ou função é opcional. A fotografia é obrigatória para publicação.
 
-**Operações.** Criar, editar, substituir fotos, ordenar cartões manualmente, desativar e reativar membros. Transferências entre unidades são exclusivas do Geral. Tratar graduação e cargo como campos distintos. Exemplo de exibição pública com nome Kátia, cargo Diretora e graduação Cardeal: **Kátia — Diretora - Cardeal**. Dispensar informações pessoais desnecessárias, como CPF, RG e endereço residencial.
+**Operações.** Criar, editar, substituir fotos, ordenar cartões manualmente, desativar e reativar membros. Transferências entre unidades são exclusivas do Geral. Tratar patente e cargo como campos distintos. Exemplo de exibição pública com nome Kátia, cargo Diretora e patente Cardeal: **Kátia — Diretora - Cardeal**. Dispensar informações pessoais desnecessárias, como CPF, RG e endereço residencial.
 
 ### RF-06 — Agenda
 
-**Campos.** Título, categoria, data inicial (ou indicação de data a definir), data final opcional, horário opcional, local, organizador, unidade regional quando aplicável, descrição, link externo ou de mapa opcional, imagem de divulgação opcional, situação do compromisso e indicação de destaque.
+| Obrigatoriedade | Campos |
+| --- | --- |
+| Obrigatórios para publicação | Título, categoria, organizador e situação do compromisso. |
+| Opcionais | Data final, horário, local, descrição, link externo ou de mapa, imagem de divulgação e indicação de destaque. |
+| Obrigatórios sob condição | Unidade regional para compromissos regionais. Data inicial quando definida ou indicação explícita de data a definir enquanto estiver pendente. Para compromissos históricos com data incompleta, registrar a precisão conhecida, como mês e ano ou apenas o ano, e identificar a data como parcial. |
 
 **Categorias iniciais.** Sede Aberta, Bate e Volta, Encontro Nacional, Encontro Motociclístico, Aniversário, Confraternização, Ação Social e Outros.
 
@@ -100,19 +104,31 @@ Validar os dados de contato e as URLs externas e gerar automaticamente o link do
 
 ### RF-07 — Eventos
 
-**Campos.** Título, categoria, data ou período, unidade regional responsável quando aplicável, cidade e estado, descrição, imagem de capa, galeria de fotos, galeria de vídeos, vínculo opcional com um compromisso da Agenda e indicação de destaque.
+| Obrigatoriedade | Campos |
+| --- | --- |
+| Obrigatórios para publicação | Título, categoria, data ou período, cidade, estado, descrição e imagem de capa. |
+| Opcionais | Galeria de fotos, galeria de vídeos, vínculo com um compromisso da Agenda e indicação de destaque. |
+| Obrigatórios sob condição | Unidade responsável para eventos regionais. Texto alternativo para cada imagem publicada, conforme o RF-09. |
+
+O rascunho pode ser salvo sem imagem de capa. Para eventos históricos com data incompleta, registrar apenas a precisão conhecida, como mês e ano ou apenas o ano.
 
 **Operações.** Cadastrar eventos realizados de forma independente ou vinculada à Agenda. Reaproveitar informações do compromisso vinculado e evitar duplicação desnecessária. Um evento regional publicado alimenta automaticamente a página da unidade e a página geral de Eventos. Apenas o Geral gerencia eventos e destaques nacionais. Preservar eventos históricos, URLs, âncoras e galerias existentes.
 
 ### RF-08 — Filantropia
 
-**Campos.** Título da ação, instituição beneficiária opcional, unidade regional responsável quando aplicável, data, período ou ano, cidade e estado, descrição, impacto social opcional, quantidade de beneficiários opcional, tipo de doação ou ação opcional, fotos, vídeos e indicação de destaque.
+| Obrigatoriedade | Campos |
+| --- | --- |
+| Obrigatórios para publicação | Título da ação, cidade, estado, descrição e informação temporal registrada como data, período ou ano. |
+| Opcionais | Instituição beneficiária, impacto social, quantidade de beneficiários, tipo de doação ou ação, fotos, vídeos e indicação de destaque. |
+| Obrigatórios sob condição | Unidade regional quando houver unidade responsável. Autorização apropriada para a divulgação de cada mídia incluída na publicação. Texto alternativo para cada imagem publicada, conforme o RF-09. |
+
+Para ações históricas com data incompleta, registrar apenas a precisão conhecida, como mês e ano ou apenas o ano.
 
 **Operações.** A gestão de ações recentes e históricas é exclusiva do Geral. Registrar impacto social e quantidade de beneficiários somente quando houver informações confirmadas. Garantir autorização apropriada para a divulgação de mídias, especialmente as que envolvam crianças ou pessoas vulneráveis.
 
 ### RF-09 — Fotografias, vídeos e galerias
 
-Permitir envio de vários arquivos, acompanhamento do progresso, prévia, busca, filtros, ordenação manual, reutilização autorizada e consulta a indicadores de uso de armazenamento. Otimizar imagens e vídeos preservando a proporção das imagens e a qualidade adequada. Gerar pôsteres de vídeo automaticamente e permitir a seleção manual de um pôster para cada vídeo. Permitir texto alternativo para imagens.
+Permitir envio de vários arquivos, acompanhamento do progresso, prévia, busca, filtros, ordenação manual, reutilização autorizada e consulta a indicadores de uso de armazenamento. Otimizar imagens e vídeos preservando a proporção das imagens e a qualidade adequada. Gerar pôsteres de vídeo automaticamente e permitir a seleção manual de um pôster para cada vídeo. Exigir texto alternativo descritivo e não vazio para cada imagem na publicação, incluindo capas, fotografias e imagens de galerias, novas ou reutilizadas. Permitir o envio e o uso em rascunhos antes do preenchimento. O backend deve bloquear a publicação de conteúdo que inclua imagem sem texto alternativo.
 
 Identificar o âmbito nacional ou a titularidade regional de cada mídia e proteger o acesso a mídias de rascunho. Validar o tipo real dos arquivos e os limites de envio. Impedir acesso regional a mídias restritas, alterações em mídias de outra unidade e exclusão de mídias referenciadas. Formatos aceitos, limites de tamanho, cotas, processamento, retenção e custos serão definidos na Etapa 02.
 
@@ -150,16 +166,16 @@ Manter rascunhos, prévias e mídias privadas fora do acesso público. Publicar 
 | RN-06 | O Geral administra a Diretoria, as unidades, a filantropia, as contas e permissões e as configurações globais. Agenda, eventos e destaques nacionais são exclusivos do Geral. O Regional administra membros, compromissos, eventos, destaques locais e galerias autorizadas de sua unidade. | Matriz, RF-03 a RF-10 |
 | RN-07 | A desativação de diretores, unidades e membros é reversível. Desativar uma unidade preserva membros, eventos e histórico. A retirada de um diretor preserva o cadastro regional do membro vinculado. | RF-03, RF-04, RF-05 |
 | RN-08 | A ordenação manual determina a apresentação de cartões e galerias em seu contexto. Os controles de ordenação de diretores e membros devem ser acessíveis. | RF-03, RF-04, RF-05, RF-09 |
-| RN-09 | Vários diretores podem ocupar o mesmo cargo. Para diretores e membros, a publicação exige foto e os campos obrigatórios. Graduação e cargo são informações distintas. | RF-03, RF-05 |
+| RN-09 | Vários diretores podem ocupar o mesmo cargo. Para diretores e membros, a publicação exige foto e os campos obrigatórios. Patente e cargo são informações distintas. | RF-03, RF-05 |
 | RN-10 | As mudanças de unidade de um membro exigem operação explícita do Geral e devem preservar seu histórico. O Regional fica impedido de alterar titularidade ou associações para obter acesso indevido. | RF-05, RF-11 |
 | RN-11 | O contato público usa dados validados. O link do WhatsApp é gerado a partir do número. URLs externas são validadas e URLs públicas existentes são preservadas. | RF-04 |
-| RN-12 | Cada compromisso ou evento regional tem um registro de origem que alimenta as páginas regionais e gerais. Eventos realizados podem existir independentemente da Agenda ou reaproveitar dados do compromisso vinculado. | RF-06, RF-07 |
-| RN-13 | A Agenda contempla compromissos públicos, inclusive de vários dias e com data a definir. O cancelamento pode permanecer visível com a situação correta. | RF-06 |
-| RN-14 | O portal coleta somente dados pessoais necessários. Métricas de impacto e beneficiários são registradas com base em informações confirmadas. A divulgação pública de mídias deve contar com autorização apropriada, com atenção especial a crianças e pessoas vulneráveis. | RF-05, RF-08, RNF-03 |
-| RN-15 | A mídia tem titularidade definida e seu acesso respeita a autorização e a situação da publicação. O portal valida tipo real e limites dos arquivos. A exclusão fica bloqueada enquanto houver referência ativa, em rascunho ou necessária à restauração de uma versão retida. | RF-09, RF-11, RF-12 |
+| RN-12 | Cada compromisso ou evento regional tem um registro de origem que alimenta as páginas regionais e gerais. Eventos realizados podem existir independentemente da Agenda ou reaproveitar dados do compromisso vinculado. A publicação de eventos exige imagem de capa com texto alternativo. Galerias e vínculo com a Agenda são opcionais. | RF-06, RF-07, RF-09 |
+| RN-13 | A Agenda contempla compromissos públicos, inclusive de vários dias e com indicação explícita de data a definir. Compromissos históricos, eventos realizados e ações históricas de filantropia preservam a precisão da data disponível, sem preenchimento de partes desconhecidas. O cancelamento de um compromisso pode permanecer visível com a situação correta. | RF-06, RF-07, RF-08 |
+| RN-14 | O portal coleta somente dados pessoais necessários. Impacto social e quantidade de beneficiários são opcionais e só podem ser registrados com base em informações confirmadas. A divulgação pública de mídias deve contar com autorização apropriada, com atenção especial a crianças e pessoas vulneráveis. | RF-05, RF-08, RNF-03 |
+| RN-15 | A mídia tem titularidade definida e seu acesso respeita a autorização e a situação da publicação. O portal valida tipo real e limites dos arquivos e exige texto alternativo descritivo e não vazio em toda imagem publicada, inclusive imagens reutilizadas. Rascunhos podem conter imagens com texto alternativo pendente. A exclusão fica bloqueada enquanto houver referência ativa, em rascunho ou necessária à restauração de uma versão retida. | RF-09, RF-11, RF-12 |
 | RN-16 | O Geral autorizado administra a situação das contas. A desativação revoga as sessões ativas e o sistema mantém pelo menos um Geral ativo, inclusive sob concorrência. | RF-01, RF-10 |
 | RN-17 | A auditoria preserva autoria, contexto regional, operação, data e mudanças pertinentes. Operações administrativas ordinárias são incapazes de editar ou apagar registros. Senhas, tokens e segredos ficam fora da trilha. | RF-11 |
-| RN-18 | Toda publicação exige ação explícita após rascunho e prévia, com validação no backend. O Regional publica diretamente dentro de seu escopo. Rascunhos, prévias e mídia privada permanecem acessíveis apenas a pessoas autorizadas. | RF-09, RF-12 |
+| RN-18 | Toda publicação exige ação explícita após rascunho e prévia, com validação no backend. Para Agenda, Eventos e Filantropia, validar os campos obrigatórios e os condicionais aplicáveis. Exigir unidade responsável em compromissos e eventos regionais e nas ações de filantropia com responsabilidade regional. O Regional publica diretamente dentro de seu escopo. Rascunhos, prévias e mídia privada permanecem acessíveis apenas a pessoas autorizadas. | RF-06 a RF-09, RF-12 |
 | RN-19 | A sincronização pública é automática. Uma falha preserva a versão pública anterior, informa o estado e permite nova tentativa. Conflitos concorrentes devem ser identificados antes de sobrescrever mudanças. | RF-12 |
 | RN-20 | Restaurar ou despublicar exige autorização vigente, validação de campos, relacionamentos e mídias e registro de auditoria. O conteúdo restaurado deve passar pelo fluxo de publicação antes de substituir a versão pública. | RF-11, RF-12 |
 | RN-21 | O site público continua a servir o conteúdo publicado durante indisponibilidade administrativa. A migração preserva o conteúdo histórico, URLs, âncoras, galerias e elementos de SEO existentes. | RF-04, RF-07, RF-12, RNF-06, RNF-12 |
@@ -171,7 +187,7 @@ Manter rascunhos, prévias e mídias privadas fora do acesso público. Publicar 
 | --- | --- |
 | Usuários | Representam contas administrativas. Uma conta Regional pertence a uma unidade. A mesma unidade pode ter várias contas Regionais. Usuários são autores das operações de auditoria. |
 | Sedes e Regionais | Representam unidades, sua identidade, localização, contatos, capa e situação. Reúnem membros e registros regionais. Ações de filantropia também podem indicar uma unidade responsável. |
-| Membros | Representam integrantes de uma unidade, com graduação, cargo opcional, fotografia, ordem e situação. Podem ser vinculados a registros da Diretoria. |
+| Membros | Representam integrantes de uma unidade, com patente, cargo opcional, fotografia, ordem e situação. Podem ser vinculados a registros da Diretoria. |
 | Diretoria Nacional | Representa os diretores, seus cargos, fotos, ordem e situação. Cada registro pode indicar uma unidade e um membro, respeitando o controle nacional do conteúdo. |
 | Agenda | Reúne compromissos públicos nacionais e regionais. Pode fornecer dados para eventos realizados. |
 | Eventos | Reúne registros de eventos realizados, nacionais ou regionais, com capa e galerias. Cada registro pode se vincular a um compromisso. |
@@ -208,7 +224,7 @@ A Etapa 02 definirá o esquema físico, as coleções do Payload CMS e a estrat�
 
 | Estrutura existente | Requisito para a migração |
 | --- | --- |
-| Diretoria e listas de membros em `web/data/leadership.ts` e `web/data/sedes/` | Preservar fotos, nomes, cargos, graduações e ordem. Conferir dados reaproveitados para manter a autonomia da Diretoria Nacional. |
+| Diretoria e listas de membros em `web/data/leadership.ts` e `web/data/sedes/` | Preservar fotos, nomes, cargos, patentes e ordem. Conferir dados reaproveitados para manter a autonomia da Diretoria Nacional. |
 | Sedes e representações em `web/data/sedes/`, com páginas por identificador em `/sedes/[slug]` | Preservar identificadores de URL, identidade das unidades, variações de apresentação, contatos, coordenadas exibidas no mapa, imagens e referências de navegação. |
 | Agenda geral e conteúdos de Sede Aberta em `web/app/agenda/` e `web/data/sedes/` | Inventariar compromissos existentes, preservar âncoras públicas e consolidar registros equivalentes que alimentam mais de uma página. |
 | Eventos regionais em `web/data/sedes/` e páginas em `web/app/eventos/` | Preservar registros históricos, incluindo o Encontro Nacional, URLs, âncoras, fotos, vídeos, pôsteres e ordem de exibição. |
@@ -275,14 +291,18 @@ Executar os cenários com dados de teste, dois usuários regionais atribuídos �
 | CA-RF-03.2 | RF-03 | Desativar e reativar um diretor vinculado. Como Regional, modificar dados autorizados do membro e tentar substituir ou alterar a foto usada pela Diretoria. | O cadastro regional permanece íntegro e a Diretoria só muda por ação autorizada do Geral. |
 | CA-RF-04.1 | RF-04 | Como Geral, criar uma unidade, editar todos os campos em unidades distintas, alterar ordem, desativar e reativar uma unidade com membros e eventos. | A gestão funciona para todas as unidades, o histórico é preservado e as URLs existentes continuam válidas. |
 | CA-RF-04.2 | RF-04 | Como Regional, publicar mudanças nos seis campos de Minha Sede. Enviar também um contato inválido, uma URL inválida, mudanças de nome, tipo, cidade, estado, ordem e status e alteração em outra unidade pela API. | Os seis campos válidos são publicados na unidade atribuída, com link de WhatsApp gerado corretamente. Contatos inválidos, campos fora do escopo e acesso a outra unidade são rejeitados. |
-| CA-RF-05.1 | RF-05 | Criar e editar membro, substituir a foto, reordenar cartões por teclado, desativar e reativar o membro. Tentar publicar sem foto ou graduação. | O cadastro dispensa CPF, RG e endereço residencial. Cargo e graduação ficam separados, a publicação incompleta é rejeitada e as alterações válidas refletem a ordem e a situação no site. |
+| CA-RF-05.1 | RF-05 | Criar e editar membro, substituir a foto, reordenar cartões por teclado, desativar e reativar o membro. Tentar publicar sem foto ou patente. | O cadastro dispensa CPF, RG e endereço residencial. Cargo e patente ficam separados, a publicação incompleta é rejeitada e as alterações válidas refletem a ordem e a situação no site. |
 | CA-RF-05.2 | RF-05 | Tentar transferir membro ou alterar a unidade do cadastro como Regional. Executar a transferência como Geral. | A tentativa regional é rejeitada e a transferência autorizada atualiza a unidade preservando o cadastro e seu histórico. |
 | CA-RF-06.1 | RF-06 | Publicar compromissos regionais em meses e anos diferentes, incluindo período de vários dias, data a definir e compromisso cancelado mantido para consulta. | As visões regional e geral exibem os mesmos registros, sem duplicidade, com período, data a definir e situação correspondentes. |
 | CA-RF-06.2 | RF-06 | Usar cada categoria e situação inicial, preencher os campos opcionais e tentar alterar um compromisso ou destaque nacional como Regional. | As categorias e situações aprovadas são aceitas, os campos opcionais podem ser omitidos e as alterações nacionais são exclusivas do Geral. |
-| CA-RF-07.1 | RF-07 | Cadastrar um evento regional realizado com fotos e vídeos e outro com vínculo a um compromisso. Publicar ambos e tentar configurar destaque nacional como Regional. | O cadastro independente e o reaproveitamento de dados funcionam. Cada registro regional aparece na página da unidade e na página geral. O destaque nacional exige perfil Geral. |
-| CA-RF-08.1 | RF-08 | Como Geral, cadastrar uma ação recente e outra histórica, associar a unidade responsável, incluir fotos e vídeos autorizados, informar apenas o ano quando pertinente e deixar impacto e beneficiários em branco. Tentar acessar a gestão como Regional. | Os registros e mídias são aceitos, números ausentes permanecem em branco e a gestão regional é rejeitada. |
+| CA-RF-06.3 | RF-06 | Tentar publicar sem cada campo obrigatório, sem unidade regional em compromisso regional ou sem nenhuma informação de data. Publicar um compromisso com data a definir e um registro histórico com mês e ano, ambos sem os campos opcionais. | As tentativas incompletas são rejeitadas. O compromisso pendente exibe a indicação de data a definir e o registro histórico preserva o mês e o ano informados. |
+| CA-RF-07.1 | RF-07 | Cadastrar um evento regional realizado com fotos e vídeos e outro com vínculo a um compromisso. Publicar ambos com capa e texto alternativo em todas as imagens e tentar configurar destaque nacional como Regional. | O cadastro independente e o reaproveitamento de dados funcionam. Cada registro regional aparece na página da unidade e na página geral. O destaque nacional exige perfil Geral. |
+| CA-RF-07.2 | RF-07 | Salvar um rascunho sem capa e tentar publicá-lo. Repetir a tentativa com capa sem texto alternativo, sem data ou período, com outro campo obrigatório ausente ou sem unidade responsável em um evento regional. Preencher os campos exigidos e publicar um evento histórico com apenas o ano conhecido e sem galerias ou vínculo com a Agenda. | O rascunho é salvo. A publicação é bloqueada enquanto faltar capa, texto alternativo ou outro dado exigido. Com os campos exigidos preenchidos, o evento é publicado com o ano informado. |
+| CA-RF-08.1 | RF-08 | Como Geral, cadastrar uma ação recente e outra histórica, associar a unidade responsável, incluir fotos com texto alternativo e vídeos autorizados, informar apenas o ano quando pertinente e deixar impacto e beneficiários em branco. Tentar acessar a gestão como Regional. | Os registros e mídias são aceitos, números ausentes permanecem em branco e a gestão regional é rejeitada. |
+| CA-RF-08.2 | RF-08 | Tentar publicar uma ação com um campo obrigatório ausente, com responsabilidade regional sem a unidade registrada ou com mídia sem autorização de divulgação. Publicar uma ação histórica nacional com apenas o ano conhecido, sem mídia, instituição, impacto, quantidade de beneficiários, tipo de doação ou destaque. | O sistema bloqueia as tentativas incompletas e aceita a ação histórica com os campos opcionais vazios e o ano na precisão informada. |
 | CA-RF-09.1 | RF-09 | Enviar imagens e vídeos juntos, observar progresso e prévias, buscar e filtrar arquivos, aplicar texto alternativo, alterar a ordem e selecionar pôster distinto para dois vídeos. | A interface informa uso do armazenamento, as mídias são otimizadas com proporção de imagens preservada, os pôsteres automáticos são gerados e cada pôster manual é aplicado ao vídeo correspondente. |
 | CA-RF-09.2 | RF-09 | Enviar arquivo com tipo real inválido ou acima do limite. Tentar acessar mídia privada de outra unidade, alterar seu vínculo ou excluí-la em lote. Reutilizar mídia autorizada e tentar apagar arquivo referenciado. | Envios inválidos e operações regionais indevidas são rejeitados. A reutilização autorizada funciona e as referências impedem a exclusão. |
+| CA-RF-09.3 | RF-09 | Salvar rascunhos com imagens novas ou reutilizadas cujo texto alternativo esteja ausente, vazio ou preenchido apenas com espaços. Tentar publicar as imagens em uma capa e em uma galeria. Preencher textos alternativos descritivos e tentar novamente. | O rascunho é salvo. O backend bloqueia a publicação enquanto houver imagem sem texto alternativo válido. Após a correção, a publicação é aceita e o site apresenta os textos alternativos. |
 | CA-RF-10.1 | RF-10 | Cadastrar dois administradores Regionais na mesma unidade, tentar repetir um e-mail e atribuir permissões como Regional. Consultar os metadados após o primeiro acesso. | Cada conta opera individualmente no mesmo escopo. E-mail duplicado e alteração de permissões por Regional são rejeitados. Criação, criador e último acesso constam no registro. |
 | CA-RF-10.2 | RF-10 | Usar uma sessão ativa de uma conta após sua desativação. Tentar desativar ou rebaixar o último Geral ativo, inclusive com operações concorrentes. | A sessão revogada perde acesso e permanece pelo menos um Geral ativo. |
 | CA-RF-11.1 | RF-11 | Editar, publicar e restaurar registros. Consultar o histórico como Geral e Regionais, tentar editar e apagar entradas e verificar o registro de uma operação de autenticação auditada. | O escopo de consulta é respeitado. Autoria, data, entidade, operação, unidade e valores pertinentes são registrados. A edição e exclusão ordinárias são bloqueadas e segredos ficam ausentes. |
