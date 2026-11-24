@@ -1,5 +1,5 @@
 import { APIError, type Access, type CollectionBeforeChangeHook, type CollectionBeforeOperationHook, type CollectionConfig, type Field } from 'payload'
-import { coverField, validateCover } from '../media/collection.ts'
+import { coverField, validateCover, validateVideo } from '../media/collection.ts'
 import { retainActiveGeneral } from './last-general.ts'
 import { actor, canUsePanel, deny, geral, limitToRegion, protectFields, rejectNested, relationID } from './policies.ts'
 
@@ -222,8 +222,9 @@ const eventos: CollectionConfig = {
   ...regionalContent('eventos', 'Eventos', [
     { name: 'compromisso', type: 'relationship', relationTo: 'agenda' },
     coverField,
+    { name: 'videoMidia', type: 'relationship', relationTo: 'midias', label: 'Vídeo experimental', maxDepth: 0 },
   ]),
-  hooks: { beforeOperation: [validateContentInput], beforeChange: [ownership, validateAgendaLink, validateCover] },
+  hooks: { beforeOperation: [validateContentInput], beforeChange: [ownership, validateAgendaLink, validateCover, validateVideo] },
 }
 const manageBoard: Access = (args) => {
   if (!geral(args)) return false

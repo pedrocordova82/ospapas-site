@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { APIError, type Endpoint, type PayloadRequest } from 'payload'
 import { actor, deny, relationID, rejectNested } from '../access/policies.ts'
+import { eligiblePoster, validAlt } from './approval.ts'
 import { detectMedia, receiveBody } from './ingest.ts'
 import { limits, mediaPool, originalKey, reservation, temporaryRoot } from './model.ts'
 import { fetchObject, removeObject, storeFile } from './storage.ts'
@@ -159,22 +160,6 @@ const retry: Endpoint['handler'] = async req => {
   `, [doc.id, limits.attempts])
   if (!changed.rowCount) throw new APIError('Mídia sem tentativa disponível.', 409)
   return Response.json({ fase: 'pendente' }, { status: 202 })
-}
-
-function validAlt(value: unknown): value is string {
-  return typeof value === 'string' && value.length <= 250 && /[\p{L}\p{N}]/u.test(value)
-}
-
-function eligiblePoster(
-  image: Record<string, unknown> | null | undefined,
-  regional: number | undefined,
-  forPublication: boolean,
-): image is Record<string, unknown> & { otimizado: string } {
-  return image?.tipo === 'imagem' && image.fase === 'pronta' &&
-    relationID(image.regional) === regional &&
-    typeof image.digest === 'string' && /^[0-9a-f]{64}$/.test(image.digest) &&
-    typeof image.otimizado === 'string' && image.otimizado.trim().length > 0 &&
-    (!forPublication || (image.publicado === true && validAlt(image.alt)))
 }
 
 const publish: Endpoint['handler'] = async req => {
