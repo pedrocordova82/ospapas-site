@@ -20,6 +20,7 @@ type Session = { token: string }
 type Stored = {
   uuid: string; id: number; fase: string; origem: string; otimizado: string; miniatura: string; poster: string
   largura: number | string; altura: number | string; publicado: boolean; tentativa: string | number
+  alt: string | null; digest: string; posterior: string | null
 }
 
 const exec = promisify(execFile)
@@ -44,6 +45,7 @@ let png: Buffer
 let image: Stored
 let replacement: Stored
 let foreign: Stored
+let approvedPoster: Stored
 let video: Stored
 let footage: Buffer
 
@@ -297,6 +299,7 @@ test('MP4 compatível é remultiplexado sem recodificar o fluxo de vídeo', asyn
   assert.equal(JSON.parse(measures[0]).modo, 'remux')
   assert.equal((await persisted(asset)).fase, 'pronta')
   assert.equal(Number((await persisted(asset)).largura), 1920)
+  await status(await api(`midias/${asset.uuid}/publicar`, df2, 'POST', {}), [200])
 })
 
 test('Seleção de instante troca apenas o pôster; imagem personalizada respeita titularidade', async () => {
@@ -312,7 +315,95 @@ test('Seleção de instante troca apenas o pôster; imagem personalizada respeit
   await status(await api(`midias/${video.uuid}/poster`, df, 'POST', { imagem: replacement.id }), [200])
   assert.equal(hash(await readAsset(video, df, 'poster')), hash(await readAsset(replacement, df)))
   await status(await download(video, rj, 'poster'), [404])
+  await status(await api(`midias/${video.uuid}/publicar`, df, 'POST', {}), [409])
+  assert.equal((await persisted(video)).publicado, false)
+})
+
+test('Publicação e leitura de pôster publicado recusam imagens inválidas ou fora do âmbito', async () => {
+  approvedPoster = await ready(df2, 'poster-autorizado.png', png)
+  await status(await api(`midias/${approvedPoster.uuid}/publicar`, df2, 'POST', { alt: 'Retângulo transparente de teste' }), [200])
+  approvedPoster = await persisted(approvedPoster)
+  await status(await api(`midias/${foreign.uuid}/publicar`, rj, 'POST', { alt: 'Imagem fictícia do Rio' }), [200])
+
+  const pool = mediaPool(payload)
+  const candidates = [
+    { id: 2_000_000_000 },
+    { id: replacement.id },
+    { id: foreign.id },
+    { id: video.id },
+    { id: approvedPoster.id, phase: 'falhou' },
+    { id: approvedPoster.id, invalidDigest: true },
+    { id: approvedPoster.id, missingDerivative: true },
+    { id: approvedPoster.id, alt: '  ' },
+    { id: approvedPoster.id, alt: String.fromCodePoint(0x200B) },
+    { id: approvedPoster.id, alt: 'a'.repeat(251) },
+  ]
+  try {
+    for (const candidate of candidates) {
+      // Estados legados de teste são gravados diretamente; as recusas usam a aplicação.
+      await pool.query(`
+        UPDATE midias SET fase = $2, digest = $3, otimizado = $4, alt = $5 WHERE id = $1
+      `, [approvedPoster.id, candidate.phase ?? 'pronta', candidate.invalidDigest ? null : approvedPoster.digest,
+        candidate.missingDerivative ? null : approvedPoster.otimizado, candidate.alt ?? approvedPoster.alt])
+      await pool.query('UPDATE midias SET posterior = $2, publicado = false WHERE id = $1', [video.id, candidate.id])
+      const beforeAttempt = await persisted(video)
+      await status(await api(`midias/${video.uuid}/publicar`, df, 'POST', {}), [409])
+      if (candidate.id === foreign.id) {
+        await status(await api(`midias/${video.uuid}/publicar`, geral, 'POST', {}), [409])
+      }
+      assert.deepEqual(await persisted(video), beforeAttempt)
+      await pool.query('UPDATE midias SET publicado = true WHERE id = $1', [video.id])
+      await status(await download(video, df, 'poster'), [403, 404])
+    }
+  } finally {
+    await pool.query("UPDATE midias SET fase = 'pronta', digest = $2, otimizado = $3, alt = $4 WHERE id = $1",
+      [approvedPoster.id, approvedPoster.digest, approvedPoster.otimizado, approvedPoster.alt])
+    await pool.query('UPDATE midias SET posterior = $2, publicado = false WHERE id = $1', [video.id, approvedPoster.id])
+  }
+})
+
+test('Publicação concorrente revalida a seleção e a aprovação depois das travas', async () => {
+  const pool = mediaPool(payload)
+  const changes = [
+    { sql: 'UPDATE midias SET posterior = $2 WHERE id = $1', values: [video.id, replacement.id] },
+    { sql: 'UPDATE midias SET publicado = false WHERE id = $1', values: [approvedPoster.id] },
+  ]
+  for (const change of changes) {
+    const holder = await pool.connect()
+    let publication: Promise<Response> | undefined
+    try {
+      await holder.query('BEGIN')
+      const { rows: [{ pid }] } = await holder.query<{ pid: number }>('SELECT pg_backend_pid() AS pid')
+      await holder.query(change.sql, change.values)
+      publication = api(`midias/${video.uuid}/publicar`, df, 'POST', {})
+      for (let attempt = 0; ; attempt++) {
+        const { rows: [{ waiting }] } = await pool.query<{ waiting: boolean }>(`
+          SELECT EXISTS (SELECT 1 FROM pg_stat_activity WHERE $1 = ANY(pg_blocking_pids(pid))) AS waiting
+        `, [pid])
+        if (waiting) break
+        assert.ok(attempt < 150, 'A publicação deveria esperar pela linha alterada.')
+        await delay(20)
+      }
+      await holder.query('COMMIT')
+      await status(await publication, [409])
+      assert.equal((await persisted(video)).publicado, false)
+    } finally {
+      await holder.query('ROLLBACK')
+      holder.release()
+      await publication?.catch(() => undefined)
+      await pool.query('UPDATE midias SET posterior = $2 WHERE id = $1', [video.id, approvedPoster.id])
+      await pool.query('UPDATE midias SET publicado = true WHERE id = $1', [approvedPoster.id])
+    }
+  }
+})
+
+test('Pôster validado e publicado por outra conta da mesma unidade permite publicar o vídeo', async () => {
+  assert.equal(Number((await persisted(video)).posterior), approvedPoster.id)
   await status(await api(`midias/${video.uuid}/publicar`, df, 'POST', {}), [200])
+  assert.equal((await persisted(video)).publicado, true)
+  assert.equal(hash(await readAsset(video, df, 'poster')), hash(await readAsset(approvedPoster, df)))
+  await status(await download(video, undefined, 'poster'), [403])
+  await status(await download(video, rj, 'poster'), [404])
   await status(await api(`midias/${video.uuid}/poster`, df, 'POST', { segundo: 1 }), [409])
 })
 

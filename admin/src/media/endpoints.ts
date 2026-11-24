@@ -161,18 +161,68 @@ const retry: Endpoint['handler'] = async req => {
   return Response.json({ fase: 'pendente' }, { status: 202 })
 }
 
+function validAlt(value: unknown): value is string {
+  return typeof value === 'string' && value.length <= 250 && /[\p{L}\p{N}]/u.test(value)
+}
+
+function eligiblePoster(
+  image: Record<string, unknown> | null | undefined,
+  regional: number | undefined,
+  forPublication: boolean,
+): image is Record<string, unknown> & { otimizado: string } {
+  return image?.tipo === 'imagem' && image.fase === 'pronta' &&
+    relationID(image.regional) === regional &&
+    typeof image.digest === 'string' && /^[0-9a-f]{64}$/.test(image.digest) &&
+    typeof image.otimizado === 'string' && image.otimizado.trim().length > 0 &&
+    (!forPublication || (image.publicado === true && validAlt(image.alt)))
+}
+
 const publish: Endpoint['handler'] = async req => {
   const doc = await scopedMedia(req)
   const { alt: value } = await body(req, ['alt'])
-  if (value !== undefined && (typeof value !== 'string' || value.length > 250)) throw new APIError('Texto alternativo inválido.', 400)
-  const alt = typeof value === 'string' ? value.trim() : doc.alt ?? ''
-  if (doc.tipo === 'imagem' && !alt) throw new APIError('Informe um texto alternativo descritivo.', 400)
-  const changed = await mediaPool(req.payload).query(`
-    UPDATE midias SET publicado = true, alt = $2, updated_at = now()
-    WHERE id = $1 AND fase = 'pronta' AND NOT publicado
-  `, [doc.id, alt])
-  if (!changed.rowCount) throw new APIError('Somente uma mídia pronta e inédita pode ser publicada.', 409)
-  return Response.json({ publicado: true })
+  if (value !== undefined && (typeof value !== 'string' || value.length > 250)) {
+    throw new APIError('Texto alternativo inválido.', 400)
+  }
+  const regional = relationID(doc.regional)
+  const client = await mediaPool(req.payload).connect()
+  try {
+    await client.query('BEGIN ISOLATION LEVEL READ COMMITTED')
+    const { rows: [current] } = await client.query<{
+      tipo: string; posterior: string | null; alt: string | null;
+    }>(`
+      SELECT tipo, posterior, alt FROM midias
+      WHERE id = $1 AND regional_id IS NOT DISTINCT FROM $2::integer
+        AND fase = 'pronta' AND NOT publicado
+      FOR UPDATE
+    `, [doc.id, regional ?? null])
+    if (!current) throw new APIError('Somente uma mídia pronta e inédita pode ser publicada.', 409)
+
+    const alt = typeof value === 'string' ? value.trim() : current.alt ?? ''
+    if (current.tipo === 'imagem' && !validAlt(alt)) {
+      throw new APIError('Informe um texto alternativo descritivo.', 400)
+    }
+    if (current.tipo === 'video' && current.posterior !== null) {
+      const { rows: [image] } = await client.query<Record<string, unknown>>(`
+        SELECT tipo, fase, regional_id AS regional, digest, otimizado, publicado, alt
+        FROM midias
+        WHERE id = $1 AND tipo = 'imagem' AND regional_id IS NOT DISTINCT FROM $2::integer
+        FOR SHARE
+      `, [current.posterior, regional ?? null])
+      if (!eligiblePoster(image, regional, true)) {
+        throw new APIError('O pôster personalizado deve ser uma imagem validada e publicada do mesmo âmbito, com texto alternativo.', 409)
+      }
+    }
+    await client.query(`
+      UPDATE midias SET publicado = true, alt = $2, updated_at = now() WHERE id = $1
+    `, [doc.id, alt])
+    await client.query('COMMIT')
+    return Response.json({ publicado: true })
+  } catch (error) {
+    await client.query('ROLLBACK')
+    throw error
+  } finally {
+    client.release()
+  }
 }
 
 const poster: Endpoint['handler'] = async req => {
@@ -187,8 +237,9 @@ const poster: Endpoint['handler'] = async req => {
     const image = await req.payload.findByID({
       collection: 'midias', id, depth: 0, overrideAccess: false, req, disableErrors: true,
     })
-    if (!image || image.tipo !== 'imagem' || image.fase !== 'pronta' ||
-        relationID(image.regional) !== relationID(doc.regional)) deny('Imagem de pôster indisponível neste âmbito.')
+    if (!eligiblePoster(image, relationID(doc.regional), false)) {
+      deny('Imagem de pôster indisponível neste âmbito.')
+    }
     const updated = await pool.query(`
       UPDATE midias SET posterior = $2, updated_at = now()
       WHERE id = $1 AND fase = 'pronta' AND NOT publicado
@@ -217,7 +268,7 @@ const download: Endpoint['handler'] = async req => {
     const image = await req.payload.findByID({
       collection: 'midias', id: doc.posterior, depth: 0, overrideAccess: false, req, disableErrors: true,
     })
-    if (!image || image.fase !== 'pronta' || relationID(image.regional) !== relationID(doc.regional)) deny()
+    if (!eligiblePoster(image, relationID(doc.regional), doc.publicado === true)) deny()
     key = image.otimizado
   }
   if (typeof key !== 'string') throw new APIError('Arquivo indisponível.', 404)
