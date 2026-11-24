@@ -1,4 +1,5 @@
 import { APIError, type Access, type CollectionBeforeChangeHook, type CollectionBeforeOperationHook, type CollectionConfig, type Field } from 'payload'
+import { coverField, validateCover } from '../media/collection.ts'
 import { retainActiveGeneral } from './last-general.ts'
 import { actor, canUsePanel, deny, geral, limitToRegion, protectFields, rejectNested, relationID } from './policies.ts'
 
@@ -81,7 +82,7 @@ const users: CollectionConfig = {
   ],
 }
 
-const editableRegionFields = new Set(['sobre', 'whatsapp', 'instagram', 'endereco', 'localizacao', 'capa'])
+const editableRegionFields = new Set(['sobre', 'whatsapp', 'instagram', 'endereco', 'localizacao', 'capa', 'capaMidia'])
 const unitIdentityFields = new Set(['id', 'nome', 'tipo', 'cidade', 'estado', 'slug', 'ordem', 'ativo', 'createdAt', 'updatedAt'])
 const regionScope = limitToRegion('id')
 const regionais: CollectionConfig = {
@@ -99,7 +100,7 @@ const regionais: CollectionConfig = {
       const id = 'id' in args ? relationID(args.id) : undefined
       await protectFields('regionais', { req, id, data: args.data }, editableRegionFields, unitIdentityFields)
     }
-  }] },
+  }], beforeChange: [validateCover] },
   fields: [
     { name: 'nome', type: 'text', required: true, access: { update: geral } },
     { name: 'tipo', type: 'select', options: ['sede', 'regional'], required: true, access: { update: geral } },
@@ -114,6 +115,7 @@ const regionais: CollectionConfig = {
     { name: 'endereco', type: 'text' },
     { name: 'localizacao', type: 'text' },
     { name: 'capa', type: 'text', label: 'Imagem de capa (referência fictícia)' },
+    coverField,
   ],
 }
 
@@ -186,9 +188,9 @@ const restoreAgenda: CollectionBeforeOperationHook = async ({ operation, args, r
   if (!args.draft) throw new APIError('Restaure a versão como rascunho e publique em uma ação separada.', 400)
 }
 const agenda: CollectionConfig = {
-  ...regionalContent('agenda', 'Agenda'),
+  ...regionalContent('agenda', 'Agenda', [coverField]),
   versions: { drafts: true, maxPerDoc: 15 },
-  hooks: { beforeOperation: [validateContentInput, restoreAgenda], beforeChange: [ownership] },
+  hooks: { beforeOperation: [validateContentInput, restoreAgenda], beforeChange: [ownership, validateCover] },
   access: {
     create: canUsePanel,
     read: contentScope,
@@ -219,8 +221,9 @@ const validateAgendaLink: CollectionBeforeChangeHook = async ({ data, originalDo
 const eventos: CollectionConfig = {
   ...regionalContent('eventos', 'Eventos', [
     { name: 'compromisso', type: 'relationship', relationTo: 'agenda' },
+    coverField,
   ]),
-  hooks: { beforeOperation: [validateContentInput], beforeChange: [ownership, validateAgendaLink] },
+  hooks: { beforeOperation: [validateContentInput], beforeChange: [ownership, validateAgendaLink, validateCover] },
 }
 const manageBoard: Access = (args) => {
   if (!geral(args)) return false
@@ -232,9 +235,11 @@ const diretoria: CollectionConfig = {
   labels: { singular: 'Diretor', plural: 'Diretoria Nacional' },
   admin: { useAsTitle: 'nomePublico' },
   access: { create: manageBoard, read: geral, update: manageBoard, delete: denyDelete },
+  hooks: { beforeChange: [validateCover] },
   fields: [
     { name: 'nomePublico', type: 'text', label: 'Nome público', required: true },
     { name: 'membro', type: 'relationship', relationTo: 'membros', maxDepth: 0 },
+    coverField,
     activeField,
   ],
 }
