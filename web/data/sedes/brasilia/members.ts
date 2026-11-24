@@ -1,13 +1,20 @@
+export const katia = {
+  name: "Kátia",
+  role: "Diretora - Cardeal",
+  image: "/images/brasilia/members/katia-cardeal.png",
+};
+
 export const brasiliaMembers = [
-  {
-    name: "Poodle",
-    role: "Diretor - Cardeal",
-    image: "/images/brasilia/members/poodle-diretor-cardeal.png",
-  },
+  katia,
   {
     name: "Brun",
     role: "Cardeal",
     image: "/images/brasilia/members/brun-cardeal.png",
+  },
+  {
+    name: "Feijão",
+    role: "Cardeal",
+    image: "/images/brasilia/members/feijao-bispo.png",
   },
   {
     name: "Jotacê",
@@ -15,19 +22,14 @@ export const brasiliaMembers = [
     image: "/images/brasilia/members/jotace-cardeal.png",
   },
   {
-    name: "Kátia",
+    name: "Poodle",
     role: "Cardeal",
-    image: "/images/brasilia/members/katia-cardeal.png",
+    image: "/images/brasilia/members/poodle-diretor-cardeal.png",
   },
   {
     name: "Woody",
     role: "Cardeal",
     image: "/images/brasilia/members/woody-cardeal.png",
-  },
-    {
-    name: "Feijão",
-    role: "Cardeal",
-    image: "/images/brasilia/members/feijao-bispo.png",
   },
   {
     name: "Cabelo de Freira",
