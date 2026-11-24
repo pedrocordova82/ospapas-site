@@ -1,3 +1,5 @@
+import { katia } from "./sedes/brasilia/members";
+
 export type Leader = {
   name: string;
   role: string;
@@ -36,22 +38,16 @@ export const leadership: Leader[] = [
   },
   {
     name: "Nasa",
-    role: "Diretor Financeiro",
+    role: "Diretor Social",
     rank: "Cardeal",
     image: "/images/diretoria/nasa_diretor-financeiro.jpeg",
   },
   {
-    name: "Sniper",
-    role: "Diretor Social",
-    rank: "Cardeal",
-    image: "/images/diretoria/sniper-diretor-social.png",
-  },
-  {
-    name: "Poodle",
-    role: "Diretor Regional Brasília",
+    name: katia.name,
+    role: "Diretora Regional Brasília",
     rank: "Cardeal",
     sede: "Brasília-DF",
-    image: "/images/diretoria/podle-diretor-brasilia.png",
+    image: katia.image,
   },
   {
     name: "Verme",
