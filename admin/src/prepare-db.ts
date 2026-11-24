@@ -24,11 +24,13 @@ const { default: config } = await import('./payload.config')
 const payload = await getPayload({ config })
 
 try {
-  const { totalDocs } = await payload.count({ collection: 'users' })
+  const { totalDocs } = await payload.count({ collection: 'users', overrideAccess: true })
   if (totalDocs === 0) {
     await payload.create({
       collection: 'users',
-      data: { email: POC_ADMIN_EMAIL, password: POC_ADMIN_PASSWORD },
+      data: { email: POC_ADMIN_EMAIL, password: POC_ADMIN_PASSWORD, perfil: 'geral' },
+      context: { pocBootstrap: true },
+      overrideAccess: true,
     })
     console.info('Esquema preparado e primeira conta experimental criada.')
   } else {
