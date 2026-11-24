@@ -10,7 +10,8 @@
     "build": "node scripts/next.mjs build",
     "db:prepare": "node --env-file-if-exists=.env.poc node_modules/payload/bin.js run src/prepare-db.ts",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:integration": "node --env-file-if-exists=.env.poc --test tests/access.integration.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.94.2",
