@@ -43,6 +43,18 @@ export const leadership: Leader[] = [
     image: "/images/diretoria/nasa_diretor-financeiro.jpeg",
   },
   {
+    name: "Sid",
+    role: "Diretor de Marketing",
+    rank: "Cardeal",
+    image: "/images/diretoria/sid-diretor-marketing.jpeg",
+  },
+  {
+    name: "Velasco",
+    role: "Diretor Financeiro",
+    rank: "Cardeal",
+    image: "/images/diretoria/velasco-diretor-financeiro.jpeg",
+  },
+  {
     name: katia.name,
     role: "Diretora Regional Brasília",
     rank: "Cardeal",
