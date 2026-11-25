@@ -6,16 +6,17 @@ import { relationID } from '../access/policies.ts'
 import { eligiblePoster } from '../media/approval.ts'
 import { limits, mediaPool } from '../media/model.ts'
 import { fetchFile } from '../media/storage.ts'
+import { publicationRefusal, type PublicationRequest } from './authorization.ts'
 import {
-  assetsOf, emptySnapshot, fileKey, hash, isSection, jsonBytes, parsePointer, parseRelease, parseSection, sections,
+  assetsOf, emptySnapshot, fileKey, hash, jsonBytes, parsePointer, parseRelease, parseSection, sections,
   validateSnapshot, version, maxPublicJSON, type Asset, type Pointer, type Release, type Rows,
   type Snapshot, type Video,
 } from './contract.ts'
-import { isApprovedVideo, type Intent, type PendingRow } from './projection.ts'
+import { isApprovedVideo, type PendingRow } from './projection.ts'
 import { readSnapshot } from './releases.ts'
 import { missing, publicationEnvironment, ReleaseStore } from './store.ts'
 
-type Job = { id: number; release: string; pedido: Intent; created_at: Date; tentativas: string }
+type Job = PublicationRequest & { id: number; release: string; created_at: Date; tentativas: string }
 type Approved = {
   capa?: { source: string; alt: string }
   video?: { source: string; poster: { source: string; alt: string } }
@@ -48,20 +49,6 @@ async function approvalSnapshot(payload: Payload, selected: PendingRow[]) {
       return { source: asset.otimizado, alt: asset.alt.trim() }
     }
     for (const record of selected) {
-      const section = record.colecao
-      if (!isSection(section)) throw new Refusal('registro_alterado')
-      const table: Record<PendingRow['colecao'], string> = {
-        sedes: 'regionais', membros: 'membros', agenda: 'agenda', eventos: 'eventos', diretoria: 'diretoria',
-      }
-      const hasRegion = section !== 'sedes' && section !== 'diretoria'
-      const { rows: [source] } = await read.query<{ ativo: boolean; regional: number | null; status: string | null }>(`
-        SELECT ativo, ${hasRegion ? 'regional_id' : 'null'} AS regional,
-          ${section === 'agenda' ? '_status' : 'null'} AS status
-        FROM ${table[section]} WHERE id = $1
-      `, [record.sourceId])
-      const owner = section === 'sedes' ? record.sourceId : relationID(source?.regional)
-      if (!source || owner !== record.unidade || source.ativo !== Boolean(record.dado) ||
-          (section === 'agenda' && source.status !== 'published')) throw new Refusal('registro_alterado')
       const dependencies: Approved = {}
       if (record.capa) dependencies.capa = await image(record.capa, record.unidade)
       if (record.video) {
@@ -283,10 +270,22 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
         return { status: 'reconciliado', operations: store.operations }
       }
       if (current && current.value.ativa.sequencia >= job.id) throw new Refusal('release_obsoleta')
+      const preflight = await publicationRefusal(client, job)
+      if (preflight) throw new Refusal(preflight)
       const result = await prepareRelease(payload, store, job, current?.value)
       await hooks.beforeActivate?.()
-      activating = true
-      await store.activate(jsonBytes({ ...result.pointer, ativadaEm: new Date().toISOString() }), current?.etag)
+      await client.query('BEGIN ISOLATION LEVEL READ COMMITTED')
+      try {
+        // Os bloqueios impedem mudanças de autorização até o fim da escrita condicional.
+        const refusal = await publicationRefusal(client, job, { lock: true })
+        if (refusal) throw new Refusal(refusal)
+        activating = true
+        await store.activate(jsonBytes({ ...result.pointer, ativadaEm: new Date().toISOString() }), current?.etag)
+        await client.query('COMMIT')
+      } catch (error) {
+        await client.query('ROLLBACK')
+        throw error
+      }
       await hooks.afterActivate?.()
       await confirm()
       return {

@@ -120,7 +120,8 @@ const publication = (...registros: ReturnType<typeof selected>[]) => ({ ambiente
 const request = (intent: object, actor?: Session, key = randomBytes(12).toString('hex'), target = admin) =>
   api('publicacoes/solicitar', actor, 'POST', intent, target, key)
 const enqueue = async (intent: object, actor = geral) => json<Enqueued>(await request(intent, actor), 202)
-const repeat = async (job: Enqueued) => expect(await api(`publicacoes/${job.id}/repetir`, geral, 'POST'), 202)
+const retry = (job: Enqueued, user: Session) => api(`publicacoes/${job.id}/repetir`, user, 'POST')
+const repeat = async (job: Enqueued, user = geral) => expect(await retry(job, user), 202)
 const storedJob = async (job: Enqueued) => (await mediaPool(payload).query<Row>('SELECT estado, erro, tentativas FROM publicacoes WHERE id = $1', [job.id])).rows[0]
 
 async function write(path: string, user: Session, data: object, update = false) {
@@ -129,6 +130,14 @@ async function write(path: string, user: Session, data: object, update = false) 
 
 async function signIn(email: string, pass: string, target = admin) {
   return json<Session>(await api('users/login', undefined, 'POST', { email, password: pass }, target), 200)
+}
+
+async function operator(regional?: Doc) {
+  const email = `pub-operador-${randomBytes(8).toString('hex')}@example.invalid`
+  const { id } = await write('users', geral, {
+    email, password, perfil: regional ? 'regional' : 'geral', regional: regional?.id,
+  })
+  return { id, session: await signIn(email, password), signIn: () => signIn(email, password) }
 }
 
 async function asset(user: Session, tipo: 'imagem' | 'video', bytes: Buffer): Promise<Asset> {
@@ -156,6 +165,17 @@ async function run(expected = 'publicado') {
 }
 const expire = (job: Enqueued) =>
   mediaPool(payload).query("UPDATE publicacoes SET expira = now() - interval '1 second' WHERE id = $1", [job.id])
+
+async function failPreparation(job: Enqueued) {
+  const result = await publishOnce(payload, 'dev', { beforeActivate: async () => { throw new Error('Preparo interrompido no teste.') } })
+  assert.equal(result?.status, 'falhou')
+  assert.equal((await storedJob(job)).erro, 'preparacao')
+}
+
+async function refuseActivation(job: Enqueued) {
+  await run('falhou')
+  assert.equal((await storedJob(job)).erro, 'autorizacao_revogada')
+}
 
 before(async () => {
   payload = await getPayload({ config })
@@ -361,8 +381,9 @@ test('CAS rejeita ETag divergente e jobs antigos não substituem uma release mai
   assert.equal((await load()).release, newer.release)
 })
 
-test('A retomada recupera o estado se a ativação já aconteceu antes da interrupção', async () => {
-  const job = await enqueue(publication(selected('membros', member)), df)
+test('A retomada reconcilia uma ativação concluída mesmo quando o operador foi desativado', async () => {
+  const author = await operator(dfUnit)
+  const job = await enqueue(publication(selected('membros', member)), author.session)
   const interrupted = await publishOnce(payload, 'dev', { afterActivate: async () => {
     throw new Error('Gravação de estado interrompida no teste.')
   } })
@@ -370,6 +391,7 @@ test('A retomada recupera o estado se a ativação já aconteceu antes da interr
   const active = await metadata()
   assert.equal(active.value.ativa.id, job.release)
   assert.equal((await storedJob(job)).estado, 'processando')
+  await write(`users/${author.id}`, geral, { ativo: false }, true)
   const successor = await enqueue(publication(selected('membros', member)), df)
   assert.equal(await publishOnce(payload), undefined)
   await expire(job)
@@ -413,6 +435,126 @@ test('Depois de encerrar o worker em execução, o próximo recupera a lease ven
   await expire(job)
   await run()
   assert.equal((await load()).release, job.release)
+})
+
+test('A perda do perfil Geral bloqueia repetição e ativação de rollback, revogação e conteúdo nacional', async () => {
+  const author = await operator()
+  const active = await metadata()
+  const intents = [
+    { ambiente: 'dev', acao: 'restaurar', release: active.value.anteriores[0].id },
+    { ambiente: 'dev', acao: 'revogar', alvo: 'a'.repeat(64) },
+    publication(selected('diretoria', director)),
+  ]
+  const failed = []
+  const pending = []
+  for (const intent of intents) {
+    const job = await enqueue(intent, author.session)
+    await failPreparation(job)
+    failed.push(job)
+  }
+  for (const intent of intents) pending.push(await enqueue(intent, author.session))
+
+  await write(`users/${author.id}`, geral, { perfil: 'regional', regional: dfUnit.id }, true)
+  const regional = await author.signIn()
+  for (const job of failed) {
+    await expect(await api(`publicacoes/${job.id}`, regional), 200)
+    await expect(await retry(job, regional), 403)
+    await expect(await retry(job, geral), 403)
+    assert.equal((await storedJob(job)).erro, 'preparacao')
+  }
+  for (const job of pending) await refuseActivation(job)
+  assert.deepEqual(await metadata(), active)
+})
+
+test('A troca de regional bloqueia publicação e repetição até a recuperação do acesso', async () => {
+  const author = await operator(dfUnit)
+  const active = await metadata()
+  const intent = publication(selected('membros', member))
+  const failed = await enqueue(intent, author.session)
+  await failPreparation(failed)
+  const pending = await enqueue(intent, author.session)
+
+  await write(`users/${author.id}`, geral, { regional: rjUnit.id }, true)
+  await expect(await retry(failed, await author.signIn()), 403)
+  await expect(await retry(failed, geral), 403)
+  assert.equal((await storedJob(failed)).estado, 'falhou')
+  await refuseActivation(pending)
+  assert.deepEqual(await metadata(), active)
+
+  await write(`users/${author.id}`, geral, { regional: dfUnit.id }, true)
+  await repeat(pending, await author.signIn())
+  await run()
+  assert.equal((await load()).release, pending.release)
+})
+
+test('A desativação da conta bloqueia publicação pendente e repetição mesmo solicitada pelo Geral', async () => {
+  const author = await operator(dfUnit)
+  const active = await metadata()
+  const intent = publication(selected('membros', member))
+  const failed = await enqueue(intent, author.session)
+  await failPreparation(failed)
+  const pending = await enqueue(intent, author.session)
+
+  await write(`users/${author.id}`, geral, { ativo: false }, true)
+  await expect(await retry(failed, author.session), 403)
+  await expect(await retry(failed, geral), 403)
+  assert.equal((await storedJob(failed)).estado, 'falhou')
+  await refuseActivation(pending)
+  assert.deepEqual(await metadata(), active)
+})
+
+test('A perda de acesso ao registro selecionado bloqueia repetição e ativação', async () => {
+  const active = await metadata()
+  const moved = await write('membros', df, { titulo: 'Membro transferido antes da ativação' })
+  const intent = publication(selected('membros', moved))
+  const failed = await enqueue(intent, df)
+  await failPreparation(failed)
+  const pending = await enqueue(intent, df)
+
+  await write(`membros/${moved.id}`, geral, { regional: rjUnit.id }, true)
+  await expect(await retry(failed, df), 403)
+  await expect(await retry(failed, geral), 403)
+  assert.equal((await storedJob(failed)).estado, 'falhou')
+  await refuseActivation(pending)
+  assert.deepEqual(await metadata(), active)
+})
+
+test('A ativação aguarda uma mudança concorrente na conta e valida a versão confirmada', async () => {
+  const author = await operator(dfUnit)
+  const active = await metadata()
+  const job = await enqueue(publication(selected('membros', member)), author.session)
+  const pool = mediaPool(payload)
+  const editor = await pool.connect()
+  const prepared = Promise.withResolvers<void>()
+  let worker: ReturnType<typeof publishOnce> | undefined
+  try {
+    await editor.query('BEGIN')
+    const { rows: [backend] } = await editor.query<{ pid: number }>('SELECT pg_backend_pid() AS pid')
+    worker = publishOnce(payload, 'dev', { beforeActivate: async () => {
+      await editor.query('UPDATE users SET ativo = false WHERE id = $1', [author.id])
+      prepared.resolve()
+    } })
+    await Promise.race([prepared.promise, worker])
+    let waiting = false
+    for (let attempt = 0; attempt < 100; attempt++) {
+      const { rows: [state] } = await pool.query<{ waiting: boolean }>(`
+        SELECT EXISTS (SELECT 1 FROM pg_stat_activity WHERE $1 = ANY(pg_blocking_pids(pid))) AS waiting
+      `, [backend.pid])
+      waiting = state.waiting
+      if (waiting) break
+      await delay(20)
+    }
+    assert.ok(waiting, 'A leitura final deve aguardar o bloqueio da conta.')
+    assert.deepEqual(await metadata(), active)
+    await editor.query('COMMIT')
+    assert.equal((await worker)?.status, 'falhou')
+  } finally {
+    await editor.query('ROLLBACK')
+    editor.release()
+    await worker
+  }
+  assert.equal((await storedJob(job)).erro, 'autorizacao_revogada')
+  assert.deepEqual(await metadata(), active)
 })
 
 test('Rollback autorizado produz nova revisão e revogação bloqueia releases históricas e objetos', async () => {

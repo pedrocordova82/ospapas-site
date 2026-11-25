@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { APIError, type CollectionConfig, type PayloadRequest, type Where } from 'payload'
 import { actor, deny, relationID } from '../access/policies.ts'
 import { mediaPool } from '../media/model.ts'
+import { publicationRefusal, type PublicationRequest } from './authorization.ts'
 import { hash, hashPattern, idPattern, isSection, mediaPattern, plain } from './contract.ts'
 import { capture, type Intent, type Selection } from './projection.ts'
 import { publicationEnvironment } from './store.ts'
@@ -158,15 +159,29 @@ async function requestPublication(req: PayloadRequest) {
 
 async function retry(req: PayloadRequest) {
   const id = relationID(req.routeParams?.id)
-  if (!actor(req) || !id) deny()
+  const requester = relationID(actor(req)?.id)
+  if (!requester || !id) deny()
   const doc = await req.payload.findByID({
     collection: 'publicacoes', id, req, depth: 0, overrideAccess: false, disableErrors: true,
   })
   if (!doc) deny()
-  const result = await mediaPool(req.payload).query(`
-    UPDATE publicacoes SET estado = 'pendente', erro = null, expira = null
-    WHERE id = $1 AND ambiente = $2 AND estado = 'falhou' AND tentativas < 8
-  `, [id, publicationEnvironment()])
-  if (!result.rowCount) throw new APIError('Pedido indisponível para repetição.', 409)
+  const client = await mediaPool(req.payload).connect()
+  try {
+    await client.query('BEGIN ISOLATION LEVEL READ COMMITTED')
+    const { rows: [job] } = await client.query<PublicationRequest>(`
+      SELECT operador, pedido FROM publicacoes
+      WHERE id = $1 AND ambiente = $2 AND estado = 'falhou' AND tentativas < 8
+      FOR UPDATE
+    `, [id, publicationEnvironment()])
+    if (!job) throw new APIError('Pedido indisponível para repetição.', 409)
+    if (await publicationRefusal(client, job, { lock: true, requester })) deny()
+    await client.query("UPDATE publicacoes SET estado = 'pendente', erro = null, expira = null WHERE id = $1", [id])
+    await client.query('COMMIT')
+  } catch (error) {
+    await client.query('ROLLBACK')
+    throw error
+  } finally {
+    client.release()
+  }
   return Response.json({ estado: 'pendente' }, { status: 202 })
 }
