@@ -1,4 +1,5 @@
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
+import { randomUUID } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Payload } from 'payload'
@@ -6,6 +7,7 @@ import { relationID } from '../access/policies.ts'
 import { eligiblePoster } from '../media/approval.ts'
 import { limits, mediaPool } from '../media/model.ts'
 import { fetchFile } from '../media/storage.ts'
+import { assertOperational, requireDirectConnection, type DatabaseClient } from '../security/database.ts'
 import { publicationRefusal, type PublicationRequest } from './authorization.ts'
 import {
   assetsOf, emptySnapshot, fileKey, hash, jsonBytes, parsePointer, parseRelease, parseSection, sections,
@@ -16,7 +18,7 @@ import { isApprovedVideo, type PendingRow } from './projection.ts'
 import { readSnapshot } from './releases.ts'
 import { missing, publicationEnvironment, ReleaseStore } from './store.ts'
 
-type Job = PublicationRequest & { id: number; release: string; created_at: Date; tentativas: string }
+type Job = PublicationRequest & { id: number; release: string; created_at: Date; tentativas: string; etag_em_ativacao: string | null }
 type Approved = {
   capa?: { source: string; alt: string }
   video?: { source: string; poster: { source: string; alt: string } }
@@ -28,51 +30,52 @@ type Hooks = {
 
 class Refusal extends Error {}
 
-async function approvalSnapshot(payload: Payload, selected: PendingRow[]) {
-  const pool = mediaPool(payload)
-  const read = await pool.connect()
+async function readApprovals(client: DatabaseClient, selected: PendingRow[], lock: boolean) {
   const result = new Map<string, Approved>()
+  const load = async (id: number) => {
+    const { rows: [asset] } = await client.query<Record<string, unknown>>(`
+      SELECT tipo, fase, regional_id AS regional, digest, otimizado, publicado, alt, poster, posterior
+      FROM midias WHERE id = $1 ${lock ? 'FOR SHARE' : ''}
+    `, [id])
+    return asset
+  }
+  const image = async (id: number, regional: number | undefined) => {
+    const asset = await load(id)
+    if (!eligiblePoster(asset, regional, true) || typeof asset.alt !== 'string') {
+      throw new Refusal('midia_invalida')
+    }
+    return { source: asset.otimizado, alt: asset.alt.trim() }
+  }
+  for (const record of selected) {
+    const dependencies: Approved = {}
+    if (record.capa) dependencies.capa = await image(record.capa, record.unidade)
+    if (record.video) {
+      const asset = await load(record.video)
+      if (!isApprovedVideo(asset, record.unidade)) throw new Refusal('midia_invalida')
+      const custom = relationID(asset.posterior)
+      if (asset.posterior != null && !custom) throw new Refusal('midia_invalida')
+      const title = record.dado && 'titulo' in record.dado ? record.dado.titulo : ''
+      dependencies.video = {
+        source: String(asset.otimizado),
+        poster: custom ? await image(custom, record.unidade) : {
+          source: String(asset.poster), alt: `Quadro do vídeo ${title}`.slice(0, 250),
+        },
+      }
+    }
+    result.set(record.id, dependencies)
+  }
+  return result
+}
+
+async function approvalSnapshot(client: DatabaseClient, selected: PendingRow[]) {
+  await client.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY')
   try {
-    await read.query('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY')
-    const load = async (id: number) => {
-      const { rows: [asset] } = await read.query<Record<string, unknown>>(`
-        SELECT tipo, fase, regional_id AS regional, digest, otimizado, publicado, alt, poster, posterior
-        FROM midias WHERE id = $1
-      `, [id])
-      return asset
-    }
-    const image = async (id: number, regional: number | undefined) => {
-      const asset = await load(id)
-      if (!eligiblePoster(asset, regional, true) || typeof asset.alt !== 'string') {
-        throw new Refusal('midia_invalida')
-      }
-      return { source: asset.otimizado, alt: asset.alt.trim() }
-    }
-    for (const record of selected) {
-      const dependencies: Approved = {}
-      if (record.capa) dependencies.capa = await image(record.capa, record.unidade)
-      if (record.video) {
-        const asset = await load(record.video)
-        if (!isApprovedVideo(asset, record.unidade)) throw new Refusal('midia_invalida')
-        const custom = relationID(asset.posterior)
-        if (asset.posterior != null && !custom) throw new Refusal('midia_invalida')
-        const title = record.dado && 'titulo' in record.dado ? record.dado.titulo : ''
-        dependencies.video = {
-          source: String(asset.otimizado),
-          poster: custom ? await image(custom, record.unidade) : {
-            source: String(asset.poster), alt: `Quadro do vídeo ${title}`.slice(0, 250),
-          },
-        }
-      }
-      result.set(record.id, dependencies)
-    }
-    await read.query('COMMIT')
+    const result = await readApprovals(client, selected, false)
+    await client.query('COMMIT')
     return result
   } catch (error) {
-    await read.query('ROLLBACK')
+    await client.query('ROLLBACK')
     throw error
-  } finally {
-    read.release()
   }
 }
 
@@ -113,13 +116,12 @@ async function copyMedia(
 
 async function patchSnapshot(
   store: ReleaseStore,
-  payload: Payload,
   snapshot: Snapshot,
   selected: PendingRow[],
   revoked: string[],
+  approvals: Map<string, Approved>,
 ) {
   const denied = new Set(revoked)
-  const approvals = await approvalSnapshot(payload, selected)
   const copied = new Map<string, string>()
   const copy = async (key: string, extension: 'mp4' | 'webp') => {
     if (!copied.has(key)) copied.set(key, await copyMedia(store, key, extension, denied))
@@ -171,7 +173,7 @@ function revoke(snapshot: Snapshot, target: string) {
 }
 
 async function prepareRelease(
-  payload: Payload,
+  client: DatabaseClient,
   store: ReleaseStore,
   job: Job,
   previous: Pointer | undefined,
@@ -181,6 +183,7 @@ async function prepareRelease(
   let revoked = previous?.revogados ?? []
   let ancestors = previous ? [previous.ativa, ...previous.anteriores].slice(0, 3) : []
   let snapshot: Snapshot
+  let approvals: Map<string, Approved> | undefined
   if (intent.acao === 'restaurar') {
     const old = previous?.anteriores.find(ref => ref.id === intent.release)
     if (!old) throw new Refusal('restauracao_indisponivel')
@@ -192,7 +195,8 @@ async function prepareRelease(
       revoke(snapshot, intent.alvo)
       ancestors = []
     } else {
-      await patchSnapshot(store, payload, snapshot, intent.registros, revoked)
+      approvals = await approvalSnapshot(client, intent.registros)
+      await patchSnapshot(store, snapshot, intent.registros, revoked, approvals)
     }
   }
   snapshot.sedes.sort((a, b) => a.ordem - b.ordem || a.slug.localeCompare(b.slug))
@@ -232,15 +236,20 @@ async function prepareRelease(
     await store.putImmutable('releases', fileKey(job.release, section), bytes, 'application/json')
   }
   await store.putImmutable('releases', fileKey(job.release, 'manifest'), manifest, 'application/json')
-  return { pointer, snapshotMs, jsonSize, jsonFiles: files.map(([key, bytes]) => [key, bytes.length]) }
+  return { pointer, approvals, snapshotMs, jsonSize, jsonFiles: files.map(([key, bytes]) => [key, bytes.length]) }
 }
 
 export async function publishOnce(payload: Payload, environment = publicationEnvironment(), hooks: Hooks = {}) {
   if (environment !== publicationEnvironment()) throw new Error('Worker deve operar no ambiente configurado.')
+  requireDirectConnection()
   const started = performance.now()
   const client = await mediaPool(payload).connect()
   let locked = false
+  let disconnected: Error | undefined
+  const lostConnection = (error: Error) => { disconnected = error }
+  client.on('error', lostConnection)
   try {
+    await assertOperational(client)
     const { rows: [lock] } = await client.query<{ acquired: boolean }>(
       'SELECT pg_try_advisory_lock(502020, $1) AS acquired', [['dev', 'hml', 'prd'].indexOf(environment)],
     )
@@ -259,28 +268,48 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
     if (!job) return
     const store = new ReleaseStore(environment)
     const confirm = () => client.query(`
-      UPDATE publicacoes SET estado = 'publicado', erro = null, expira = null, updated_at = now()
+      UPDATE publicacoes SET estado = 'publicado', erro = null, expira = null, etag_em_ativacao = null, updated_at = now()
       WHERE id = $1 AND estado = 'processando' AND ambiente = $2
     `, [job.id, environment])
     let activating = false
+    let reconciling = Boolean(job.etag_em_ativacao)
     try {
-      const current = await store.pointer()
+      let current = await store.pointer()
       if (current?.value.ativa.id === job.release && current.value.ativa.sequencia === job.id) {
         await confirm()
         return { status: 'reconciliado', operations: store.operations }
       }
+      if (job.etag_em_ativacao) {
+        if (!current) return { status: 'processando', operations: store.operations }
+        if (current.etag === job.etag_em_ativacao) {
+          // Muda o ETag sem estender a janela de leitura ou trocar a release segura.
+          await store.activate(jsonBytes({ ...current.value, geracao: randomUUID() }), current.etag)
+          current = await store.pointer()
+          if (!current) return { status: 'processando', operations: store.operations }
+        }
+        await client.query('UPDATE publicacoes SET etag_em_ativacao = null WHERE id = $1', [job.id])
+        reconciling = false
+      }
       if (current && current.value.ativa.sequencia >= job.id) throw new Refusal('release_obsoleta')
       const preflight = await publicationRefusal(client, job)
       if (preflight) throw new Refusal(preflight)
-      const result = await prepareRelease(payload, store, job, current?.value)
+      const result = await prepareRelease(client, store, job, current?.value)
       await hooks.beforeActivate?.()
+      await client.query('UPDATE publicacoes SET etag_em_ativacao = $2 WHERE id = $1', [job.id, current?.etag ?? 'ausente'])
       await client.query('BEGIN ISOLATION LEVEL READ COMMITTED')
       try {
         // Os bloqueios impedem mudanças de autorização até o fim da escrita condicional.
         const refusal = await publicationRefusal(client, job, { lock: true })
         if (refusal) throw new Refusal(refusal)
+        if (job.pedido.acao === 'publicar') {
+          const currentApprovals = await readApprovals(client, job.pedido.registros, true)
+          if (JSON.stringify([...currentApprovals]) !== JSON.stringify([...(result.approvals ?? [])])) {
+            throw new Refusal('midia_alterada')
+          }
+        }
         activating = true
-        await store.activate(jsonBytes({ ...result.pointer, ativadaEm: new Date().toISOString() }), current?.etag)
+        await store.activate(jsonBytes({ ...result.pointer, geracao: randomUUID(), ativadaEm: new Date().toISOString() }), current?.etag)
+        if (disconnected) return { status: 'processando', operations: store.operations }
         await client.query('COMMIT')
       } catch (error) {
         await client.query('ROLLBACK')
@@ -294,21 +323,22 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
         rssKiB: process.resourceUsage().maxRSS,
       }
     } catch (error) {
-      if (activating && !(error instanceof Error && ['PreconditionFailed', 'ConditionalRequestConflict'].includes(error.name))) {
+      if (disconnected || reconciling || (activating && !(error instanceof Error && ['PreconditionFailed', 'ConditionalRequestConflict'].includes(error.name)))) {
         return { status: 'processando', operations: store.operations }
       }
       const reason = activating ? 'conflito_manifesto' : error instanceof Refusal ? error.message : 'preparacao'
       await client.query(`
-        UPDATE publicacoes SET estado = 'falhou', erro = $2, expira = null, updated_at = now()
+        UPDATE publicacoes SET estado = 'falhou', erro = $2, expira = null, etag_em_ativacao = null, updated_at = now()
         WHERE id = $1 AND estado = 'processando' AND ambiente = $3
       `, [job.id, reason, environment])
       return { status: 'falhou', reason, operations: store.operations }
     }
   } finally {
     try {
-      if (locked) await client.query('SELECT pg_advisory_unlock(502020, $1)', [['dev', 'hml', 'prd'].indexOf(environment)])
+      if (locked && !disconnected) await client.query('SELECT pg_advisory_unlock(502020, $1)', [['dev', 'hml', 'prd'].indexOf(environment)])
     } finally {
-      client.release()
+      client.off('error', lostConnection)
+      client.release(disconnected)
     }
   }
 }

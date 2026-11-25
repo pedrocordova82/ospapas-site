@@ -18,7 +18,9 @@
     "publication:prepare": "node --env-file-if-exists=.env.poc scripts/prepare-publication.ts",
     "publication:worker": "node --env-file-if-exists=.env.poc scripts/publication-worker.ts",
     "publication:demo": "node --env-file-if-exists=.env.poc scripts/publication-demo.ts",
-    "test:publication": "node --env-file-if-exists=.env.poc --test tests/publication.integration.ts"
+    "test:publication": "node --env-file-if-exists=.env.poc --test tests/publication.integration.ts",
+    "recovery": "node --env-file-if-exists=.env.poc scripts/recovery.ts",
+    "test:security": "node --env-file-if-exists=.env.poc --test tests/security.integration.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1176.0",

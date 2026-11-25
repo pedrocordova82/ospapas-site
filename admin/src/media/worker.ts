@@ -1,3 +1,4 @@
+import { requireDirectConnection } from '../security/database.ts'
 import { mkdir, mkdtemp, readdir, rm, stat } from 'node:fs/promises'
 import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
@@ -81,6 +82,7 @@ async function processJob(row: Media, dir: string) {
 }
 
 export async function workOnce(payload: Payload) {
+  requireDirectConnection()
   const client = await mediaPool(payload).connect()
   let locked = false
   try {

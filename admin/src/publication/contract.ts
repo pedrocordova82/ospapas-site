@@ -28,7 +28,7 @@ export type Release = {
 }
 export type Pointer = {
   versao: 1; ambiente: Environment; ativa: ReleaseRef; anteriores: ReleaseRef[]
-  revogados: string[]; ativadaEm: string
+  revogados: string[]; ativadaEm: string; geracao?: string
 }
 
 export const hash = (bytes: string | Uint8Array) => createHash('sha256').update(bytes).digest('hex')
@@ -67,9 +67,10 @@ function parseRef(value: unknown): value is ReleaseRef {
 }
 
 export function parsePointer(input: unknown, environment: Environment): Pointer {
-  check(plain(input) && exact(input, ['versao', 'ambiente', 'ativa', 'anteriores', 'revogados', 'ativadaEm']))
+  check(plain(input) && exact(input, ['versao', 'ambiente', 'ativa', 'anteriores', 'revogados', 'ativadaEm'], ['geracao']))
   check(input.versao === version && input.ambiente === environment && parseRef(input.ativa))
   check(typeof input.ativadaEm === 'string' && Number.isFinite(Date.parse(input.ativadaEm)))
+  check(!Object.hasOwn(input, 'geracao') || stringMatching(input.geracao, idPattern))
   const activeSequence = input.ativa.sequencia
   check(Array.isArray(input.anteriores) && input.anteriores.length <= 3 &&
     input.anteriores.every(ref => parseRef(ref) && ref.sequencia < activeSequence) &&

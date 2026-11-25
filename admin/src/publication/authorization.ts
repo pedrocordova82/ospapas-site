@@ -31,6 +31,10 @@ export async function publicationRefusal(
   const caller = accounts.find(account => account.id === (requester ?? operatorID))
   if (!activeAdministrator(operator) || !activeAdministrator(caller) ||
       (caller.id !== operatorID && caller.perfil !== 'geral')) return 'autorizacao_revogada'
+  if (operator.perfil === 'regional') {
+    const { rows: [unit] } = await client.query(`SELECT ativo FROM regionais WHERE id = $1 ${share}`, [operator.regional_id])
+    if (unit?.ativo !== true) return 'autorizacao_revogada'
+  }
 
   if (pedido.acao === 'restaurar' || pedido.acao === 'revogar') {
     if (operator.perfil !== 'geral' || caller.perfil !== 'geral') return 'autorizacao_revogada'

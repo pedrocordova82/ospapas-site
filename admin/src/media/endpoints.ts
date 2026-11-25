@@ -1,3 +1,4 @@
+import { requireDirectConnection } from '../security/database.ts'
 import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -7,10 +8,12 @@ import { eligiblePoster, validAlt } from './approval.ts'
 import { detectMedia, receiveBody } from './ingest.ts'
 import { limits, mediaPool, originalKey, reservation, temporaryRoot } from './model.ts'
 import { fetchObject, removeObject, storeFile } from './storage.ts'
+import { auditContext, checkUnit, lockOperator } from '../security/controls.ts'
 
-function operator(req: PayloadRequest) {
+async function operator(req: PayloadRequest) {
   const user = actor(req)
   if (!user) deny()
+  await checkUnit(req, user)
   return user
 }
 
@@ -45,7 +48,7 @@ async function body(req: PayloadRequest, keys: string[]): Promise<Record<string,
 }
 
 async function scopedMedia(req: PayloadRequest, uuid = req.routeParams?.uuid) {
-  operator(req)
+  await operator(req)
   if (typeof uuid !== 'string' || !/^[0-9a-f-]{36}$/.test(uuid)) throw new APIError('Mídia indisponível.', 404)
   const { docs: [doc] } = await req.payload.find({
     collection: 'midias', where: { uuid: { equals: uuid } }, limit: 1,
@@ -56,7 +59,7 @@ async function scopedMedia(req: PayloadRequest, uuid = req.routeParams?.uuid) {
 }
 
 const reserve: Endpoint['handler'] = async req => {
-  const user = operator(req)
+  const user = await operator(req)
   const data = await body(req, ['arquivo', 'tipo', 'tamanho', 'regional'])
   const { arquivo, tipo, tamanho } = data
   if (typeof arquivo !== 'string' || !arquivo.trim() || arquivo.length > 160 ||
@@ -72,6 +75,7 @@ const reserve: Endpoint['handler'] = async req => {
     collection: 'regionais', id: regional, depth: 0, req, overrideAccess: false, disableErrors: true,
   })) deny('Unidade indisponível.')
 
+  requireDirectConnection()
   const client = await mediaPool(req.payload).connect()
   let locked = false
   try {
@@ -107,7 +111,7 @@ const reserve: Endpoint['handler'] = async req => {
 }
 
 const upload: Endpoint['handler'] = async req => {
-  const user = operator(req)
+  const user = await operator(req)
   const doc = await scopedMedia(req)
   if (doc.operador !== Number(user.id)) deny('Esta reserva pertence a outra conta.')
   const stream = req.body
@@ -172,6 +176,8 @@ const publish: Endpoint['handler'] = async req => {
   const client = await mediaPool(req.payload).connect()
   try {
     await client.query('BEGIN ISOLATION LEVEL READ COMMITTED')
+    await lockOperator(client, req)
+    await auditContext(client, req)
     const { rows: [current] } = await client.query<{
       tipo: string; posterior: string | null; alt: string | null;
     }>(`
@@ -242,6 +248,28 @@ const poster: Endpoint['handler'] = async req => {
   return Response.json({ fase: 'pendente' }, { status: 202 })
 }
 
+const withdrawApproval: Endpoint['handler'] = async req => {
+  if (actor(req)?.perfil !== 'geral') deny()
+  const doc = await scopedMedia(req)
+  const client = await mediaPool(req.payload).connect()
+  try {
+    await client.query('BEGIN')
+    await lockOperator(client, req)
+    await auditContext(client, req)
+    const changed = await client.query(
+      'UPDATE midias SET publicado = false, updated_at = now() WHERE id = $1 AND publicado', [doc.id],
+    )
+    if (!changed.rowCount) throw new APIError('A mídia já está sem aprovação.', 409)
+    await client.query('COMMIT')
+    return Response.json({ publicado: false })
+  } catch (error) {
+    await client.query('ROLLBACK')
+    throw error
+  } finally {
+    client.release()
+  }
+}
+
 const download: Endpoint['handler'] = async req => {
   const doc = await scopedMedia(req)
   const kind = req.routeParams?.arquivo
@@ -278,6 +306,7 @@ export const mediaEndpoints: Endpoint[] = [
   { method: 'put', path: '/:uuid/envio', handler: upload },
   { method: 'post', path: '/:uuid/repetir', handler: retry },
   { method: 'post', path: '/:uuid/publicar', handler: publish },
+  { method: 'post', path: '/:uuid/retirar-aprovacao', handler: withdrawApproval },
   { method: 'post', path: '/:uuid/poster', handler: poster },
   { method: 'get', path: '/:uuid/arquivo/:arquivo', handler: download },
 ]
