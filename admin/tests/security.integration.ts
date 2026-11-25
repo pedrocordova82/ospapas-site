@@ -452,13 +452,18 @@ test('Destinos cruzados, catálogo incompatível, mídia ausente e arquivo corro
 
 test('Restauração real preserva rascunhos, trilha e objetos, bloqueia sessões e fila e deixa revogação posterior ativa', async () => {
   const publicId = stableID('eventos', event.id)
-  const revocation = await submit(general, 'revogar', { alvo: publicId })
+  const eventRelease = await (await expect(await fetch(publicBase + '/releases/' + archivedRelease + '/eventos.json'), 200)).json()
+  const assetKey: string = eventRelease.dados[0].capa.arquivo
+  await submit(general, 'revogar', { alvo: publicId })
+  const revocation = await submit(general, 'revogar', { alvo: assetKey })
   // O pedido pendente precede a revogação local. A cópia restaurada deve mantê-lo em quarentena.
+  await run()
   await run()
   await run()
   const active = await publicManifest()
   assert.equal(active.ativa.id, revocation.release)
   assert.ok(active.revogados.includes(publicId))
+  assert.ok(active.revogados.includes(assetKey))
   assert.notEqual(active.ativa.id, archivedRelease)
   await stop(server)
   const [result, live] = await Promise.all([
@@ -467,6 +472,8 @@ test('Restauração real preserva rascunhos, trilha e objetos, bloqueia sessões
   ])
   assert.deepEqual(live, active)
   assert.deepEqual(await publicManifest(), active)
+  assert.equal(result.revocationsAfterBackup, 2)
+  assert.equal(result.promotion, 'revisao_obrigatoria')
   const dir = await mkdtemp(join(tmpdir(), 'ospapas-rec-check-'))
   const vault = new RecoveryStorage('dev')
   try {
@@ -488,6 +495,9 @@ test('Restauração real preserva rascunhos, trilha e objetos, bloqueia sessões
     assert.equal(restored.locked, true)
     assert.equal(restored.sessions, 0)
     assert.ok(restored.jobs >= 1)
+    const recoveredDenials: string[] = JSON.parse(await query(runSQL,
+      "SELECT json_agg(alvo ORDER BY alvo) FROM poc_recovery_revocations"))
+    assert.deepEqual(recoveredDenials, [publicId, assetKey, 'b'.repeat(64)].sort())
     const archived = await vault.client.send(new GetObjectCommand({ Bucket: result.quarantine, Key: 'releases/manifest.json' }))
     const pointer = JSON.parse(await archived.Body!.transformToString())
     assert.equal(pointer.ativa.id, archivedRelease)

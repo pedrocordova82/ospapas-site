@@ -619,9 +619,11 @@ test('Consumidor independente mantém leitura durante queda administrativa e rej
   assert.match(html.toString(), /Diretora fictícia/)
   for (const invalid of [Buffer.from('{'), jsonBytes({ ...current.value, versao: 99 })]) {
     const raw = await currentStore.read('releases', 'manifest.json')
+    assert.ok(raw.etag)
     await currentStore.activate(invalid, raw.etag)
     await expect(await fetch(demo + '/'), 503)
     const broken = await currentStore.read('releases', 'manifest.json')
+    assert.ok(broken.etag)
     await currentStore.activate(jsonBytes(current.value), broken.etag)
   }
   assert.deepEqual(await publicBytes(''), html)

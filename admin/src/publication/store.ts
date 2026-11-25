@@ -1,8 +1,9 @@
 import {
   CreateBucketCommand, GetObjectCommand, HeadObjectCommand, PutObjectCommand,
 } from '@aws-sdk/client-s3'
+import { randomUUID } from 'node:crypto'
 import { storage } from '../media/storage.ts'
-import { hash, isEnvironment, maxPublicJSON, parsePointer, type Environment } from './contract.ts'
+import { hash, isEnvironment, jsonBytes, maxPublicJSON, parseManifest, version, type Environment } from './contract.ts'
 
 export function publicationEnvironment(): Environment {
   const value = process.env.POC_PUBLIC_ENV ?? 'dev'
@@ -22,6 +23,7 @@ export function destinations(environment: Environment) {
 const noStore = 'no-store'
 const immutable = 'public, max-age=31536000, immutable'
 export const manifestKey = 'manifest.json'
+const initializationKey = 'controle/inicializacao.json'
 
 export function missing(error: unknown) {
   return error instanceof Error && ['NoSuchKey', 'NotFound', 'NoSuchBucket'].includes(error.name)
@@ -46,6 +48,7 @@ export class ReleaseStore {
     for (const bucket of Object.values(this.buckets)) {
       await storage().client.send(new CreateBucketCommand({ Bucket: bucket }))
     }
+    await this.initialize()
   }
 
   async read(bucket: 'releases' | 'media', key: string, max = maxPublicJSON) {
@@ -76,15 +79,47 @@ export class ReleaseStore {
     return { bytes: Buffer.concat(chunks), etag: result.ETag }
   }
 
-  async pointer() {
+  async manifest() {
     try {
       const { bytes, etag } = await this.read('releases', manifestKey)
       if (!etag) throw new Error('Manifesto sem ETag.')
-      return { value: parsePointer(JSON.parse(bytes.toString()), this.environment), etag }
+      return { value: parseManifest(JSON.parse(bytes.toString()), this.environment), etag }
     } catch (error) {
       if (missing(error)) return null
       throw error
     }
+  }
+
+  async pointer() {
+    const current = await this.manifest()
+    return current?.value.ativa ? { value: current.value, etag: current.etag } : null
+  }
+
+  async initialize() {
+    const current = await this.manifest()
+    if (current) return current
+    const lineage = randomUUID()
+    const initial = jsonBytes({
+      versao: version, ambiente: this.environment, ativa: null, linhagem: lineage, geracao: lineage, revisao: 0,
+    })
+    try {
+      await this.write(initializationKey, initial)
+    } catch (error) {
+      if (!conflicts(error)) throw error
+      const winner = await this.manifest()
+      if (winner) return winner
+      throw new Error('Inicialização pendente ou manifesto perdido. Reconciliação exige intervenção.')
+    }
+    try {
+      await this.write(manifestKey, initial)
+    } catch (error) {
+      const observed = await this.manifest()
+      if (!observed) throw error
+      return observed
+    }
+    const created = await this.manifest()
+    if (!created) throw new Error('Manifesto inicial indisponível.')
+    return created
   }
 
   async verifyMedia(key: string) {
@@ -115,10 +150,15 @@ export class ReleaseStore {
     }
   }
 
-  async activate(bytes: Buffer, etag: string | undefined) {
+  async activate(bytes: Buffer, etag: string) {
+    if (!etag) throw new Error('A ativação exige uma geração anterior.')
+    await this.write(manifestKey, bytes, etag)
+  }
+
+  private async write(key: string, bytes: Buffer, etag?: string) {
     this.operations++
     await storage().client.send(new PutObjectCommand({
-      Bucket: this.buckets.releases, Key: manifestKey, Body: bytes,
+      Bucket: this.buckets.releases, Key: key, Body: bytes,
       ContentType: 'application/json', CacheControl: noStore,
       ...(etag ? { IfMatch: etag } : { IfNoneMatch: '*' }),
     }), { abortSignal: AbortSignal.timeout(30_000) })

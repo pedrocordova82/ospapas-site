@@ -15,6 +15,7 @@ import {
   type Snapshot, type Video,
 } from './contract.ts'
 import { isApprovedVideo, type PendingRow } from './projection.ts'
+import { recordRevocation } from './journal.ts'
 import { readSnapshot } from './releases.ts'
 import { missing, publicationEnvironment, ReleaseStore } from './store.ts'
 
@@ -274,28 +275,46 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
     let activating = false
     let reconciling = Boolean(job.etag_em_ativacao)
     try {
-      let current = await store.pointer()
-      if (current?.value.ativa.id === job.release && current.value.ativa.sequencia === job.id) {
+      let current = await store.manifest()
+      if (!current || !current.value.linhagem || current.value.revisao === undefined) {
+        await client.query("UPDATE publicacoes SET erro = 'incidente_manifesto' WHERE id = $1", [job.id])
+        return { status: 'processando', reason: 'incidente_manifesto', operations: store.operations }
+      }
+      if (current.value.ativa?.id === job.release && current.value.ativa.sequencia === job.id) {
         await confirm()
         return { status: 'reconciliado', operations: store.operations }
       }
       if (job.etag_em_ativacao) {
-        if (!current) return { status: 'processando', operations: store.operations }
         if (current.etag === job.etag_em_ativacao) {
           // Muda o ETag sem estender a janela de leitura ou trocar a release segura.
-          await store.activate(jsonBytes({ ...current.value, geracao: randomUUID() }), current.etag)
-          current = await store.pointer()
-          if (!current) return { status: 'processando', operations: store.operations }
+          await store.activate(jsonBytes({
+            ...current.value, geracao: randomUUID(), revisao: current.value.revisao + 1,
+          }), current.etag)
+          current = await store.manifest()
+          if (!current?.value.linhagem || current.value.revisao === undefined) {
+            return { status: 'processando', operations: store.operations }
+          }
+          if (current.value.ativa?.id === job.release && current.value.ativa.sequencia === job.id) {
+            await confirm()
+            return { status: 'reconciliado', operations: store.operations }
+          }
         }
         await client.query('UPDATE publicacoes SET etag_em_ativacao = null WHERE id = $1', [job.id])
         reconciling = false
       }
-      if (current && current.value.ativa.sequencia >= job.id) throw new Refusal('release_obsoleta')
+      if (current.value.ativa && current.value.ativa.sequencia >= job.id) throw new Refusal('release_obsoleta')
       const preflight = await publicationRefusal(client, job)
       if (preflight) throw new Refusal(preflight)
-      const result = await prepareRelease(client, store, job, current?.value)
+      const previous = current.value.ativa ? current.value : undefined
+      const result = await prepareRelease(client, store, job, previous)
+      const next: Pointer = {
+        ...result.pointer, linhagem: current.value.linhagem, revisao: current.value.revisao + 1, geracao: randomUUID(),
+      }
+      if (previous?.diario) next.diario = previous.diario
+      const journal = job.pedido.acao === 'revogar' ? await recordRevocation(next, previous, job.pedido.alvo) : undefined
+      if (journal) next.diario = journal.digest
       await hooks.beforeActivate?.()
-      await client.query('UPDATE publicacoes SET etag_em_ativacao = $2 WHERE id = $1', [job.id, current?.etag ?? 'ausente'])
+      await client.query('UPDATE publicacoes SET etag_em_ativacao = $2 WHERE id = $1', [job.id, current.etag])
       await client.query('BEGIN ISOLATION LEVEL READ COMMITTED')
       try {
         // Os bloqueios impedem mudanças de autorização até o fim da escrita condicional.
@@ -308,7 +327,7 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
           }
         }
         activating = true
-        await store.activate(jsonBytes({ ...result.pointer, geracao: randomUUID(), ativadaEm: new Date().toISOString() }), current?.etag)
+        await store.activate(jsonBytes({ ...next, ativadaEm: new Date().toISOString() }), current.etag)
         if (disconnected) return { status: 'processando', operations: store.operations }
         await client.query('COMMIT')
       } catch (error) {
@@ -320,7 +339,7 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
       return {
         status: 'publicado', snapshotMs: result.snapshotMs, elapsedMs: Math.round(performance.now() - started),
         jsonSize: result.jsonSize, jsonFiles: result.jsonFiles, operations: store.operations, reused: store.reused,
-        rssKiB: process.resourceUsage().maxRSS,
+        rssKiB: process.resourceUsage().maxRSS, ...(journal ? { journalOperations: journal.operations, journalBytes: journal.bytes } : {}),
       }
     } catch (error) {
       if (disconnected || reconciling || (activating && !(error instanceof Error && ['PreconditionFailed', 'ConditionalRequestConflict'].includes(error.name)))) {
