@@ -29,7 +29,12 @@ export type Release = {
 export type Pointer = {
   versao: 1; ambiente: Environment; ativa: ReleaseRef; anteriores: ReleaseRef[]
   revogados: string[]; ativadaEm: string; geracao?: string
+  linhagem?: string; revisao?: number; diario?: string
 }
+export type InitialManifest = {
+  versao: 1; ambiente: Environment; ativa: null; geracao: string; linhagem: string; revisao: number
+}
+export type PublicationManifest = Pointer | InitialManifest
 
 export const hash = (bytes: string | Uint8Array) => createHash('sha256').update(bytes).digest('hex')
 export const jsonBytes = (value: unknown) => Buffer.from(JSON.stringify(value))
@@ -67,10 +72,16 @@ function parseRef(value: unknown): value is ReleaseRef {
 }
 
 export function parsePointer(input: unknown, environment: Environment): Pointer {
-  check(plain(input) && exact(input, ['versao', 'ambiente', 'ativa', 'anteriores', 'revogados', 'ativadaEm'], ['geracao']))
+  check(plain(input) && exact(input, ['versao', 'ambiente', 'ativa', 'anteriores', 'revogados', 'ativadaEm'],
+    ['geracao', 'linhagem', 'revisao', 'diario']))
   check(input.versao === version && input.ambiente === environment && parseRef(input.ativa))
   check(typeof input.ativadaEm === 'string' && Number.isFinite(Date.parse(input.ativadaEm)))
   check(!Object.hasOwn(input, 'geracao') || stringMatching(input.geracao, idPattern))
+  if (Object.hasOwn(input, 'revisao') || Object.hasOwn(input, 'linhagem')) {
+    check(stringMatching(input.linhagem, idPattern) && stringMatching(input.geracao, idPattern) &&
+      Number.isSafeInteger(input.revisao) && Number(input.revisao) > 0)
+  }
+  check(!Object.hasOwn(input, 'diario') || stringMatching(input.diario, hashPattern))
   const activeSequence = input.ativa.sequencia
   check(Array.isArray(input.anteriores) && input.anteriores.length <= 3 &&
     input.anteriores.every(ref => parseRef(ref) && ref.sequencia < activeSequence) &&
@@ -78,6 +89,17 @@ export function parsePointer(input: unknown, environment: Environment): Pointer 
   check(Array.isArray(input.revogados) && input.revogados.length <= 1000 &&
     input.revogados.every(id => stringMatching(id, hashPattern) || stringMatching(id, mediaPattern)))
   return input as unknown as Pointer
+}
+
+export function parseManifest(input: unknown, environment: Environment): PublicationManifest {
+  if (plain(input) && input.ativa === null) {
+    check(exact(input, ['versao', 'ambiente', 'ativa', 'geracao', 'linhagem', 'revisao']) &&
+      input.versao === version && input.ambiente === environment &&
+      stringMatching(input.geracao, idPattern) && stringMatching(input.linhagem, idPattern) &&
+      Number.isSafeInteger(input.revisao) && Number(input.revisao) >= 0)
+    return input as unknown as InitialManifest
+  }
+  return parsePointer(input, environment)
 }
 
 export function parseRelease(bytes: Buffer, ref: ReleaseRef, environment: Environment): Release {

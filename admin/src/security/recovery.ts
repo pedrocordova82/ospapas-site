@@ -8,6 +8,7 @@ import { storage } from '../media/storage.ts'
 import { fileKey, hash, hashPattern, idPattern, isEnvironment, jsonBytes, mediaPattern, parsePointer, sections,
   type Environment } from '../publication/contract.ts'
 import { readRelease, readSnapshot } from '../publication/releases.ts'
+import { recoveryRevocations } from '../publication/journal.ts'
 import { destinations, manifestKey, publicationEnvironment, ReleaseStore } from '../publication/store.ts'
 import { assertOperational, type DatabaseClient } from './database.ts'
 import { databaseURL, postgres, query, samePostgresMajor } from './recovery-db.ts'
@@ -212,25 +213,40 @@ export async function restore(payload: Payload, id: string, target: string, envi
       throw new Error('O inventário não cobre as referências restauradas.')
     }
     const manifest = catalog.objects.find(entry => entry.area === 'releases' && entry.key === manifestKey)
+    let archived: ReturnType<typeof parsePointer> | undefined
     if (manifest) {
       const bytes = verified(await recovery.get(blobKey(manifest.sha256)), manifest)
-      const pointer = parsePointer(JSON.parse(bytes.toString()), environment)
-      const { id: release, sequencia } = pointer.ativa
+      archived = parsePointer(JSON.parse(bytes.toString()), environment)
+      const { id: release, sequencia } = archived.ativa
       const matched = await query(run, `SELECT count(*) FROM publicacoes WHERE id = ${sequencia} AND release = '${release}'
         AND ambiente = '${environment}' AND estado = 'publicado'`)
       if (matched !== '1') throw new Error('O manifesto arquivado diverge da fila restaurada.')
     }
+    const store = new ReleaseStore(environment)
+    const current = await store.pointer()
+    if (!current) throw new Error('Sem manifesto atual para verificar o diário de revogações.')
+    const revocations = await recoveryRevocations(recovery, archived, current.value)
+    await query(run, `CREATE TABLE poc_recovery_revocations (
+        alvo text PRIMARY KEY, fonte text NOT NULL
+      );
+      INSERT INTO poc_recovery_revocations
+        SELECT alvo, '${current.value.ativa.id}' FROM jsonb_array_elements_text(
+          '${JSON.stringify(revocations.targets)}'::jsonb) AS alvo`)
     await recovery.prepare(quarantine)
     for (const entry of catalog.objects) {
       const bytes = verified(await recovery.get(blobKey(entry.sha256)), entry)
       // O manifesto fica no arquivo de quarentena, fora do caminho resolvido pelo consumidor.
       await recovery.putObject(quarantine, `${entry.area}/${entry.key}`, bytes, entry.type)
     }
+    if ((await store.pointer())?.etag !== current.etag) {
+      throw new Error('Manifesto mudou durante a recuperação. Mantenha o destino em quarentena.')
+    }
     await query(run, `INSERT INTO poc_audit (processo, ambiente, operacao, entidade, registro, resultado, correlacao)
       VALUES ('recuperacao', '${environment}', 'restaurar', 'backup', '${id}', 'quarentena', '${id}')`)
     await securityEvent(mediaPool(payload), 'restaurar', environment, id, 'sucesso')
     return { id, quarantine, objects: catalog.objects.length, verifyMs, restoreMs,
-      reconcileMs: Math.round(performance.now() - reconcileStart), operations: recovery.operations,
+      revocationsAfterBackup: revocations.later, promotion: 'revisao_obrigatoria',
+      reconcileMs: Math.round(performance.now() - reconcileStart), operations: recovery.operations + store.operations,
       elapsedMs: Math.round(performance.now() - start), rssKiB: process.resourceUsage().maxRSS }
   } catch (error) {
     await securityEvent(mediaPool(payload), 'restaurar', environment, id, 'falha').catch(() => undefined)
