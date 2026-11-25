@@ -58,3 +58,18 @@ export const validateCover: CollectionBeforeChangeHook = async ({ collection, da
   }
   return data
 }
+
+export const validateVideo: CollectionBeforeChangeHook = async ({ data, originalDoc, req }) => {
+  const value = Object.hasOwn(data, 'videoMidia') ? data.videoMidia : originalDoc?.videoMidia
+  rejectNested(value)
+  const id = relationID(value)
+  if (!id) return data
+  const doc = await req.payload.findByID({
+    collection: 'midias', id, depth: 0, overrideAccess: false, req, disableErrors: true,
+  })
+  const regional = Object.hasOwn(data, 'regional') ? data.regional : originalDoc?.regional
+  if (!doc || doc.tipo !== 'video' || doc.fase !== 'pronta' || relationID(doc.regional) !== relationID(regional)) {
+    deny('O vídeo deve estar pronto, autorizado e no mesmo âmbito do evento.')
+  }
+  return data
+}

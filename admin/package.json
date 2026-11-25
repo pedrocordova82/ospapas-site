@@ -14,7 +14,11 @@
     "test:integration": "node --env-file-if-exists=.env.poc --test tests/access.integration.ts",
     "media:prepare": "node --env-file-if-exists=.env.poc scripts/prepare-storage.ts",
     "media:worker": "node --env-file-if-exists=.env.poc scripts/media-worker.ts",
-    "test:media": "node --env-file-if-exists=.env.poc --test tests/media.integration.ts"
+    "test:media": "node --env-file-if-exists=.env.poc --test tests/media.integration.ts",
+    "publication:prepare": "node --env-file-if-exists=.env.poc scripts/prepare-publication.ts",
+    "publication:worker": "node --env-file-if-exists=.env.poc scripts/publication-worker.ts",
+    "publication:demo": "node --env-file-if-exists=.env.poc scripts/publication-demo.ts",
+    "test:publication": "node --env-file-if-exists=.env.poc --test tests/publication.integration.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1176.0",
