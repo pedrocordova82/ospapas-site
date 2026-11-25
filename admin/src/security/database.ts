@@ -43,6 +43,42 @@ export async function prepareSecurity(payload: Payload) {
         id integer PRIMARY KEY CHECK (id = 1), bloqueado boolean NOT NULL
       );
       INSERT INTO poc_recovery_guard VALUES (1, false) ON CONFLICT DO NOTHING;
+      CREATE TABLE IF NOT EXISTS poc_security_intents (
+        id uuid PRIMARY KEY, saida uuid NOT NULL UNIQUE, ambiente text NOT NULL,
+        entidade text NOT NULL, registro integer NOT NULL,
+        linhagem uuid, revisao bigint, release_observada uuid,
+        estado text NOT NULL DEFAULT 'pendente' CHECK (estado IN ('pendente','concluida','abortada'))
+      );
+      CREATE UNIQUE INDEX IF NOT EXISTS poc_security_pending ON poc_security_intents (ambiente)
+        WHERE estado = 'pendente';
+      CREATE TABLE IF NOT EXISTS poc_security_effects (
+        id uuid PRIMARY KEY, entidade text NOT NULL, registro integer NOT NULL, xid xid8 NOT NULL,
+        aplicado boolean NOT NULL DEFAULT false
+      );
+      CREATE OR REPLACE FUNCTION poc_require_security_barrier() RETURNS trigger LANGUAGE plpgsql AS $$
+      DECLARE
+        before_row jsonb;
+        after_row jsonb;
+        op uuid := nullif(current_setting('poc.security_id', true), '')::uuid;
+      BEGIN
+        IF TG_OP <> 'UPDATE' THEN
+          RAISE EXCEPTION 'Registros de autoridade exigem inativação coordenada.' USING ERRCODE = '42501';
+        END IF;
+        before_row := to_jsonb(OLD);
+        after_row := to_jsonb(NEW);
+        IF NOT (
+          (TG_TABLE_NAME = 'users' AND (before_row->'perfil' IS DISTINCT FROM after_row->'perfil'
+            OR before_row->'regional_id' IS DISTINCT FROM after_row->'regional_id'))
+          OR (TG_TABLE_NAME IN ('users', 'regionais') AND before_row->>'ativo' = 'true' AND after_row->>'ativo' = 'false')
+          OR (TG_TABLE_NAME = 'membros' AND before_row->'regional_id' IS DISTINCT FROM after_row->'regional_id')
+          OR (TG_TABLE_NAME = 'midias' AND before_row->>'publicado' = 'true' AND after_row->>'publicado' = 'false')
+        ) THEN RETURN NEW; END IF;
+        UPDATE poc_security_effects SET aplicado = true WHERE id = op AND entidade = TG_TABLE_NAME
+          AND registro = (after_row->>'id')::integer AND xid = pg_current_xact_id() AND NOT aplicado;
+        IF NOT FOUND THEN RAISE EXCEPTION 'Mudança de segurança sem barreira confirmada.' USING ERRCODE = '42501'; END IF;
+        RETURN NEW;
+      END
+      $$;
       CREATE TABLE IF NOT EXISTS poc_audit (
         id uuid PRIMARY KEY DEFAULT gen_random_uuid(), instante timestamptz NOT NULL DEFAULT clock_timestamp(),
         operador integer, processo text, ambiente text NOT NULL, regional integer,
@@ -106,6 +142,16 @@ export async function prepareSecurity(payload: Payload) {
       CREATE TRIGGER poc_keep_audit BEFORE UPDATE OR DELETE OR TRUNCATE ON poc_audit
         FOR EACH STATEMENT EXECUTE FUNCTION poc_keep_audit();
     `)
+    for (const table of ['users', 'regionais', 'membros', 'midias']) {
+      await client.query(`
+        DROP TRIGGER IF EXISTS poc_security_barrier ON ${table};
+        CREATE TRIGGER poc_security_barrier BEFORE UPDATE ON ${table}
+          FOR EACH ROW EXECUTE FUNCTION poc_require_security_barrier();
+        DROP TRIGGER IF EXISTS poc_security_no_removal ON ${table};
+        CREATE TRIGGER poc_security_no_removal BEFORE DELETE OR TRUNCATE ON ${table}
+          FOR EACH STATEMENT EXECUTE FUNCTION poc_require_security_barrier();
+      `)
+    }
     for (const [table, fields] of Object.entries(tableFields)) {
       await client.query(`
         DROP TRIGGER IF EXISTS poc_audit ON ${table};

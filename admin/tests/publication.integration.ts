@@ -320,6 +320,15 @@ test('Consumidor fixa a release em obediência ao manifesto durante uma ativaç�
   assert.match((await publicBytes('')).toString(), /Nome da nova release/)
 })
 
+async function assertReleasePreserved(original: Awaited<ReturnType<typeof metadata>>) {
+  const current = await metadata()
+  assert.deepEqual(current.value.ativa, original.value.ativa)
+  assert.deepEqual(current.value.anteriores, original.value.anteriores)
+  assert.deepEqual(current.value.revogados, original.value.revogados)
+  assert.equal(current.value.bloqueio, undefined)
+  assert.ok((current.value.revisao ?? 0) >= (original.value.revisao ?? 0))
+}
+
 test('Falha de preparo preserva release ativa, esconde objetos incompletos e permite repetição', async () => {
   const old = await metadata()
   const before = await load()
@@ -344,11 +353,12 @@ test('Falha de preparo preserva release ativa, esconde objetos incompletos e per
 test('Ausência de derivado ou retirada de aprovação do pôster impede a ativação', async () => {
   const old = await metadata()
   const pending = await enqueue(publication(selected('eventos', event)), df)
-  await mediaPool(payload).query('UPDATE midias SET publicado = false WHERE id = $1', [cover.id])
+  await expect(await api(`midias/${cover.uuid}/retirar-aprovacao`, geral, 'POST'), 200)
   await run('falhou')
   assert.equal((await storedJob(pending)).erro, 'midia_invalida')
-  await mediaPool(payload).query('UPDATE midias SET publicado = true WHERE id = $1', [cover.id])
-  assert.deepEqual(await metadata(), old)
+  await expect(await api(`midias/${cover.uuid}/publicar`, df, 'POST', { alt: 'Retângulo roxo fictício' }), 200)
+  await assertReleasePreserved(old)
+  const afterApproval = await metadata()
   const saved = await fetchObject(cover.otimizado)
   const backup = join(dir, 'backup.webp')
   await writeFile(backup, Buffer.from(await saved.Body!.transformToByteArray()))
@@ -356,7 +366,7 @@ test('Ausência de derivado ou retirada de aprovação do pôster impede a ativa
   await repeat(pending)
   await run('falhou')
   assert.equal((await storedJob(pending)).erro, 'midia_ausente')
-  assert.deepEqual(await metadata(), old)
+  assert.deepEqual(await metadata(), afterApproval)
   const active = await load()
   assert.ok((await publicBytes(active.snapshot.eventos[0].capa!.arquivo)).length)
   await storeFile(cover.otimizado, backup, 'image/webp')
@@ -396,7 +406,7 @@ test('A retomada reconcilia uma ativação concluída mesmo quando o operador fo
   assert.equal(await publishOnce(payload), undefined)
   await expire(job)
   await run('reconciliado')
-  assert.deepEqual(await metadata(), active)
+  await assertReleasePreserved(active)
   assert.equal((await storedJob(job)).estado, 'publicado')
   await run()
   assert.equal((await load()).release, successor.release)
@@ -463,7 +473,7 @@ test('A perda do perfil Geral bloqueia repetição e ativação de rollback, rev
     assert.equal((await storedJob(job)).erro, 'preparacao')
   }
   for (const job of pending) await refuseActivation(job)
-  assert.deepEqual(await metadata(), active)
+  await assertReleasePreserved(active)
 })
 
 test('A troca de regional bloqueia publicação e repetição até a recuperação do acesso', async () => {
@@ -479,7 +489,7 @@ test('A troca de regional bloqueia publicação e repetição até a recuperaç�
   await expect(await retry(failed, geral), 403)
   assert.equal((await storedJob(failed)).estado, 'falhou')
   await refuseActivation(pending)
-  assert.deepEqual(await metadata(), active)
+  await assertReleasePreserved(active)
 
   await write(`users/${author.id}`, geral, { regional: dfUnit.id }, true)
   await repeat(pending, await author.signIn())
@@ -500,7 +510,7 @@ test('A desativação da conta bloqueia publicação pendente e repetição mesm
   await expect(await retry(failed, geral), 403)
   assert.equal((await storedJob(failed)).estado, 'falhou')
   await refuseActivation(pending)
-  assert.deepEqual(await metadata(), active)
+  await assertReleasePreserved(active)
 })
 
 test('A perda de acesso ao registro selecionado bloqueia repetição e ativação', async () => {
@@ -516,7 +526,7 @@ test('A perda de acesso ao registro selecionado bloqueia repetição e ativaçã
   await expect(await retry(failed, geral), 403)
   assert.equal((await storedJob(failed)).estado, 'falhou')
   await refuseActivation(pending)
-  assert.deepEqual(await metadata(), active)
+  await assertReleasePreserved(active)
 })
 
 test('A ativação aguarda uma mudança concorrente na conta e valida a versão confirmada', async () => {
@@ -529,6 +539,8 @@ test('A ativação aguarda uma mudança concorrente na conta e valida a versão 
   let worker: ReturnType<typeof publishOnce> | undefined
   try {
     await editor.query('BEGIN')
+    // O fixture injeta a escrita externa de uma instalação legada para testar a revalidação.
+    await editor.query("SET LOCAL session_replication_role = 'replica'")
     const { rows: [backend] } = await editor.query<{ pid: number }>('SELECT pg_backend_pid() AS pid')
     worker = publishOnce(payload, 'dev', { beforeActivate: async () => {
       await editor.query('UPDATE users SET ativo = false WHERE id = $1', [author.id])

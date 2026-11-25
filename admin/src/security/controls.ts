@@ -5,6 +5,7 @@ import { actor, deny, relationID } from '../access/policies.ts'
 import { mediaPool } from '../media/model.ts'
 import { publicationEnvironment } from '../publication/store.ts'
 import { activeUnit, session, type DatabaseClient } from './database.ts'
+import { checkSecurity, conflictingMutation, coordinatePayload } from './coordination.ts'
 
 const identifiers = new WeakMap<PayloadRequest, string>()
 
@@ -15,6 +16,7 @@ function correlation(req: PayloadRequest) {
 }
 
 export async function checkUnit(req: PayloadRequest, user: { perfil?: unknown; regional?: unknown } | undefined = actor(req)) {
+  if (user) await checkSecurity(req)
   const region = relationID(user?.regional)
   if (user?.perfil === 'regional' && (!region || !await activeUnit(req, region))) {
     deny('Unidade administrativa inativa.')
@@ -58,6 +60,8 @@ export const auditChange: CollectionBeforeChangeHook = async ({ collection, req,
            set_config('poc.correlacao', ${correlation(req)}, true),
            set_config('poc.operacao', ${req.routeParams?.versionID ? 'restaurar' : ''}, true)
   `)
+  const conflict = conflictingMutation(collection.slug, data, originalDoc)
+  if (conflict) await coordinatePayload(req, conflict)
   return data
 }
 

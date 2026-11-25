@@ -7,6 +7,7 @@ import { midias } from './media/collection.ts'
 import { mediaPool } from './media/model.ts'
 import { auditDenial, databaseConflict, protectCollection, readAudit } from './security/controls.ts'
 import { assertOperational, prepareSecurity } from './security/database.ts'
+import { bindSecurityTransactions } from './security/coordination.ts'
 
 const { DATABASE_URL, PAYLOAD_SECRET, POC_PREPARE_SCHEMA } = process.env
 
@@ -31,6 +32,7 @@ export default buildConfig({
   onInit: async payload => {
     if (POC_PREPARE_SCHEMA === '1') await prepareSecurity(payload)
     await assertOperational(mediaPool(payload))
+    bindSecurityTransactions(payload)
   },
   db: postgresAdapter({
     pool: { connectionString: DATABASE_URL, max: 3, connectionTimeoutMillis: 5_000 },

@@ -53,27 +53,31 @@ export class RecoveryStorage {
   }
 
   async get(key: string) {
+    return (await this.readVersion(key)).bytes
+  }
+
+  async readVersion(key: string) {
     this.operations++
-    const { bytes } = await readObject(this.client, this.bucket, key)
+    const { bytes, etag } = await readObject(this.client, this.bucket, key)
     if (bytes.length < 28) throw new Error('Objeto cifrado inválido.')
     const decipher = createDecipheriv('aes-256-gcm', this.#key, bytes.subarray(0, 12))
     decipher.setAAD(Buffer.from(`${this.bucket}/${key}`))
     decipher.setAuthTag(bytes.subarray(12, 28))
     try {
-      return Buffer.concat([decipher.update(bytes.subarray(28)), decipher.final()])
+      return { bytes: Buffer.concat([decipher.update(bytes.subarray(28)), decipher.final()]), etag }
     } catch {
       throw new Error('Falha de integridade do objeto cifrado.')
     }
   }
 
-  async put(key: string, bytes: Buffer, deduplicate = false) {
+  async put(key: string, bytes: Buffer, deduplicate = false, etag?: string) {
     if (bytes.length > maximumObject) throw new Error('Objeto excede o limite da recuperação local.')
     const nonce = randomBytes(12)
     const cipher = createCipheriv('aes-256-gcm', this.#key, nonce)
     cipher.setAAD(Buffer.from(`${this.bucket}/${key}`))
     const ciphertext = Buffer.concat([cipher.update(bytes), cipher.final()])
     try {
-      await this.putObject(this.bucket, key, Buffer.concat([nonce, cipher.getAuthTag(), ciphertext]), 'application/octet-stream')
+      await this.putObject(this.bucket, key, Buffer.concat([nonce, cipher.getAuthTag(), ciphertext]), 'application/octet-stream', etag)
     } catch (error) {
       if (!deduplicate || !(error instanceof Error) ||
           !['PreconditionFailed', 'ConditionalRequestConflict'].includes(error.name)) throw error
@@ -81,10 +85,10 @@ export class RecoveryStorage {
     }
   }
 
-  async putObject(bucket: string, key: string, bytes: Buffer, type: string) {
+  async putObject(bucket: string, key: string, bytes: Buffer, type: string, etag?: string) {
     this.operations++
     await this.client.send(new PutObjectCommand({
-      Bucket: bucket, Key: key, Body: bytes, ContentType: type, IfNoneMatch: '*',
+      Bucket: bucket, Key: key, Body: bytes, ContentType: type, ...(etag ? { IfMatch: etag } : { IfNoneMatch: '*' }),
     }), { abortSignal: AbortSignal.timeout(30_000) })
   }
 
