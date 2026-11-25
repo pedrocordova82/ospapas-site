@@ -29,10 +29,10 @@ export type Release = {
 export type Pointer = {
   versao: 1; ambiente: Environment; ativa: ReleaseRef; anteriores: ReleaseRef[]
   revogados: string[]; ativadaEm: string; geracao?: string
-  linhagem?: string; revisao?: number; diario?: string
+  linhagem?: string; revisao?: number; diario?: string; bloqueio?: string
 }
 export type InitialManifest = {
-  versao: 1; ambiente: Environment; ativa: null; geracao: string; linhagem: string; revisao: number
+  versao: 1; ambiente: Environment; ativa: null; geracao: string; linhagem: string; revisao: number; bloqueio?: string
 }
 export type PublicationManifest = Pointer | InitialManifest
 
@@ -73,7 +73,7 @@ function parseRef(value: unknown): value is ReleaseRef {
 
 export function parsePointer(input: unknown, environment: Environment): Pointer {
   check(plain(input) && exact(input, ['versao', 'ambiente', 'ativa', 'anteriores', 'revogados', 'ativadaEm'],
-    ['geracao', 'linhagem', 'revisao', 'diario']))
+    ['geracao', 'linhagem', 'revisao', 'diario', 'bloqueio']))
   check(input.versao === version && input.ambiente === environment && parseRef(input.ativa))
   check(typeof input.ativadaEm === 'string' && Number.isFinite(Date.parse(input.ativadaEm)))
   check(!Object.hasOwn(input, 'geracao') || stringMatching(input.geracao, idPattern))
@@ -82,6 +82,7 @@ export function parsePointer(input: unknown, environment: Environment): Pointer 
       Number.isSafeInteger(input.revisao) && Number(input.revisao) > 0)
   }
   check(!Object.hasOwn(input, 'diario') || stringMatching(input.diario, hashPattern))
+  check(!Object.hasOwn(input, 'bloqueio') || (input.bloqueio === input.geracao && stringMatching(input.bloqueio, idPattern)))
   const activeSequence = input.ativa.sequencia
   check(Array.isArray(input.anteriores) && input.anteriores.length <= 3 &&
     input.anteriores.every(ref => parseRef(ref) && ref.sequencia < activeSequence) &&
@@ -93,9 +94,10 @@ export function parsePointer(input: unknown, environment: Environment): Pointer 
 
 export function parseManifest(input: unknown, environment: Environment): PublicationManifest {
   if (plain(input) && input.ativa === null) {
-    check(exact(input, ['versao', 'ambiente', 'ativa', 'geracao', 'linhagem', 'revisao']) &&
+    check(exact(input, ['versao', 'ambiente', 'ativa', 'geracao', 'linhagem', 'revisao'], ['bloqueio']) &&
       input.versao === version && input.ambiente === environment &&
       stringMatching(input.geracao, idPattern) && stringMatching(input.linhagem, idPattern) &&
+      (!Object.hasOwn(input, 'bloqueio') || input.bloqueio === input.geracao) &&
       Number.isSafeInteger(input.revisao) && Number(input.revisao) >= 0)
     return input as unknown as InitialManifest
   }

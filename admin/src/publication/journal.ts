@@ -1,5 +1,6 @@
 import { hash, hashPattern, idPattern, jsonBytes, mediaPattern, plain, type Pointer } from './contract.ts'
 import { RecoveryStorage } from '../security/recovery-storage.ts'
+import { verifyEvidence } from './evidence.ts'
 
 type Event = {
   versao: 1; ambiente: Pointer['ambiente']; linhagem: string; operacao: string
@@ -50,7 +51,10 @@ export async function recordRevocation(
   if (!pointer.linhagem) throw new Error('A revogação exige uma linhagem inicializada.')
   const vault = new RecoveryStorage(pointer.ambiente)
   try {
-    if (previous) await readRevocations(vault, previous)
+    if (previous) {
+      const committed = await readRevocations(vault, previous)
+      if (previous.diario) await verifyEvidence(vault, previous, committed)
+    }
     const event: Event = {
       versao: 1, ambiente: pointer.ambiente, linhagem: pointer.linhagem,
       operacao: pointer.ativa.id, sequencia: pointer.ativa.sequencia, alvo: target,
@@ -75,6 +79,7 @@ export async function recoveryRevocations(
     throw new Error('Origem divergente do manifesto arquivado.')
   }
   const events = await readRevocations(vault, current)
+  await verifyEvidence(vault, current, events)
   const later: Event[] = []
   for (const [digest, event] of events) {
     if (digest === archived?.diario) break

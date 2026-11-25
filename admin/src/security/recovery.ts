@@ -9,6 +9,7 @@ import { fileKey, hash, hashPattern, idPattern, isEnvironment, jsonBytes, mediaP
   type Environment } from '../publication/contract.ts'
 import { readRelease, readSnapshot } from '../publication/releases.ts'
 import { recoveryRevocations } from '../publication/journal.ts'
+import { initializeEvidence } from '../publication/evidence.ts'
 import { destinations, manifestKey, publicationEnvironment, ReleaseStore } from '../publication/store.ts'
 import { assertOperational, type DatabaseClient } from './database.ts'
 import { databaseURL, postgres, query, samePostgresMajor } from './recovery-db.ts'
@@ -83,9 +84,10 @@ export async function backup(payload: Payload) {
     await assertOperational(client)
     // A leitura do pg_dump é compatível com SHARE. Escritores e novos workers aguardam.
     await client.query(`LOCK TABLE users, users_sessions, regionais, membros, agenda, _agenda_v, eventos, diretoria,
-      midias, publicacoes, poc_audit IN SHARE MODE NOWAIT`)
+      midias, publicacoes, poc_audit, poc_security_intents, poc_security_effects IN SHARE MODE NOWAIT`)
     const { rows: [busy] } = await client.query(`SELECT
       EXISTS (SELECT 1 FROM publicacoes WHERE estado = 'processando' OR etag_em_ativacao IS NOT NULL) OR
+      EXISTS (SELECT 1 FROM poc_security_intents WHERE estado = 'pendente') OR
       EXISTS (SELECT 1 FROM midias WHERE fase IN ('recebendo', 'processando')) AS pending
     `)
     if (busy.pending) throw new Error('Reconcilie os trabalhos em andamento antes do backup.')
@@ -113,6 +115,8 @@ export async function backup(payload: Payload) {
       objects.push(entry)
     }
     await recovery.prepare()
+    if (pointer?.value.linhagem && !pointer.value.diario) await initializeEvidence(recovery, pointer.value.linhagem)
+    if (pointer) await recoveryRevocations(recovery, undefined, pointer.value)
     const refs = await client.query<{ key: string; original: string | null }>(privateReferences)
     for (const { key, original } of refs.rows) {
       if (!privateKey.test(key)) throw new Error('Chave privada incompatível.')

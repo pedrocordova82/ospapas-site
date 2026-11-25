@@ -107,12 +107,14 @@ async function start() {
 
 async function stop() {
   if (!child || child.exitCode !== null || child.signalCode !== null) return
-  const exited = once(child, 'exit')
-  child.kill('SIGTERM')
+  const running = child
+  const exited = once(running, 'exit')
+  running.kill('SIGTERM')
+  const forceStop = setTimeout(() => running.kill('SIGKILL'), 2500)
   try {
-    await Promise.race([exited, delay(2500, undefined, { ref: false }).then(() => child?.kill('SIGKILL'))])
-  } finally {
     await exited
+  } finally {
+    clearTimeout(forceStop)
   }
 }
 

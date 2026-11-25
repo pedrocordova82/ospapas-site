@@ -319,6 +319,21 @@ test('Seleção de instante troca apenas o pôster; imagem personalizada respeit
   assert.equal((await persisted(video)).publicado, false)
 })
 
+async function persistLegacyMediaFixture(statement: string, values: unknown[]) {
+  const client = await mediaPool(payload).connect()
+  try {
+    await client.query('BEGIN')
+    await client.query("SET LOCAL session_replication_role = 'replica'")
+    await client.query(statement, values)
+    await client.query('COMMIT')
+  } catch (error) {
+    await client.query('ROLLBACK')
+    throw error
+  } finally {
+    client.release()
+  }
+}
+
 test('Publicação e leitura de pôster publicado recusam imagens inválidas ou fora do âmbito', async () => {
   approvedPoster = await ready(df2, 'poster-autorizado.png', png)
   await status(await api(`midias/${approvedPoster.uuid}/publicar`, df2, 'POST', { alt: 'Retângulo transparente de teste' }), [200])
@@ -345,7 +360,7 @@ test('Publicação e leitura de pôster publicado recusam imagens inválidas ou 
         UPDATE midias SET fase = $2, digest = $3, otimizado = $4, alt = $5 WHERE id = $1
       `, [approvedPoster.id, candidate.phase ?? 'pronta', candidate.invalidDigest ? null : approvedPoster.digest,
         candidate.missingDerivative ? null : approvedPoster.otimizado, candidate.alt ?? approvedPoster.alt])
-      await pool.query('UPDATE midias SET posterior = $2, publicado = false WHERE id = $1', [video.id, candidate.id])
+      await persistLegacyMediaFixture('UPDATE midias SET posterior = $2, publicado = false WHERE id = $1', [video.id, candidate.id])
       const beforeAttempt = await persisted(video)
       await status(await api(`midias/${video.uuid}/publicar`, df, 'POST', {}), [409])
       if (candidate.id === foreign.id) {
@@ -358,7 +373,7 @@ test('Publicação e leitura de pôster publicado recusam imagens inválidas ou 
   } finally {
     await pool.query("UPDATE midias SET fase = 'pronta', digest = $2, otimizado = $3, alt = $4 WHERE id = $1",
       [approvedPoster.id, approvedPoster.digest, approvedPoster.otimizado, approvedPoster.alt])
-    await pool.query('UPDATE midias SET posterior = $2, publicado = false WHERE id = $1', [video.id, approvedPoster.id])
+    await persistLegacyMediaFixture('UPDATE midias SET posterior = $2, publicado = false WHERE id = $1', [video.id, approvedPoster.id])
   }
 })
 
@@ -373,6 +388,8 @@ test('Publicação concorrente revalida a seleção e a aprovação depois das t
     let publication: Promise<Response> | undefined
     try {
       await holder.query('BEGIN')
+      // O fixture simula um escritor externo legado para manter o ensaio de bloqueios do pôster.
+      await holder.query("SET LOCAL session_replication_role = 'replica'")
       const { rows: [{ pid }] } = await holder.query<{ pid: number }>('SELECT pg_backend_pid() AS pid')
       await holder.query(change.sql, change.values)
       publication = api(`midias/${video.uuid}/publicar`, df, 'POST', {})

@@ -9,6 +9,7 @@ import { detectMedia, receiveBody } from './ingest.ts'
 import { limits, mediaPool, originalKey, reservation, temporaryRoot } from './model.ts'
 import { fetchObject, removeObject, storeFile } from './storage.ts'
 import { auditContext, checkUnit, lockOperator } from '../security/controls.ts'
+import { coordinateSQL, reconcileSecurity } from '../security/coordination.ts'
 
 async function operator(req: PayloadRequest) {
   const user = actor(req)
@@ -252,22 +253,33 @@ const withdrawApproval: Endpoint['handler'] = async req => {
   if (actor(req)?.perfil !== 'geral') deny()
   const doc = await scopedMedia(req)
   const client = await mediaPool(req.payload).connect()
+  let securityID: string | undefined
+  let committing = false
   try {
     await client.query('BEGIN')
     await lockOperator(client, req)
     await auditContext(client, req)
+    securityID = await coordinateSQL(client, req.payload, { entidade: 'midias', registro: Number(doc.id) })
     const changed = await client.query(
       'UPDATE midias SET publicado = false, updated_at = now() WHERE id = $1 AND publicado', [doc.id],
     )
     if (!changed.rowCount) throw new APIError('A mídia já está sem aprovação.', 409)
+    committing = true
     await client.query('COMMIT')
-    return Response.json({ publicado: false })
   } catch (error) {
-    await client.query('ROLLBACK')
+    await client.query('ROLLBACK').catch(() => undefined)
+    if (committing) throw new APIError('Mudança de segurança pendente de reconciliação.', 503)
+    if (securityID) await reconcileSecurity(req.payload, securityID, 'rollback')
     throw error
   } finally {
     client.release()
   }
+  try {
+    await reconcileSecurity(req.payload, securityID!, 'commit')
+  } catch {
+    throw new APIError('Mudança de segurança pendente de reconciliação.', 503)
+  }
+  return Response.json({ publicado: false })
 }
 
 const download: Endpoint['handler'] = async req => {

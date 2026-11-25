@@ -8,6 +8,7 @@ import { eligiblePoster } from '../media/approval.ts'
 import { limits, mediaPool } from '../media/model.ts'
 import { fetchFile } from '../media/storage.ts'
 import { assertOperational, requireDirectConnection, type DatabaseClient } from '../security/database.ts'
+import { securitySuspended } from '../security/coordination.ts'
 import { publicationRefusal, type PublicationRequest } from './authorization.ts'
 import {
   assetsOf, emptySnapshot, fileKey, hash, jsonBytes, parsePointer, parseRelease, parseSection, sections,
@@ -16,6 +17,8 @@ import {
 } from './contract.ts'
 import { isApprovedVideo, type PendingRow } from './projection.ts'
 import { recordRevocation } from './journal.ts'
+import { assertLatestEvidence, reserveEvidence, settleEvidence } from './evidence.ts'
+import { RecoveryStorage } from '../security/recovery-storage.ts'
 import { readSnapshot } from './releases.ts'
 import { missing, publicationEnvironment, ReleaseStore } from './store.ts'
 
@@ -251,6 +254,7 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
   client.on('error', lostConnection)
   try {
     await assertOperational(client)
+    if (await securitySuspended(client, environment)) return
     const { rows: [lock] } = await client.query<{ acquired: boolean }>(
       'SELECT pg_try_advisory_lock(502020, $1) AS acquired', [['dev', 'hml', 'prd'].indexOf(environment)],
     )
@@ -268,6 +272,10 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
     `, [environment])
     if (!job) return
     const store = new ReleaseStore(environment)
+    let vault: RecoveryStorage | undefined
+    const evidence = () => vault ??= new RecoveryStorage(environment)
+    const settle = (current: NonNullable<Awaited<ReturnType<ReleaseStore['manifest']>>>, confirmed: boolean) =>
+      job.pedido.acao === 'revogar' ? settleEvidence(evidence(), current, job.release, confirmed) : undefined
     const confirm = () => client.query(`
       UPDATE publicacoes SET estado = 'publicado', erro = null, expira = null, etag_em_ativacao = null, updated_at = now()
       WHERE id = $1 AND estado = 'processando' AND ambiente = $2
@@ -276,11 +284,13 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
     let reconciling = Boolean(job.etag_em_ativacao)
     try {
       let current = await store.manifest()
+      if (current?.value.bloqueio) return { status: 'processando', operations: store.operations }
       if (!current || !current.value.linhagem || current.value.revisao === undefined) {
         await client.query("UPDATE publicacoes SET erro = 'incidente_manifesto' WHERE id = $1", [job.id])
         return { status: 'processando', reason: 'incidente_manifesto', operations: store.operations }
       }
       if (current.value.ativa?.id === job.release && current.value.ativa.sequencia === job.id) {
+        await settle(current, true)
         await confirm()
         return { status: 'reconciliado', operations: store.operations }
       }
@@ -291,18 +301,21 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
             ...current.value, geracao: randomUUID(), revisao: current.value.revisao + 1,
           }), current.etag)
           current = await store.manifest()
-          if (!current?.value.linhagem || current.value.revisao === undefined) {
+          if (!current?.value.linhagem || current.value.revisao === undefined || current.value.bloqueio) {
             return { status: 'processando', operations: store.operations }
           }
           if (current.value.ativa?.id === job.release && current.value.ativa.sequencia === job.id) {
+            await settle(current, true)
             await confirm()
             return { status: 'reconciliado', operations: store.operations }
           }
         }
+        await settle(current, false)
         await client.query('UPDATE publicacoes SET etag_em_ativacao = null WHERE id = $1', [job.id])
         reconciling = false
       }
       if (current.value.ativa && current.value.ativa.sequencia >= job.id) throw new Refusal('release_obsoleta')
+      await assertLatestEvidence(evidence(), current.value)
       const preflight = await publicationRefusal(client, job)
       if (preflight) throw new Refusal(preflight)
       const previous = current.value.ativa ? current.value : undefined
@@ -317,6 +330,7 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
       await client.query('UPDATE publicacoes SET etag_em_ativacao = $2 WHERE id = $1', [job.id, current.etag])
       await client.query('BEGIN ISOLATION LEVEL READ COMMITTED')
       try {
+        if (await securitySuspended(client, environment)) throw new Refusal('mudanca_seguranca_pendente')
         // Os bloqueios impedem mudanças de autorização até o fim da escrita condicional.
         const refusal = await publicationRefusal(client, job, { lock: true })
         if (refusal) throw new Refusal(refusal)
@@ -327,6 +341,10 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
           }
         }
         activating = true
+        if (journal) {
+          await reserveEvidence(evidence(), next, current)
+          await client.query('SELECT 1')
+        }
         await store.activate(jsonBytes({ ...next, ativadaEm: new Date().toISOString() }), current.etag)
         if (disconnected) return { status: 'processando', operations: store.operations }
         await client.query('COMMIT')
@@ -335,14 +353,21 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
         throw error
       }
       await hooks.afterActivate?.()
+      if (journal) {
+        const confirmed = await store.manifest()
+        if (!confirmed) throw new Refusal('incidente_manifesto')
+        await settle(confirmed, true)
+      }
       await confirm()
       return {
         status: 'publicado', snapshotMs: result.snapshotMs, elapsedMs: Math.round(performance.now() - started),
         jsonSize: result.jsonSize, jsonFiles: result.jsonFiles, operations: store.operations, reused: store.reused,
-        rssKiB: process.resourceUsage().maxRSS, ...(journal ? { journalOperations: journal.operations, journalBytes: journal.bytes } : {}),
+        rssKiB: process.resourceUsage().maxRSS,
+        ...(journal ? { journalOperations: journal.operations + (vault?.operations ?? 0), journalBytes: journal.bytes } : {}),
       }
     } catch (error) {
-      if (disconnected || reconciling || (activating && !(error instanceof Error && ['PreconditionFailed', 'ConditionalRequestConflict'].includes(error.name)))) {
+      if (disconnected || reconciling || (activating && (job.pedido.acao === 'revogar' ||
+        !(error instanceof Error && ['PreconditionFailed', 'ConditionalRequestConflict'].includes(error.name))))) {
         return { status: 'processando', operations: store.operations }
       }
       const reason = activating ? 'conflito_manifesto' : error instanceof Refusal ? error.message : 'preparacao'
@@ -351,6 +376,8 @@ export async function publishOnce(payload: Payload, environment = publicationEnv
         WHERE id = $1 AND estado = 'processando' AND ambiente = $3
       `, [job.id, reason, environment])
       return { status: 'falhou', reason, operations: store.operations }
+    } finally {
+      vault?.close()
     }
   } finally {
     try {

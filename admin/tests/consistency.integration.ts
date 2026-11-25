@@ -17,9 +17,11 @@ import { mediaPool } from '../src/media/model.ts'
 import { closeStorage, storage } from '../src/media/storage.ts'
 import { publicObject } from '../src/publication/consumer.ts'
 import { readRevocations, recoveryRevocations } from '../src/publication/journal.ts'
+import { assertLatestEvidence } from '../src/publication/evidence.ts'
 import { stableID } from '../src/publication/projection.ts'
 import { manifestKey, ReleaseStore } from '../src/publication/store.ts'
 import { publishOnce } from '../src/publication/worker.ts'
+import { coordinateSQL, reconcileSecurity } from '../src/security/coordination.ts'
 import { databaseURL, postgres, query } from '../src/security/recovery-db.ts'
 import { backup, restore } from '../src/security/recovery.ts'
 import { RecoveryStorage } from '../src/security/recovery-storage.ts'
@@ -178,7 +180,7 @@ test('Após desconexão na primeira ativação, a barreira vence o PUT atrasado 
     await run('falhou')
     const fenced = await store.manifest()
     assert.equal(fenced?.value.ativa, null)
-    assert.equal(fenced?.value.revisao, 1)
+    assert.equal(fenced?.value.revisao, 2)
     assert.notEqual(fenced?.etag, initialized?.etag)
     assert.equal((await state(job)).erro, 'autorizacao_revogada')
     go.resolve()
@@ -202,7 +204,7 @@ test('Primeira ativação vencedora com resposta perdida é reconciliada sem alt
   }
   const active = await store.pointer()
   assert.equal(active?.value.ativa.id, job.release)
-  assert.equal(active?.value.revisao, 2)
+  assert.equal(active?.value.revisao, 3)
   assert.equal(await publishOnce(payload), undefined)
   await expire(job)
   await run('reconciliado')
@@ -240,6 +242,22 @@ test('Revogação liga o evento idempotente só no CAS e preserva a ordem dos al
     assert.equal(active.value.ativa.id, media.release)
     assert.equal((await readRevocations(vault, active.value)).size, 2)
     assert.equal((await recoveryRevocations(vault, original!.value, active.value)).later, 2)
+    await assert.rejects(recoveryRevocations(vault, original!.value, original!.value), /Manifesto regredido/)
+    await assert.rejects(assertLatestEvidence(vault, original!.value), /Manifesto regredido/)
+    const chain = [...(await readRevocations(vault, active.value)).entries()]
+    const prior = chain[1]
+    const truncated = { ...active.value, diario: prior[0], revogados: [prior[1].alvo] }
+    assert.equal((await readRevocations(vault, truncated)).size, 1)
+    await assert.rejects(recoveryRevocations(vault, original!.value, truncated), /truncado/)
+    const index = `diario/evidencias/${active.value.linhagem}/indice`
+    const encrypted = await vault.client.send(new GetObjectCommand({ Bucket: vault.bucket, Key: index }))
+    const saved = Buffer.from(await encrypted.Body!.transformToByteArray())
+    await vault.client.send(new DeleteObjectCommand({ Bucket: vault.bucket, Key: index }))
+    try {
+      await assert.rejects(recoveryRevocations(vault, original!.value, active.value), /Índice de evidência ausente/)
+    } finally {
+      await vault.putObject(vault.bucket, index, saved, 'application/octet-stream')
+    }
     await assert.rejects(readRevocations(vault, { ...active.value, ambiente: 'hml' }), /Ambiente do diário divergente/)
   } finally {
     vault.close()
@@ -274,6 +292,139 @@ test('Diário ausente ou adulterado bloqueia restauração e mantém a quarenten
     await vault.putObject(vault.bucket, key, saved, 'application/octet-stream')
     vault.close()
   }
+})
+
+test('Uma ativação que vence o CAS é mantida antes de a desativação se tornar efetiva', async () => {
+  await request(`users/${author.id}`, 200, general, { ativo: true }, 'PATCH')
+  regional = (await request<{ token: string }>('users/login', 200, undefined,
+    { email: 'consistencia-regional@example.invalid', password })).token
+  const job = await submit(regional, { acao: 'publicar', registros: [records[0]] })
+  const accepted = Promise.withResolvers<void>()
+  const resume = Promise.withResolvers<void>()
+  const client = storage().client
+  const name = 'ativacaoAceitaSemResposta'
+  let intercepted = false
+  client.middlewareStack.add((next, context) => async args => {
+    const result = await next(args)
+    const input = args.input as PutObjectCommandInput
+    if (!intercepted && context.commandName === 'PutObjectCommand' && input.Bucket === store.buckets.releases &&
+        input.Key === manifestKey && Buffer.isBuffer(input.Body) && JSON.parse(input.Body.toString()).ativa?.id === job.release &&
+        !JSON.parse(input.Body.toString()).bloqueio) {
+      intercepted = true
+      accepted.resolve()
+      await resume.promise
+      throw new Error('Resposta do PUT omitida no teste.')
+    }
+    return result
+  }, { name, step: 'initialize' })
+  const worker = publishOnce(payload)
+  try {
+    await Promise.race([accepted.promise, worker])
+    const active = (await store.pointer())!
+    assert.equal(active.value.ativa.id, job.release)
+    const ended = await mediaPool(payload).query(`SELECT pg_terminate_backend(pid, 5000) AS encerrado
+      FROM pg_locks WHERE locktype = 'advisory' AND classid = 502020 AND objid = 0 AND granted
+      AND database = (SELECT oid FROM pg_database WHERE datname = current_database())`)
+    assert.deepEqual(ended.rows, [{ encerrado: true }])
+    await request(`users/${author.id}`, 200, general, { ativo: false }, 'PATCH')
+    const { rows: [intent] } = await mediaPool(payload).query(`
+      SELECT i.estado, i.release_observada, e.aplicado, u.ativo FROM poc_security_intents i
+      JOIN poc_security_effects e USING (id) JOIN users u ON u.id = i.registro
+      WHERE i.registro = $1 AND i.release_observada = $2`, [author.id, job.release])
+    assert.deepEqual(intent, { estado: 'concluida', release_observada: job.release, aplicado: true, ativo: false })
+    const fenced = (await store.pointer())!
+    assert.deepEqual(fenced.value.ativa, active.value.ativa)
+    assert.notEqual(fenced.etag, active.etag)
+    resume.resolve()
+    assert.equal((await worker)?.status, 'processando')
+    await expire(job)
+    await run('reconciliado')
+    assert.deepEqual(await store.pointer(), fenced)
+  } finally {
+    resume.resolve()
+    await worker
+    client.middlewareStack.remove(name)
+  }
+})
+
+test('Efeito de commit incerto e rollback permanecem cercados até reconciliação explícita', async () => {
+  const pool = mediaPool(payload)
+  const target = { entidade: 'users', registro: author.id } as const
+  const before = (await store.pointer())!
+  await request(`users/${author.id}`, 200, general, { ativo: true }, 'PATCH')
+  const apply = async (commit: boolean) => {
+    const client = await pool.connect()
+    try {
+      await client.query('BEGIN')
+      const id = await coordinateSQL(client, payload, target)
+      await client.query('UPDATE users SET ativo = false WHERE id = $1', [author.id])
+      if (commit) {
+        // O processo termina depois do COMMIT, antes de observar ou liberar a operação.
+        await client.query('COMMIT')
+      } else await client.query('ROLLBACK')
+      return id
+    } finally {
+      client.release()
+    }
+  }
+
+  const connection = await pool.connect()
+  const remove = controlWrite('respostaBarreiraPerdida', async () => undefined, true)
+  try {
+    await connection.query('BEGIN')
+    await assert.rejects(coordinateSQL(connection, payload, target), /pendente/)
+    await connection.query('ROLLBACK')
+  } finally {
+    remove()
+    connection.release()
+  }
+  const uncertainFence = (await store.pointer())!
+  assert.ok(uncertainFence.value.bloqueio)
+  assert.equal(await publishOnce(payload), undefined)
+  assert.equal(await reconcileSecurity(payload, uncertainFence.value.bloqueio, 'inspect'), 'abortada')
+
+  const rolledBack = await apply(false)
+  const held = (await store.pointer())!
+  assert.equal(held.value.bloqueio, rolledBack)
+  assert.equal((await pool.query('SELECT ativo FROM users WHERE id = $1', [author.id])).rows[0].ativo, true)
+  assert.equal((await pool.query('SELECT estado FROM poc_security_intents WHERE id = $1', [rolledBack])).rows[0].estado, 'pendente')
+  assert.equal(await publishOnce(payload), undefined)
+  await request(`users/${author.id}`, 503, general, { ativo: false }, 'PATCH')
+  assert.equal(await reconcileSecurity(payload, rolledBack, 'inspect'), 'abortada')
+
+  const committed = await apply(true)
+  const newer = (await store.pointer())!
+  assert.equal(newer.value.bloqueio, committed)
+  assert.equal((await pool.query('SELECT ativo FROM users WHERE id = $1', [author.id])).rows[0].ativo, false)
+  assert.equal(await reconcileSecurity(payload, rolledBack, 'inspect'), 'abortada')
+  assert.deepEqual(await store.pointer(), newer)
+  assert.ok(await publicObject(store, manifestKey))
+  assert.equal(await reconcileSecurity(payload, committed, 'inspect'), 'concluida')
+  const current = (await store.pointer())!
+  assert.deepEqual(current.value.ativa, before.value.ativa)
+  assert.equal(current.value.bloqueio, undefined)
+  assert.ok((current.value.revisao ?? 0) > (newer.value.revisao ?? 0))
+  const evidence = new RecoveryStorage('dev')
+  try {
+    const receipt = JSON.parse((await evidence.get(`diario/autorizacao/${current.value.linhagem}/${committed}`)).toString())
+    assert.equal(receipt.efetiva, true)
+  } finally {
+    evidence.close()
+  }
+})
+
+test('SQL sem coordenação e a API em lote não podem alterar autoridade regional', async () => {
+  const pool = mediaPool(payload)
+  const original = (await pool.query('SELECT regional_id FROM membros WHERE id = $1', [member.id])).rows[0]
+  const another = (await request<{ doc: Doc }>('regionais', 201, general, {
+    nome: 'Unidade fictícia de transferência', slug: 'transferencia-ficticia', tipo: 'regional',
+  })).doc
+  await assert.rejects(pool.query('UPDATE membros SET regional_id = $1 WHERE id = $2', [another.id, member.id]), { code: '42501' })
+  await assert.rejects(pool.query('DELETE FROM membros WHERE id = $1', [member.id]), { code: '42501' })
+  await request(`membros?where[id][equals]=${member.id}`, 403, general, { regional: another.id }, 'PATCH')
+  assert.deepEqual((await pool.query('SELECT regional_id FROM membros WHERE id = $1', [member.id])).rows[0], original)
+  await request(`membros/${member.id}`, 200, general, { regional: another.id }, 'PATCH')
+  assert.equal((await pool.query('SELECT regional_id FROM membros WHERE id = $1', [member.id])).rows[0].regional_id, another.id)
 })
 
 test('Perda do manifesto inicializado gera incidente e impede recriação pelo worker ou inicializador', async () => {
