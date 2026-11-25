@@ -2,6 +2,7 @@ import { APIError, type Access, type CollectionBeforeChangeHook, type Collection
 import { coverField, validateCover, validateVideo } from '../media/collection.ts'
 import { retainActiveGeneral } from './last-general.ts'
 import { actor, canUsePanel, deny, geral, limitToRegion, protectFields, rejectNested, relationID } from './policies.ts'
+import { checkUnit } from '../security/controls.ts'
 
 const denyDelete = () => false
 const activeField: Field = { name: 'ativo', type: 'checkbox', defaultValue: true, required: true }
@@ -46,8 +47,9 @@ const users: CollectionConfig = {
         await protectFields('users', { req, id, data: args.data }, selfService, accountFields)
       }
     }],
-    beforeLogin: [({ user }) => {
+    beforeLogin: [async ({ user, req }) => {
       if (user.ativo !== true) deny('Conta administrativa indisponível.')
+      await checkUnit(req, user)
       return user
     }],
     beforeChange: [async ({ data, operation, originalDoc, req, context }) => {
@@ -64,7 +66,8 @@ const users: CollectionConfig = {
       if (originalDoc?.perfil === 'geral' && originalDoc.ativo && (perfil !== 'geral' || !ativo)) {
         await retainActiveGeneral(req)
       }
-      if (!ativo) data.sessions = []
+      if (!ativo || (originalDoc && (perfil !== originalDoc.perfil ||
+          relationID(regional) !== relationID(originalDoc.regional)))) data.sessions = []
       return data
     }],
   },

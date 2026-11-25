@@ -7,6 +7,7 @@ import { publicationRefusal, type PublicationRequest } from './authorization.ts'
 import { hash, hashPattern, idPattern, isSection, mediaPattern, plain } from './contract.ts'
 import { capture, type Intent, type Selection } from './projection.ts'
 import { publicationEnvironment } from './store.ts'
+import { auditContext, checkUnit } from '../security/controls.ts'
 
 const enqueue = Symbol('publicação autorizada')
 
@@ -31,6 +32,8 @@ export const publicacoes: CollectionConfig = {
     { name: 'release', type: 'text', unique: true, required: true },
     { name: 'ambiente', type: 'text', required: true, index: true },
     { name: 'operador', type: 'number', required: true, index: true },
+    { name: 'escopo', type: 'number', access: { read: () => false } },
+    { name: 'etagEmAtivacao', type: 'text', access: { read: () => false } },
     { name: 'estado', type: 'text', required: true, index: true },
     { name: 'pedido', type: 'json', required: true, access: { read: () => false } },
     { name: 'tentativas', type: 'number', defaultValue: 0, required: true },
@@ -89,6 +92,7 @@ function selections(input: unknown): Selection[] {
 async function requestPublication(req: PayloadRequest) {
   const user = actor(req)
   if (!user) deny()
+  await checkUnit(req, user)
   const key = req.headers.get('idempotency-key') ?? ''
   if (!/^[A-Za-z0-9_-]{8,80}$/.test(key)) throw new APIError('Chave de idempotência inválida.', 400)
   const input = await readJSON(req)
@@ -140,7 +144,11 @@ async function requestPublication(req: PayloadRequest) {
     await session.db.execute(sql`SELECT pg_advisory_xact_lock(502021)`)
     await req.payload.create({
       collection: 'publicacoes', req, overrideAccess: false, context: { publication: enqueue },
-      data: { pedido, chave, assinatura, ambiente, operador: Number(user.id), estado: 'pendente', release: randomUUID() },
+      data: {
+        pedido, chave, assinatura, ambiente, operador: Number(user.id),
+        escopo: user.perfil === 'regional' ? relationID(user.regional) : undefined,
+        estado: 'pendente', release: randomUUID(),
+      },
     })
     await req.payload.db.commitTransaction(transaction)
   } catch (error) {
@@ -175,6 +183,7 @@ async function retry(req: PayloadRequest) {
     `, [id, publicationEnvironment()])
     if (!job) throw new APIError('Pedido indisponível para repetição.', 409)
     if (await publicationRefusal(client, job, { lock: true, requester })) deny()
+    await auditContext(client, req)
     await client.query("UPDATE publicacoes SET estado = 'pendente', erro = null, expira = null WHERE id = $1", [id])
     await client.query('COMMIT')
   } catch (error) {
