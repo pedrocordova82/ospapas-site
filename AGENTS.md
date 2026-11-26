@@ -20,3 +20,10 @@ This repository contains the MC Os Papas institutional website.
 
 - Code comments, when necessary, must be written in Brazilian Portuguese.
 - The website must remain responsive, performant, accessible, and compatible with static export.
+
+## Desenvolvimento do portal administrativo
+
+- Leia `ADMIN_PROJECT_SPEC.md` e `ADMIN_ARCHITECTURE.md` antes de trabalhar no portal. Consulte `ADMIN_DESIGN_SYSTEM.md` assim que o documento existir.
+- Consulte `ADMIN_COST_ESTIMATE.md` para mudanças de infraestrutura ou com impacto financeiro.
+- Respeite Security First, as fronteiras arquiteturais aprovadas, o comportamento do site existente e todos os bloqueadores de produção.
+- Informe desvios arquiteturais antes de implementá-los. É vedado provisionar infraestrutura sem autorização.
