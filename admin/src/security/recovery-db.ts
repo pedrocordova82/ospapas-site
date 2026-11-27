@@ -2,18 +2,10 @@ import { execFile } from 'node:child_process'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
-import { localURL } from './recovery-storage.ts'
+export { disposableDatabaseURL as databaseURL } from '../config.ts'
 
 const exec = promisify(execFile)
 type Tool = 'pg_dump' | 'pg_restore' | 'psql'
-
-export function databaseURL(input: string | undefined) {
-  const url = localURL(input, ['postgres:', 'postgresql:'])
-  if (!/^\/[a-z][a-z0-9_]{1,62}$/.test(url.pathname) || url.search || url.hash || !url.username) {
-    throw new Error('Identifique explicitamente o banco PostgreSQL descartável.')
-  }
-  return url
-}
 
 export async function postgres(url: URL, dir: string) {
   const fields = [url.hostname.replace(/^\[|\]$/g, ''), url.port || '5432',

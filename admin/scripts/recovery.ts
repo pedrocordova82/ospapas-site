@@ -1,5 +1,5 @@
 import { getPayload } from 'payload'
-import config from '../src/payload.config.ts'
+import { assertDisposableDatabase } from '../src/experimental.ts'
 import { closeStorage } from '../src/media/storage.ts'
 import { isEnvironment } from '../src/publication/contract.ts'
 import { backup, restore } from '../src/security/recovery.ts'
@@ -10,6 +10,9 @@ if (operation !== 'backup' && (operation !== 'restore' || !id || !isEnvironment(
   throw new Error('Informe backup ou restore <id> <ambiente> <rótulo> com destino descartável configurado.')
 }
 
+await assertDisposableDatabase()
+if (operation === 'restore') await assertDisposableDatabase(target)
+const { default: config } = await import('../src/payload.config.ts')
 const payload = await getPayload({ config })
 try {
   const result = operation === 'backup'

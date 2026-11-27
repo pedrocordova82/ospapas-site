@@ -3,6 +3,7 @@ import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Payload } from 'payload'
+import { assertDisposableDatabase } from '../experimental.ts'
 import { mediaPool } from '../media/model.ts'
 import { storage } from '../media/storage.ts'
 import { fileKey, hash, hashPattern, idPattern, isEnvironment, jsonBytes, mediaPattern, parsePointer, sections,
@@ -12,7 +13,7 @@ import { recoveryRevocations } from '../publication/journal.ts'
 import { initializeEvidence } from '../publication/evidence.ts'
 import { destinations, manifestKey, publicationEnvironment, ReleaseStore } from '../publication/store.ts'
 import { assertOperational, type DatabaseClient } from './database.ts'
-import { databaseURL, postgres, query, samePostgresMajor } from './recovery-db.ts'
+import { postgres, query, samePostgresMajor } from './recovery-db.ts'
 import { maximumObject, readObject, RecoveryStorage } from './recovery-storage.ts'
 
 const schema = '02g-1'
@@ -62,7 +63,7 @@ export async function backup(payload: Payload) {
   const start = performance.now()
   const environment = publicationEnvironment()
   if (process.env.POC_RECOVERY_MAINTENANCE !== '1') throw new Error('Pause os escritores e confirme a manutenção local.')
-  const database = databaseURL(process.env.DATABASE_URL)
+  const database = await assertDisposableDatabase()
   const recovery = new RecoveryStorage(environment)
   const source = storage()
   const releaseStore = new ReleaseStore(environment)
@@ -178,8 +179,8 @@ export async function restore(payload: Payload, id: string, target: string, envi
   const start = performance.now()
   if (!idPattern.test(id) || !/^[a-z0-9]{4,12}$/.test(label) || !isEnvironment(environment) ||
       environment !== publicationEnvironment()) throw new Error('Autorização explícita do mesmo ambiente é obrigatória.')
-  const database = databaseURL(target)
-  const source = databaseURL(process.env.DATABASE_URL)
+  const source = await assertDisposableDatabase()
+  const database = await assertDisposableDatabase(target)
   if (database.pathname === source.pathname) throw new Error('A recuperação exige um banco diferente da origem.')
   if (database.username === source.username) throw new Error('Use identidade PostgreSQL separada para a recuperação.')
   const recovery = new RecoveryStorage(environment)

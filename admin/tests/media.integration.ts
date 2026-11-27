@@ -1,3 +1,4 @@
+import { assertDisposableDatabase } from '../src/experimental.ts'
 import assert from 'node:assert/strict'
 import { execFile, spawn, type ChildProcess } from 'node:child_process'
 import { createHash, randomBytes } from 'node:crypto'
@@ -26,8 +27,6 @@ type Stored = {
 const exec = promisify(execFile)
 const suffix = randomBytes(4).toString('hex')
 const password = randomBytes(24).toString('hex')
-const database = new URL(process.env.DATABASE_URL ?? 'postgresql://invalid')
-assert.ok(['postgres:', 'postgresql:'].includes(database.protocol) && ['localhost', '127.0.0.1', '[::1]'].includes(database.hostname))
 assert.ok(process.env.POC_ADMIN_EMAIL && process.env.POC_ADMIN_PASSWORD)
 
 let payload: Payload
@@ -122,6 +121,7 @@ async function readAsset(asset: Stored, session: Session, kind = 'otimizado') {
 const hash = (data: Buffer) => createHash('sha256').update(data).digest('hex')
 
 before(async () => {
+  await assertDisposableDatabase()
   payload = await getPayload({ config })
   assert.equal((await payload.count({ collection: 'midias', overrideAccess: true })).totalDocs, 0, 'Prepare um banco de teste sem mídias.')
   dir = await mkdtemp(join(tmpdir(), 'ospapas-teste-midia-'))

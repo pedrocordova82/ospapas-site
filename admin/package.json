@@ -1,5 +1,5 @@
 {
-  "name": "ospapas-admin-poc",
+  "name": "ospapas-admin",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,10 +7,12 @@
     "node": ">=24.22.3 <25"
   },
   "scripts": {
+    "dev": "node scripts/next.mjs dev",
     "build": "node scripts/next.mjs build",
-    "db:prepare": "node --env-file-if-exists=.env.poc node_modules/payload/bin.js run src/prepare-db.ts",
+    "db:prepare": "node --env-file-if-exists=.env.poc src/prepare-db.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "test:config": "node --test tests/config.test.ts",
     "test:integration": "node --env-file-if-exists=.env.poc --test tests/access.integration.ts",
     "media:prepare": "node --env-file-if-exists=.env.poc scripts/prepare-storage.ts",
     "media:worker": "node --env-file-if-exists=.env.poc scripts/media-worker.ts",

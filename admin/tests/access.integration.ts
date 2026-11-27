@@ -1,3 +1,4 @@
+import { assertDisposableDatabase } from '../src/experimental.ts'
 import assert from 'node:assert/strict'
 import { spawn, type ChildProcess } from 'node:child_process'
 import { randomBytes } from 'node:crypto'
@@ -15,9 +16,7 @@ type Page = { docs: Doc[]; totalDocs: number; totalPages: number }
 type Session = { token: string; user: Doc }
 type Content = 'regionais' | 'membros' | 'agenda' | 'eventos' | 'diretoria' | 'users'
 
-const { DATABASE_URL, POC_ADMIN_EMAIL, POC_ADMIN_PASSWORD } = process.env
-const database = new URL(DATABASE_URL ?? 'postgresql://invalid')
-assert.ok(['postgres:', 'postgresql:'].includes(database.protocol) && ['localhost', '127.0.0.1', '[::1]'].includes(database.hostname), 'Use PostgreSQL descartável no loopback.')
+const { POC_ADMIN_EMAIL, POC_ADMIN_PASSWORD } = process.env
 assert.ok(POC_ADMIN_EMAIL && POC_ADMIN_PASSWORD)
 const password = randomBytes(24).toString('hex')
 const suffix = randomBytes(4).toString('hex')
@@ -119,6 +118,7 @@ async function stop() {
 }
 
 before(async () => {
+  await assertDisposableDatabase()
   const { default: config } = await import('../src/payload.config.ts')
   payload = await getPayload({ config })
   assert.equal((await payload.count({ collection: 'users', overrideAccess: true })).totalDocs, 1, 'Prepare um banco vazio para cada execução.')

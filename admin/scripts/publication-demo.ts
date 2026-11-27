@@ -1,7 +1,14 @@
+import { requireExperimentalEnvironment, localStorageEndpoint, publicationNamespace } from '../src/config.ts'
 import { createServer } from 'node:http'
 import { loadPublication, publicObject, renderPublication } from '../src/publication/consumer.ts'
-import { publicationEnvironment, ReleaseStore } from '../src/publication/store.ts'
+import { ReleaseStore } from '../src/publication/store.ts'
 import { closeStorage } from '../src/media/storage.ts'
+
+requireExperimentalEnvironment()
+localStorageEndpoint(process.env.POC_S3_ENDPOINT)
+const environment = publicationNamespace()
+const port = Number(process.env.POC_PUBLIC_PORT ?? 3190)
+if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('Porta da demonstração inválida.')
 
 const server = createServer(async (req, res) => {
   res.setHeader('Cache-Control', 'no-store')
@@ -15,7 +22,7 @@ const server = createServer(async (req, res) => {
       res.writeHead(200).end('ok')
       return
     }
-    const store = new ReleaseStore(publicationEnvironment())
+    const store = new ReleaseStore(environment)
     const get = (path: string) => publicObject(store, path)
     if (req.url === '/') {
       const { release, snapshot } = await loadPublication(async path => {
@@ -37,7 +44,7 @@ const server = createServer(async (req, res) => {
   }
 })
 
-server.listen(Number(process.env.POC_PUBLIC_PORT ?? 3190), '127.0.0.1')
+server.listen(port, '127.0.0.1')
 for (const signal of ['SIGINT', 'SIGTERM'] as const) {
   process.once(signal, () => server.close(() => closeStorage()))
 }

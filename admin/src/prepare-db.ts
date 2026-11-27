@@ -1,27 +1,20 @@
 import { getPayload } from 'payload'
+import { requireExperimentalEnvironment } from './config.ts'
+import { experimentalBootstrap } from './experimental.ts'
 
+requireExperimentalEnvironment()
 if (process.env.NODE_ENV === 'production') {
-  throw new Error('Prepare o banco descartável antes de iniciar o servidor em produção.')
+  throw new Error('Execute db:prepare antes de iniciar o runtime de produção local.')
 }
 
-const { DATABASE_URL, POC_ADMIN_EMAIL, POC_ADMIN_PASSWORD } = process.env
-const database = DATABASE_URL && new URL(DATABASE_URL)
+const { POC_ADMIN_EMAIL, POC_ADMIN_PASSWORD } = process.env
 
-if (
-  !database ||
-  !['postgres:', 'postgresql:'].includes(database.protocol) ||
-  !['localhost', '127.0.0.1', '[::1]'].includes(database.hostname)
-) {
-  throw new Error('A preparação do esquema exige um PostgreSQL local e descartável.')
+if (!POC_ADMIN_EMAIL || !/^[^\s@]+@example\.invalid$/i.test(POC_ADMIN_EMAIL) || !POC_ADMIN_PASSWORD || POC_ADMIN_PASSWORD.length < 16) {
+  throw new Error('Informe um e-mail em example.invalid e uma senha temporária de pelo menos 16 caracteres.')
 }
 
-if (!POC_ADMIN_EMAIL || !POC_ADMIN_PASSWORD || POC_ADMIN_PASSWORD.length < 16) {
-  throw new Error('Informe um e-mail fictício e uma senha temporária de pelo menos 16 caracteres.')
-}
-
-process.env.POC_PREPARE_SCHEMA = '1'
-const { default: config } = await import('./payload.config')
-const payload = await getPayload({ config })
+const { experimentalSchemaConfig } = await import('./payload.config.ts')
+const payload = await getPayload({ config: await experimentalSchemaConfig() })
 
 try {
   const { totalDocs } = await payload.count({ collection: 'users', overrideAccess: true })
@@ -29,7 +22,7 @@ try {
     await payload.create({
       collection: 'users',
       data: { email: POC_ADMIN_EMAIL, password: POC_ADMIN_PASSWORD, perfil: 'geral' },
-      context: { pocBootstrap: true },
+      context: { pocBootstrap: experimentalBootstrap },
       overrideAccess: true,
     })
     console.info('Esquema preparado e primeira conta experimental criada.')

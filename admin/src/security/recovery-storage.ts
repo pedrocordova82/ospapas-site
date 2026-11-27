@@ -1,22 +1,9 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto'
 import { CreateBucketCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { localStorageEndpoint, requireExperimentalEnvironment } from '../config.ts'
 import { hash, type Environment } from '../publication/contract.ts'
 
 export const maximumObject = 224 * 1024 ** 2
-const loopback = new Set(['localhost', '127.0.0.1', '[::1]'])
-
-export function localURL(input: string | undefined, protocols: string[]) {
-  let url: URL
-  try {
-    url = new URL(input ?? '')
-  } catch {
-    throw new Error('Configure um endereço local válido.')
-  }
-  if (!protocols.includes(url.protocol) || !loopback.has(url.hostname)) {
-    throw new Error('A recuperação só pode usar recursos locais descartáveis.')
-  }
-  return url
-}
 
 export class RecoveryStorage {
   readonly client: S3Client
@@ -26,16 +13,17 @@ export class RecoveryStorage {
   operations = 0
 
   constructor(environment: Environment) {
+    requireExperimentalEnvironment()
     this.environment = environment
     const {
       POC_BACKUP_ENDPOINT, POC_BACKUP_PREFIX, POC_BACKUP_ACCESS_KEY, POC_BACKUP_SECRET_KEY, POC_BACKUP_KEY,
       POC_S3_ACCESS_KEY, POC_S3_SECRET_KEY,
     } = process.env
-    const endpoint = localURL(POC_BACKUP_ENDPOINT, ['http:', 'https:'])
+    const endpoint = localStorageEndpoint(POC_BACKUP_ENDPOINT)
     if (environment === 'prd' || !POC_BACKUP_PREFIX || !/^[a-z0-9][a-z0-9-]{1,25}$/.test(POC_BACKUP_PREFIX) ||
         !POC_BACKUP_ACCESS_KEY || !POC_BACKUP_SECRET_KEY || POC_BACKUP_ACCESS_KEY === POC_S3_ACCESS_KEY ||
         POC_BACKUP_SECRET_KEY === POC_S3_SECRET_KEY || !POC_BACKUP_KEY || !/^[0-9a-f]{64}$/i.test(POC_BACKUP_KEY)) {
-      throw new Error('Configure credenciais de recuperação separadas, chave AES-256 e ambiente local DEV ou HML.')
+      throw new Error('Configure credenciais de recuperação separadas, chave AES-256 e namespace local dev ou hml.')
     }
     this.bucket = `${POC_BACKUP_PREFIX}-${environment}-backup`
     if (this.bucket === process.env.POC_S3_BUCKET) throw new Error('Separe o armazenamento de recuperação da mídia privada.')

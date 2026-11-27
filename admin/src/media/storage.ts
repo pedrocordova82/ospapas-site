@@ -4,14 +4,15 @@ import { Transform } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import { CreateBucketCommand, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
+import { localStorageEndpoint, requireExperimentalEnvironment } from '../config.ts'
+
 let client: S3Client | undefined
 
 export function storage() {
   const { POC_S3_ENDPOINT, POC_S3_BUCKET, POC_S3_ACCESS_KEY, POC_S3_SECRET_KEY } = process.env
-  const endpoint = POC_S3_ENDPOINT && new URL(POC_S3_ENDPOINT)
-  if (!endpoint || !['http:', 'https:'].includes(endpoint.protocol) ||
-      !['localhost', '127.0.0.1', '[::1]'].includes(endpoint.hostname) ||
-      !POC_S3_BUCKET || !POC_S3_ACCESS_KEY || !POC_S3_SECRET_KEY) {
+  requireExperimentalEnvironment()
+  const endpoint = localStorageEndpoint(POC_S3_ENDPOINT)
+  if (!POC_S3_BUCKET || !POC_S3_ACCESS_KEY || !POC_S3_SECRET_KEY) {
     throw new Error('Configure o emulador S3 local e as credenciais fictícias da PoC.')
   }
   client ??= new S3Client({
