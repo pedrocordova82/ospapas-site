@@ -70,6 +70,8 @@ O wrapper do Next carrega `.env.poc` em DEV e recusa os arquivos que o Next carr
 | `typecheck`, `lint`, `test:config` | Tipagem, lint e validações específicas de configuração e bloqueio dos caminhos experimentais. |
 | `test:integration`, `test:media`, `test:publication`, `test:security`, `test:consistency` | Regressão de acesso, mídia, publicação, segurança e consistência. Execute após `build`, com bases descartáveis, prefixos novos e destinos de recuperação preparados conforme cada suíte. |
 
+A suíte de mídia simula estados legados e escritas concorrentes com um papel de fixture. Somente no cluster descartável do ensaio, esse papel precisa de permissão de `SET` sobre `session_replication_role`. Use papéis separados para o runtime hospedado e a recuperação.
+
 Para iniciar o standalone, disponibilize `.next/static` em `.next/standalone/.next/static` e execute `node .next/standalone/server.js`, passando a configuração DEV pelo processo. Antes de distribuir um artefato, verifique a ausência de arquivos `.env*` e dos valores de configuração privada nele. `/healthz` indica que o processo responde. Valide também a rota administrativa com a conexão configurada. [Empacotamento e ensaios](../ADMIN_POC_REPORT.md)
 
 ## Próximas atividades da fundação
