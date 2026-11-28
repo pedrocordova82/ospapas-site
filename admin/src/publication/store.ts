@@ -2,14 +2,11 @@ import {
   CreateBucketCommand, GetObjectCommand, HeadObjectCommand, PutObjectCommand,
 } from '@aws-sdk/client-s3'
 import { randomUUID } from 'node:crypto'
+import { publicationNamespace } from '../config.ts'
 import { storage } from '../media/storage.ts'
-import { hash, isEnvironment, jsonBytes, maxPublicJSON, parseManifest, version, type Environment } from './contract.ts'
+import { hash, jsonBytes, maxPublicJSON, parseManifest, version, type Environment } from './contract.ts'
 
-export function publicationEnvironment(): Environment {
-  const value = process.env.POC_PUBLIC_ENV ?? 'dev'
-  if (!isEnvironment(value)) throw new Error('Ambiente de publicação inválido.')
-  return value
-}
+export const publicationEnvironment = publicationNamespace
 
 export function destinations(environment: Environment) {
   const prefix = process.env.POC_PUBLIC_PREFIX

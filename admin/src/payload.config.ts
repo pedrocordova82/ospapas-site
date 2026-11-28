@@ -1,5 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { APIError, buildConfig } from 'payload'
+import { adminConfig } from './config.ts'
+import { assertDisposableDatabase } from './experimental.ts'
 import { collections } from './access/collections.ts'
 
 import { publicacoes } from './publication/queue.ts'
@@ -9,38 +11,43 @@ import { auditDenial, databaseConflict, protectCollection, readAudit } from './s
 import { assertOperational, prepareSecurity } from './security/database.ts'
 import { bindSecurityTransactions } from './security/coordination.ts'
 
-const { DATABASE_URL, PAYLOAD_SECRET, POC_PREPARE_SCHEMA } = process.env
-
-if (!DATABASE_URL || !PAYLOAD_SECRET || PAYLOAD_SECRET.length < 32) {
-  throw new Error('Configure DATABASE_URL e PAYLOAD_SECRET (mínimo de 32 caracteres).')
+function createConfig(database: URL, secret: string, prepareSchema: boolean) {
+  return buildConfig({
+    admin: { user: 'users' },
+    collections: [...collections, midias, publicacoes].map(protectCollection),
+    endpoints: [readAudit],
+    hooks: {
+      afterError: [async ({ error, req }) => {
+        if (databaseConflict(error)) {
+          return { status: 409, response: { errors: [{ message: 'Conflito concorrente. Consulte o estado atual.' }] } }
+        }
+        if (error instanceof APIError) {
+          await auditDenial(req, error.status).catch(() => req.payload.logger.warn('Falha ao registrar recusa de acesso.'))
+        }
+      }],
+    },
+    onInit: async payload => {
+      if (prepareSchema) await prepareSecurity(payload)
+      await assertOperational(mediaPool(payload))
+      bindSecurityTransactions(payload)
+    },
+    db: postgresAdapter({
+      pool: { connectionString: database.href, max: 3, connectionTimeoutMillis: 5_000 },
+      transactionOptions: { isolationLevel: 'serializable' },
+      push: prepareSchema,
+      disableCreateDatabase: true,
+    }),
+    graphQL: { disable: true },
+    secret,
+    typescript: { autoGenerate: false },
+  })
 }
 
-export default buildConfig({
-  admin: { user: 'users' },
-  collections: [...collections, midias, publicacoes].map(protectCollection),
-  endpoints: [readAudit],
-  hooks: {
-    afterError: [async ({ error, req }) => {
-      if (databaseConflict(error)) {
-        return { status: 409, response: { errors: [{ message: 'Conflito concorrente. Consulte o estado atual.' }] } }
-      }
-      if (error instanceof APIError) {
-        await auditDenial(req, error.status).catch(() => req.payload.logger.warn('Falha ao registrar recusa de acesso.'))
-      }
-    }],
-  },
-  onInit: async payload => {
-    if (POC_PREPARE_SCHEMA === '1') await prepareSecurity(payload)
-    await assertOperational(mediaPool(payload))
-    bindSecurityTransactions(payload)
-  },
-  db: postgresAdapter({
-    pool: { connectionString: DATABASE_URL, max: 3, connectionTimeoutMillis: 5_000 },
-    transactionOptions: { isolationLevel: 'serializable' },
-    push: POC_PREPARE_SCHEMA === '1',
-    disableCreateDatabase: true,
-  }),
-  graphQL: { disable: true },
-  secret: PAYLOAD_SECRET,
-  typescript: { autoGenerate: false },
-})
+export async function experimentalSchemaConfig() {
+  const { database, secret } = adminConfig()
+  const disposable = await assertDisposableDatabase(database.href)
+  return createConfig(disposable, secret, true)
+}
+
+const { database, secret } = adminConfig()
+export default createConfig(database, secret, false)

@@ -1,3 +1,4 @@
+import { assertDisposableDatabase } from '../src/experimental.ts'
 import assert from 'node:assert/strict'
 import { spawn, type ChildProcess } from 'node:child_process'
 import { randomBytes, randomUUID } from 'node:crypto'
@@ -92,6 +93,8 @@ async function run(status: string) {
 }
 
 before(async () => {
+  await assertDisposableDatabase()
+  await assertDisposableDatabase(target.href)
   payload = await getPayload({ config })
   assert.equal((await payload.count({ collection: 'publicacoes', overrideAccess: true })).totalDocs, 0)
   for (const Bucket of Object.values(store.buckets)) await storage().client.send(new CreateBucketCommand({ Bucket }))

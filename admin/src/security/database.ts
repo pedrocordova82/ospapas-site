@@ -1,5 +1,6 @@
 import { sql, type PostgresAdapter } from '@payloadcms/db-postgres'
 import type { Payload, PayloadRequest } from 'payload'
+import { postgresURL } from '../config.ts'
 import { mediaPool } from '../media/model.ts'
 
 export type DatabaseClient = Pick<ReturnType<typeof mediaPool>, 'query'>
@@ -169,7 +170,7 @@ export async function prepareSecurity(payload: Payload) {
 }
 
 export function requireDirectConnection() {
-  const database = new URL(process.env.DATABASE_URL ?? '')
+  const database = postgresURL(process.env.DATABASE_URL)
   if (database.hostname.includes('-pooler') || process.env.POC_PG_CONNECTION_MODE === 'transaction' ||
       database.searchParams.get('pgbouncer') === 'true') {
     throw new Error('Esta operação exige uma conexão PostgreSQL direta.')

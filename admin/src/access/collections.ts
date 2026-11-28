@@ -1,3 +1,5 @@
+import { applicationEnvironment } from '../config.ts'
+import { experimentalBootstrap } from '../experimental.ts'
 import { APIError, type Access, type CollectionBeforeChangeHook, type CollectionBeforeOperationHook, type CollectionConfig, type Field } from 'payload'
 import { coverField, validateCover, validateVideo } from '../media/collection.ts'
 import { retainActiveGeneral } from './last-general.ts'
@@ -54,7 +56,8 @@ const users: CollectionConfig = {
     }],
     beforeChange: [async ({ data, operation, originalDoc, req, context }) => {
       const operator = actor(req)
-      if (!operator && !(operation === 'create' && context.pocBootstrap === true)) deny()
+      if (!operator && !(operation === 'create' && context.pocBootstrap === experimentalBootstrap &&
+          applicationEnvironment() === 'dev')) deny()
 
       const perfil = data.perfil ?? originalDoc?.perfil
       const ativo = data.ativo ?? originalDoc?.ativo ?? true

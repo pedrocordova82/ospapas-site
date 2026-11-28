@@ -1,3 +1,4 @@
+import { assertDisposableDatabase } from '../src/experimental.ts'
 import assert from 'node:assert/strict'
 import { execFile, spawn, type ChildProcess } from 'node:child_process'
 import { randomBytes } from 'node:crypto'
@@ -27,11 +28,10 @@ type Enqueued = { id: number; release: string; estado: string }
 type Row = { estado: string; erro: string | null; tentativas: number | string }
 type Asset = { id: number; uuid: string; otimizado: string }
 const exec = promisify(execFile)
+assert.equal(process.env.POC_PUBLIC_ENV ?? 'dev', 'dev')
 const password = randomBytes(24).toString('hex')
 const currentStore = new ReleaseStore('dev')
 const processes = new Set<ChildProcess>()
-const database = new URL(process.env.DATABASE_URL ?? 'postgresql://invalid')
-assert.ok(['localhost', '127.0.0.1', '[::1]'].includes(database.hostname) && process.env.POC_PUBLIC_ENV === 'dev')
 let payload: Payload
 let dir: string
 let bundle: string
@@ -178,6 +178,7 @@ async function refuseActivation(job: Enqueued) {
 }
 
 before(async () => {
+  await assertDisposableDatabase()
   payload = await getPayload({ config })
   assert.equal((await payload.count({ collection: 'publicacoes', overrideAccess: true })).totalDocs, 0)
   dir = await mkdtemp(join(tmpdir(), 'ospapas-test-publicacao-'))
